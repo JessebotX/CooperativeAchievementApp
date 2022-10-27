@@ -1,0 +1,8 @@
+Scrum Roles:
+
+Iteration 1:
+- Scrum Master: Jesse
+- Product Owner: Nathalie
+- Repo Manager: Tomi
+- Team Member: Andy
+
