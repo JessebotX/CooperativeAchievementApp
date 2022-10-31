@@ -79,6 +79,8 @@ public class Game {
 	 * Take the expected great/poor individual scores, the number of players, and the total score
 	 * to determine the cooperative achievement level (from 0 to 8).
 	 *
+	 * TODO testing required.
+	 *
 	 * @return an integer from 0 to 8 (inclusive) that represents achievement level
 	 */
 	public int getAchievementLevel() {
