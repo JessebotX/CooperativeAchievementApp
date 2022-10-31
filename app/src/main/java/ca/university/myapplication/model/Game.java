@@ -11,7 +11,7 @@ package ca.university.myapplication.model;
  * - Expected scores
  * - Achievement level
  */
-public class GameConfig {
+public class Game {
 	private static final int MIN_PLAYERS = 1;
 	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
 
@@ -21,11 +21,11 @@ public class GameConfig {
 	private int expectedPoorScore;
 	private int expectedGoodScore;
 
-	public GameConfig() {
+	public Game() {
 		// default, requires manually calling setters
 	}
 
-	public GameConfig(String name, int players, int totalScore, int expectedPoorScore, int expectedGoodScore) {
+	public Game(String name, int players, int totalScore, int expectedPoorScore, int expectedGoodScore) {
 		setName(name);
 		setPlayers(players);
 		this.totalScore = totalScore;
