@@ -83,11 +83,13 @@ public class Game {
 
 	// TODO test this out!
 	public int getAchievementLevel() {
-		double greatPoorDifference = expectedGoodScore - expectedPoorScore;
+		int collectiveGreatScore = expectedGoodScore * players;
+		int collectivePoorScore = expectedPoorScore * players;
+		double greatPoorDifference = collectiveGreatScore - collectivePoorScore;
 
-		if (totalScore < expectedPoorScore) {
+		if (totalScore < collectivePoorScore) {
 			return 0; // level 0
-		} else if (totalScore < expectedGoodScore) {
+		} else if (totalScore < collectiveGreatScore) {
 			for (int level = 1; level < ACHIEVEMENT_LEVELS; level++) {
 				// eg. if level = 1; poor = 40; great = 100; then difference = 60
 				// (60 / (8-1) * 1) + 40
@@ -100,7 +102,7 @@ public class Game {
 
 				double levelCap = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * level);
 
-				if (totalScore < levelCap + expectedPoorScore) {
+				if (totalScore < levelCap + collectivePoorScore) {
 					return level;
 				}
 			}
