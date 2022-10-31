@@ -1,7 +1,9 @@
 package ca.university.myapplication.model;
 
+import java.time.LocalDateTime;
+
 /**
- * Represents a single game configuration.
+ * Represents a single game.
  *
  * Stores: Game name; num players; Total score; Expected individual poor/great scores
  */
@@ -9,7 +11,6 @@ public class Game {
 	private static final int MIN_PLAYERS = 1;
 	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
 
-	private String name;
 	private int players;
 	private int totalScore;
 	private int expectedPoorScore;
@@ -19,24 +20,11 @@ public class Game {
 		// default, requires manually calling setters
 	}
 
-	public Game(String name, int players, int totalScore, int expectedPoorScore, int expectedGoodScore) {
-		setName(name);
+	public Game(int players, int totalScore, int expectedPoorScore, int expectedGoodScore) {
 		setPlayers(players);
 		this.totalScore = totalScore;
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGoodScore = expectedGoodScore;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		if (name.trim().isEmpty()) {
-			throw new IllegalArgumentException("Game name cannot be empty.");
-		}
-
-		this.name = name;
 	}
 
 	public int getPlayers() {
