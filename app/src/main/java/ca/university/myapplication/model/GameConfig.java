@@ -12,7 +12,9 @@ package ca.university.myapplication.model;
  * - Achievement level
  */
 public class GameConfig {
-	public static final int MIN_PLAYERS = 1;
+	private static final int MIN_PLAYERS = 1;
+	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
+
 	private String name;
 	private int players;
 	private int totalScore;
@@ -77,5 +79,33 @@ public class GameConfig {
 
 	public void setExpectedGoodScore(int expectedGoodScore) {
 		this.expectedGoodScore = expectedGoodScore;
+	}
+
+	// TODO test this out!
+	public int getAchievementLevel() {
+		double greatPoorDifference = expectedGoodScore - expectedPoorScore;
+
+		if (totalScore < expectedPoorScore) {
+			return 0; // level 0
+		} else if (totalScore < expectedGoodScore) {
+			for (int level = 1; level < ACHIEVEMENT_LEVELS; level++) {
+				// eg. if level = 1; poor = 40; great = 100; then difference = 60
+				// (60 / (8-1) * 1) + 40
+				//   (60 / 7 * 1) + 40
+				//   (8.5.. * 1) + 40
+				//   = 48.5...
+				// anything < 48.5... is considered level 1.
+				// divide difference by 7 because between poor and great, have 7 separations
+				// anything below poor = level 0, >= great means level 8
+
+				double levelCap = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * level);
+
+				if (totalScore < levelCap + expectedPoorScore) {
+					return level;
+				}
+			}
+		}
+
+		return ACHIEVEMENT_LEVELS;
 	}
 }
