@@ -3,13 +3,7 @@ package ca.university.myapplication.model;
 /**
  * Represents a single game configuration.
  *
- * Stores
- * - Game name
- * - Players
- * - Total score
- * - Date and time of creation
- * - Expected scores
- * - Achievement level
+ * Stores: Game name; num players; Total score; Expected individual poor/great scores
  */
 public class Game {
 	private static final int MIN_PLAYERS = 1;
@@ -81,28 +75,32 @@ public class Game {
 		this.expectedGoodScore = expectedGoodScore;
 	}
 
-	// TODO test this out!
+	/**
+	 * Take the expected great/poor individual scores, the number of players, and the total score
+	 * to determine the cooperative achievement level (from 0 to 8).
+	 *
+	 * @return an integer from 0 to 8 (inclusive) that represents achievement level
+	 */
 	public int getAchievementLevel() {
 		int collectiveGreatScore = expectedGoodScore * players;
 		int collectivePoorScore = expectedPoorScore * players;
 		double greatPoorDifference = collectiveGreatScore - collectivePoorScore;
 
+		// eg. if level = 1; poor = 40; great = 100; then difference = 60
+		// (60 / (8-1) * 1) + 40
+		//   (60 / 7 * 1) + 40
+		//   (8.5.. * 1) + 40
+		//   = 48.5...
+		// anything < 48.5... is considered level 1.
+		// divide difference by 7 because between poor and great, have 7 separations
+		// anything below poor = level 0, >= great means level 8
 		if (totalScore < collectivePoorScore) {
-			return 0; // level 0
+			return 0;
 		} else if (totalScore < collectiveGreatScore) {
 			for (int level = 1; level < ACHIEVEMENT_LEVELS; level++) {
-				// eg. if level = 1; poor = 40; great = 100; then difference = 60
-				// (60 / (8-1) * 1) + 40
-				//   (60 / 7 * 1) + 40
-				//   (8.5.. * 1) + 40
-				//   = 48.5...
-				// anything < 48.5... is considered level 1.
-				// divide difference by 7 because between poor and great, have 7 separations
-				// anything below poor = level 0, >= great means level 8
+				double thresholdMark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * level);
 
-				double levelCap = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * level);
-
-				if (totalScore < levelCap + collectivePoorScore) {
+				if (totalScore < (thresholdMark + collectivePoorScore)) {
 					return level;
 				}
 			}
