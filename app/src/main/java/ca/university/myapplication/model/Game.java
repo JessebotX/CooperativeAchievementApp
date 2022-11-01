@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  *
  * Stores: Game name; num players; Total score; Expected individual poor/great scores
  */
-public class Game {
+public class Game implements Comparable<Game> {
 	private static final int MIN_PLAYERS = 1;
 	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
 
@@ -141,5 +141,10 @@ public class Game {
 			double mark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * i) + collectivePoorScore;
 			achievementLevelThresholds[i] = (int)Math.round(mark);
 		}
+	}
+
+	@Override
+	public int compareTo(Game game) {
+		return this.timeOfCreation.compareTo(game.getTimeOfCreation());
 	}
 }
