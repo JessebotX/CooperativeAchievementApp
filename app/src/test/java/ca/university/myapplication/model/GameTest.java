@@ -27,7 +27,7 @@ public class GameTest {
 		Game game = new Game(4, 4, 1, 8);
 
 		for (int i = 0; i < 8; i++) {
-			assertEquals(4 * (i + 1), game.getAchievementLevelThresholds()[i]);
+			assertEquals(4 * (i + 1), game.getAchievementLevelRequiredScores()[i]);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class GameTest {
 		int[] levelRequirements = { 40, 48, 57, 65, 74, 82, 91, 100 };
 
 		for (int i = 0; i < levelRequirements.length; i++) {
-			assertEquals(levelRequirements[i], game.getAchievementLevelThresholds()[i]);
+			assertEquals(levelRequirements[i], game.getAchievementLevelRequiredScores()[i]);
 		}
 	}
 

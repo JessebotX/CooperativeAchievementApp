@@ -15,7 +15,7 @@ public class Game implements Comparable<Game> {
 	private int totalScore;
 	private int expectedPoorScore;
 	private int expectedGreatScore;
-	private int[] achievementLevelThresholds;
+	private int[] achievementLevelRequiredScores;
 	private LocalDateTime timeOfCreation;
 
 	/**
@@ -30,7 +30,7 @@ public class Game implements Comparable<Game> {
 		this.totalScore = totalScore;
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGreatScore = expectedGoodScore;
-		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
+		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 		this.timeOfCreation = LocalDateTime.now();
 
 		initializeAchievementLevelThresholds();
@@ -97,8 +97,8 @@ public class Game implements Comparable<Game> {
 	 * @return A list of required scores for levels 1 to 8. NOTE: indices are zero indexed so level
 	 * 1 scores are accessed by index 0.
 	 */
-	public int[] getAchievementLevelThresholds() {
-		return achievementLevelThresholds;
+	public int[] getAchievementLevelRequiredScores() {
+		return achievementLevelRequiredScores;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class Game implements Comparable<Game> {
 	 */
 	public int getAchievementLevel() {
 		for (int level = 0; level < ACHIEVEMENT_LEVELS; level++) {
-			if (totalScore < achievementLevelThresholds[level]) {
+			if (totalScore < achievementLevelRequiredScores[level]) {
 				return level;
 			}
 		}
@@ -122,7 +122,7 @@ public class Game implements Comparable<Game> {
 	}
 
 	private void initializeAchievementLevelThresholds() {
-		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
+		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 
 		int collectiveGreatScore = expectedGreatScore * players;
 		int collectivePoorScore = expectedPoorScore * players;
@@ -139,7 +139,7 @@ public class Game implements Comparable<Game> {
 
 		for (int i = 0; i < ACHIEVEMENT_LEVELS; i++) {
 			double mark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * i) + collectivePoorScore;
-			achievementLevelThresholds[i] = (int)mark;
+			achievementLevelRequiredScores[i] = (int)mark;
 		}
 	}
 
