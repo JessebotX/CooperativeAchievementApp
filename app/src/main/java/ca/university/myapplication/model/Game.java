@@ -105,7 +105,8 @@ public class Game implements Comparable<Game> {
 	 * Take the expected great/poor individual scores, the number of players, and the total score
 	 * to determine the cooperative achievement level (from 0 to 8).
 	 *
-	 * @return an integer from 0 to 8 (inclusive) that represents achievement level
+	 * @return an integer from 0 to 8 (inclusive) that represents achievement level. Level 0 is
+	 * below the expected collective poor score while level 8 is >= expected collective great score
 	 */
 	public int getAchievementLevel() {
 		for (int level = 0; level < ACHIEVEMENT_LEVELS; level++) {
