@@ -5,14 +5,21 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Manages a list of Games
+ * A Game Configuration that manages a list of Games
  */
 public class GameConfig implements Iterable<Game> {
+	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
 	private String name;
 	private int expectedGreatScore;
 	private int expectedPoorScore;
 	private List<Game> games;
 
+	/**
+	 * Create a new Game Configuration
+	 * @param name the game name (eg. Monopoly, Via Magica, etc.)
+	 * @param expectedPoorScore the expected poor performance of an individual
+	 * @param expectedGreatScore the expected great performance of an individual
+	 */
 	public GameConfig(String name, int expectedPoorScore, int expectedGreatScore) {
 		setName(name);
 		this.expectedPoorScore = expectedPoorScore;
@@ -24,6 +31,10 @@ public class GameConfig implements Iterable<Game> {
 		return name;
 	}
 
+	/**
+	 * Set a new game name.
+	 * @param name A non-empty non-blank string value.
+	 */
 	public void setName(String name) {
 		if (name.trim().isEmpty()) {
 			throw new IllegalArgumentException("Game configuration name cannot be blank.");
@@ -49,26 +60,35 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public Game getGame(int index) {
-		if (index < 0 || index > this.games.size()) {
-			throw new IllegalArgumentException("index out of bounds when trying to get game.");
+		if (index < 0 || index > games.size()) {
+			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
 
-		return this.games.get(index);
+		return games.get(index);
 	}
 
+	/**
+	 * Add a new game to a list
+	 * @param players number of players
+	 * @param totalScore the total score
+	 */
 	public void addGame(int players, int totalScore) {
 		Game game = new Game(players, totalScore, expectedPoorScore, expectedGreatScore);
-		this.games.add(game);
+		games.add(game);
 	}
 
 	public void removeGame(int index) {
-		if (index < 0 || index > this.games.size()) {
-			throw new IllegalArgumentException("index out of bounds when trying to remove game.");
+		if (index < 0 || index > games.size()) {
+			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
 
-		this.games.remove(index);
+		games.remove(index);
 	}
 
+	/**
+	 * Get the amount of games added to this game configuration
+	 * @return >= 0 amount of games
+	 */
 	public int totalGames() {
 		return this.games.size();
 	}
