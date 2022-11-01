@@ -14,7 +14,7 @@ public class Game implements Comparable<Game> {
 	private int players;
 	private int totalScore;
 	private int expectedPoorScore;
-	private int expectedGoodScore;
+	private int expectedGreatScore;
 	private int[] achievementLevelThresholds;
 	private LocalDateTime timeOfCreation;
 
@@ -29,7 +29,7 @@ public class Game implements Comparable<Game> {
 		setPlayers(players);
 		this.totalScore = totalScore;
 		this.expectedPoorScore = expectedPoorScore;
-		this.expectedGoodScore = expectedGoodScore;
+		this.expectedGreatScore = expectedGoodScore;
 		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
 		this.timeOfCreation = LocalDateTime.now();
 
@@ -79,12 +79,12 @@ public class Game implements Comparable<Game> {
 		initializeAchievementLevelThresholds();
 	}
 
-	public int getExpectedGoodScore() {
-		return expectedGoodScore;
+	public int getExpectedGreatScore() {
+		return expectedGreatScore;
 	}
 
-	public void setExpectedGoodScore(int expectedGoodScore) {
-		this.expectedGoodScore = expectedGoodScore;
+	public void setExpectedGreatScore(int expectedGreatScore) {
+		this.expectedGreatScore = expectedGreatScore;
 
 		// reinitialize achievement levels
 		initializeAchievementLevelThresholds();
@@ -126,7 +126,7 @@ public class Game implements Comparable<Game> {
 	private void initializeAchievementLevelThresholds() {
 		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
 
-		int collectiveGreatScore = expectedGoodScore * players;
+		int collectiveGreatScore = expectedGreatScore * players;
 		int collectivePoorScore = expectedPoorScore * players;
 		double greatPoorDifference = collectiveGreatScore - collectivePoorScore;
 
