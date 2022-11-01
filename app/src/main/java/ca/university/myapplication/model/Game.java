@@ -124,6 +124,8 @@ public class Game implements Comparable<Game> {
 	}
 
 	private void initializeAchievementLevelThresholds() {
+		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
+
 		int collectiveGreatScore = expectedGoodScore * players;
 		int collectivePoorScore = expectedPoorScore * players;
 		double greatPoorDifference = collectiveGreatScore - collectivePoorScore;
@@ -139,7 +141,7 @@ public class Game implements Comparable<Game> {
 
 		for (int i = 0; i < ACHIEVEMENT_LEVELS; i++) {
 			double mark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * i) + collectivePoorScore;
-			achievementLevelThresholds[i] = (int)Math.round(mark);
+			achievementLevelThresholds[i] = (int)mark;
 		}
 	}
 
