@@ -43,7 +43,7 @@ public class Game implements Comparable<Game> {
 	/**
 	 * Set a new number of total players. Automatically reupdates the achievement level requirements
 	 * list.
-	 * @param players number of players
+	 * @param players number of players >= 1
 	 */
 	public void setPlayers(int players) {
 		if (players < MIN_PLAYERS) {
