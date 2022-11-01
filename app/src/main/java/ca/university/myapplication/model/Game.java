@@ -15,52 +15,66 @@ public class Game {
 	private int totalScore;
 	private int expectedPoorScore;
 	private int expectedGoodScore;
+	private int[] achievementLevelThresholds;
 
-	public Game() {
-		// default, requires manually calling setters
-	}
-
+	/**
+	 * Create a new Game under a GameConfig. Game creation should be done by GameConfig itself
+	 * @param players number of players
+	 * @param totalScore total score from the sum of player scores
+	 * @param expectedPoorScore the expected poor score for a single individual
+	 * @param expectedGoodScore the expected great score for a single individual
+	 */
 	public Game(int players, int totalScore, int expectedPoorScore, int expectedGoodScore) {
 		setPlayers(players);
 		this.totalScore = totalScore;
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGoodScore = expectedGoodScore;
+		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
+
+		initializeAchievementLevelThresholds();
 	}
 
 	public int getPlayers() {
 		return players;
 	}
 
+	/**
+	 * Set a new number of total players. Automatically reupdates the achievement level requirements
+	 * list.
+	 * @param players number of players
+	 */
 	public void setPlayers(int players) {
 		if (players < MIN_PLAYERS) {
 			throw new IllegalArgumentException("Players cannot be less than " + MIN_PLAYERS);
 		}
 
 		this.players = players;
+
+		// update achievement levels
+		initializeAchievementLevelThresholds();
 	}
 
 	public int getTotalScore() {
 		return totalScore;
 	}
 
+	/**
+	 * Set a new total score
+	 * @param totalScore new value
+	 */
 	public void setTotalScore(int totalScore) {
 		this.totalScore = totalScore;
 	}
 
-	public int getExpectedPoorScore() {
-		return expectedPoorScore;
-	}
-
-	public void setExpectedPoorScore(int expectedPoorScore) {
-		this.expectedPoorScore = expectedPoorScore;
-	}
-
-	public int getExpectedGoodScore() {
-		return expectedGoodScore;
-	}
-
-	public void setExpectedGoodScore(int expectedGoodScore) {
-		this.expectedGoodScore = expectedGoodScore;
+	/**
+	 * Get a list of the required scores for each level from 1 to 8. Any total score below level 1
+	 * (index 0) should be level 0 and any score greater or equal to level 8 (index 7) should be
+	 * level 8
+	 * @return A list of required scores for levels 1 to 8. NOTE: indices are zero indexed so level
+	 * 1 scores are accessed by index 0.
+	 */
+	public int[] getAchievementLevelThresholds() {
+		return achievementLevelThresholds;
 	}
 
 	/**
@@ -72,6 +86,16 @@ public class Game {
 	 * @return an integer from 0 to 8 (inclusive) that represents achievement level
 	 */
 	public int getAchievementLevel() {
+		for (int level = 0; level < ACHIEVEMENT_LEVELS; level++) {
+			if (totalScore < achievementLevelThresholds[level]) {
+				return level;
+			}
+		}
+
+		return ACHIEVEMENT_LEVELS;
+	}
+
+	private void initializeAchievementLevelThresholds() {
 		int collectiveGreatScore = expectedGoodScore * players;
 		int collectivePoorScore = expectedPoorScore * players;
 		double greatPoorDifference = collectiveGreatScore - collectivePoorScore;
@@ -84,18 +108,10 @@ public class Game {
 		// anything < 48.5... is considered level 1.
 		// divide difference by 7 because between poor and great, have 7 separations
 		// anything below poor = level 0, >= great means level 8
-		if (totalScore < collectivePoorScore) {
-			return 0;
-		} else if (totalScore < collectiveGreatScore) {
-			for (int level = 1; level < ACHIEVEMENT_LEVELS; level++) {
-				double thresholdMark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * level);
 
-				if (totalScore < (thresholdMark + collectivePoorScore)) {
-					return level;
-				}
-			}
+		for (int i = 0; i < ACHIEVEMENT_LEVELS; i++) {
+			double mark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * i) + collectivePoorScore;
+			achievementLevelThresholds[i] = (int)Math.round(mark);
 		}
-
-		return ACHIEVEMENT_LEVELS;
 	}
 }
