@@ -16,6 +16,7 @@ public class Game {
 	private int expectedPoorScore;
 	private int expectedGoodScore;
 	private int[] achievementLevelThresholds;
+	private LocalDateTime timeOfCreation;
 
 	/**
 	 * Create a new Game under a GameConfig. Game creation should be done by GameConfig itself
@@ -30,6 +31,7 @@ public class Game {
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGoodScore = expectedGoodScore;
 		this.achievementLevelThresholds = new int[ACHIEVEMENT_LEVELS];
+		this.timeOfCreation = LocalDateTime.now();
 
 		initializeAchievementLevelThresholds();
 	}
@@ -50,7 +52,7 @@ public class Game {
 
 		this.players = players;
 
-		// update achievement levels
+		// reinitialize achievement levels
 		initializeAchievementLevelThresholds();
 	}
 
@@ -64,6 +66,28 @@ public class Game {
 	 */
 	public void setTotalScore(int totalScore) {
 		this.totalScore = totalScore;
+	}
+
+	public int getExpectedPoorScore() {
+		return expectedPoorScore;
+	}
+
+	public void setExpectedPoorScore(int expectedPoorScore) {
+		this.expectedPoorScore = expectedPoorScore;
+
+		// reinitialize achievement levels
+		initializeAchievementLevelThresholds();
+	}
+
+	public int getExpectedGoodScore() {
+		return expectedGoodScore;
+	}
+
+	public void setExpectedGoodScore(int expectedGoodScore) {
+		this.expectedGoodScore = expectedGoodScore;
+
+		// reinitialize achievement levels
+		initializeAchievementLevelThresholds();
 	}
 
 	/**
@@ -93,6 +117,10 @@ public class Game {
 		}
 
 		return ACHIEVEMENT_LEVELS;
+	}
+
+	public LocalDateTime getTimeOfCreation() {
+		return timeOfCreation;
 	}
 
 	private void initializeAchievementLevelThresholds() {
