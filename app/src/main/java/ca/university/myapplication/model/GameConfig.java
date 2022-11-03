@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class GameConfig implements Iterable<Game> {
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
+
 	private String name;
 	private int expectedGreatScore;
 	private int expectedPoorScore;
@@ -67,11 +68,6 @@ public class GameConfig implements Iterable<Game> {
 		return games.get(index);
 	}
 
-	/**
-	 * Add a new game to a list
-	 * @param players number of players
-	 * @param totalScore the total score
-	 */
 	public void addGame(int players, int totalScore) {
 		Game game = new Game(players, totalScore, expectedPoorScore, expectedGreatScore);
 		games.add(game);
