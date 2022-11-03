@@ -60,7 +60,7 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public Game getGame(int index) {
-		if (index < 0 || index > games.size()) {
+		if (index < 0 || index >= games.size()) {
 			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
 
@@ -78,7 +78,7 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public void removeGame(int index) {
-		if (index < 0 || index > games.size()) {
+		if (index < 0 || index >= games.size()) {
 			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
 
