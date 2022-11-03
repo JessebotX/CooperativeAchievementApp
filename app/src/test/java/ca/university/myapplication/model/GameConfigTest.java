@@ -1,8 +1,11 @@
 package ca.university.myapplication.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
+
+import java.time.LocalDateTime;
 
 /**
  * Test out GameConfig
@@ -36,7 +39,26 @@ public class GameConfigTest {
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.getGame(2));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.getGame(3));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.getGame(Integer.MAX_VALUE));
+	}
 
+	@Test
+	public void accessingGame() {
+		GameConfig gameConfig = new GameConfig("Placeholder Game", 1, 8);
+
+		gameConfig.addGame(4, 100);
+
+		gameConfig.getGame(0).setPlayers(5);
+
+		Game game = gameConfig.getGame(0);
+		int level = game.getAchievementLevel();
+		LocalDateTime time = game.getTimeOfCreation();
+		int players = game.getPlayers();
+		int score = game.getTotalScore();
+
+		assertEquals(5, players);
+		assertEquals(40, game.getAchievementLevelRequiredScores()[7]);
+		assertEquals(8, level);
+		assertEquals(100, score);
 	}
 
 	@Test
