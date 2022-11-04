@@ -15,15 +15,15 @@ public class GameConfigManager implements Iterable<GameConfig> {
 		gameConfigs = new ArrayList<>();
 	}
 
-	public void addGameConfig(String name, int expectedPoorScore, int expectedGreatScore) {
-		addGameConfig(new GameConfig(name, expectedPoorScore, expectedGreatScore));
+	public void addConfig(String name, int expectedPoorScore, int expectedGreatScore) {
+		addConfig(new GameConfig(name, expectedPoorScore, expectedGreatScore));
 	}
 
-	public void addGameConfig(GameConfig gameConfig) {
+	public void addConfig(GameConfig gameConfig) {
 		gameConfigs.add(gameConfig);
 	}
 
-	public GameConfig getGameConfig(int index) {
+	public GameConfig getConfig(int index) {
 		if (index < 0 || index > gameConfigs.size()) {
 			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
@@ -31,7 +31,7 @@ public class GameConfigManager implements Iterable<GameConfig> {
 		return gameConfigs.get(index);
 	}
 
-	public void removeGameConfig(int index) {
+	public void removeConfig(int index) {
 		if (index < 0 || index > gameConfigs.size()) {
 			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
@@ -39,7 +39,7 @@ public class GameConfigManager implements Iterable<GameConfig> {
 		gameConfigs.remove(index);
 	}
 
-	public int totalGameConfigs() {
+	public int totalConfigs() {
 		return gameConfigs.size();
 	}
 
