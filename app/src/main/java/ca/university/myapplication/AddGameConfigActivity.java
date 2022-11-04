@@ -8,6 +8,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddGameConfigActivity extends AppCompatActivity {
+    private GameConfigManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,8 @@ public class AddGameConfigActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        manager = GameConfigManager.getInstance();
 
         findViewById(R.id.btn_save_game_config).setOnClickListener(v -> saveGameConfig());
 
@@ -58,7 +61,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
         }
 
         //save
-
+        manager.addConfig(name,poorScore,greatScore);
     }
 
 }
