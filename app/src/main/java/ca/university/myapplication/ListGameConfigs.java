@@ -16,6 +16,11 @@ public class ListGameConfigs extends AppCompatActivity {
         setContentView(R.layout.activity_list_game_configs);
 
         setUpAddNewGameConfigButton();
+        displayListOfConfigsUsingListView();
+    }
+
+    private void displayListOfConfigsUsingListView() {
+
     }
 
     private void setUpAddNewGameConfigButton() {
@@ -24,7 +29,9 @@ public class ListGameConfigs extends AppCompatActivity {
         addGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ListGameConfigs.this, AddGameConfigActivity.class);
+                /**
+                 * Intent intent = new Intent(ListGameConfigs.this, AddGameConfigActivity.class);
+                 */
             }
         });
     }
