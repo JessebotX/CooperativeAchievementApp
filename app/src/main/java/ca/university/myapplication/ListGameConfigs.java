@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,9 +31,9 @@ public class ListGameConfigs extends AppCompatActivity {
 
 
     //Displays info if there are no game configs added
-    //Lists game configs.
-    //Has a button to add a game config (launches the AddGameConfigActivity).
-    //On the click of a game config it launches the GameConfigInfoActivity
+    // [CHECK] Lists game configs.
+    // [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
+    // [CHECK] On the click of a game config it launches the GameConfigInfoActivity
     //On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
     //Has a delete button next to every game config that deletes the game config and updates the list view
 
@@ -58,6 +59,11 @@ public class ListGameConfigs extends AppCompatActivity {
         ListView listView = findViewById(R.id.listOfConfigs);
         int size = GameConfigManager.getInstance().totalConfigs();
 
+        //display message if no configs are added
+        if(size == 0){
+            Toast.makeText(this,"no configurations have been added yet",Toast.LENGTH_LONG);
+        }
+
         String[] listOfConfigs = new String[size];
         for (int i = 0; i < size; i++) {
             GameConfig config = GameConfigManager.getInstance().getConfig(i);
@@ -69,7 +75,6 @@ public class ListGameConfigs extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,R.layout.activity_list_game_configs,R.id.listOfConfigs,listOfConfigs);
         listView.setAdapter(arrayAdapter);
-
     }
 
     private void clickConfigToLaunchGameConfigInfo() {
