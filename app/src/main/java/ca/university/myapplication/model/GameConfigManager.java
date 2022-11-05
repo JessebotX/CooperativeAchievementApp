@@ -5,14 +5,24 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Manages a list of Game Configurations
+ * Manages a list of Game Configurations. Access through singleton.
  */
 public class GameConfigManager implements Iterable<GameConfig> {
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
+
+	private static GameConfigManager instance;
 	private List<GameConfig> gameConfigs;
 
 	public GameConfigManager() {
 		gameConfigs = new ArrayList<>();
+	}
+
+	public static GameConfigManager getInstance() {
+		if (instance == null) {
+			instance = new GameConfigManager();
+		}
+
+		return instance;
 	}
 
 	public void addConfig(String name, int expectedPoorScore, int expectedGreatScore) {
