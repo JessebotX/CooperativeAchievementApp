@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
 public class ListGameConfigs extends AppCompatActivity {
@@ -49,24 +51,25 @@ public class ListGameConfigs extends AppCompatActivity {
     private void displayListOfConfigsUsingListView() {
         /**
          * if no configs we need to display a message
-         */
-        ListView listView = findViewById(R.id.listOfConfigs);
-        int size = GameConfigManager.getInstance().totalConfigs();
-
-        /**
          * Name (String)
          * expected poor score (int)
          * expected great score (int)
          */
+        ListView listView = findViewById(R.id.listOfConfigs);
+        int size = GameConfigManager.getInstance().totalConfigs();
+
         String[] listOfConfigs = new String[size];
         for (int i = 0; i < size; i++) {
-            GameConfigManager.getInstance().getConfig(i);
+            GameConfig config = GameConfigManager.getInstance().getConfig(i);
+            //listOfConfigs contains the line we print
+            listOfConfigs[i] = config.getName() +" || "+ config.getExpectedPoorScore()
+                    +" || "+ config.getExpectedGreatScore();
+
         }
-        /**
-         * ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-         *                 this,R.layout.activity_display_history,R.id.TextViewID,arr);
-         *         listView.setAdapter(arrayAdapter);
-         */
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,R.layout.activity_list_game_configs,R.id.listOfConfigs,listOfConfigs);
+        listView.setAdapter(arrayAdapter);
+
     }
 
     private void clickConfigToLaunchGameConfigInfo() {
