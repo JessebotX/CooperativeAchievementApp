@@ -9,14 +9,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ca.university.myapplication.model.GameConfig;
+import ca.university.myapplication.model.GameConfigManager;
+
 public class AddGameActivity extends AppCompatActivity {
+
+    GameConfig gameConfig;
+
+    GameConfigManager gameConfigManager;
 
     EditText inputNumPlayers;
     EditText inputCombinedScore;
+    EditText inputGameName;
     Button saveButton;
 
     int numPlayers;
     int combinedScore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +34,11 @@ public class AddGameActivity extends AppCompatActivity {
 
         inputNumPlayers = findViewById(R.id.inputNumPlayers);
         inputCombinedScore = findViewById(R.id.inputCombinedScore);
+        inputGameName = findViewById(R.id.inputGameName);
         saveButton = findViewById(R.id.btnSave);
 
+        // REMINDER:  switch this to get instance from singleton.
+        gameConfigManager = new GameConfigManager();
         setUpSaveButton();
     }
 
@@ -34,9 +46,10 @@ public class AddGameActivity extends AppCompatActivity {
         saveButton.setOnClickListener( view -> {
             String numPlayersText = inputNumPlayers.getText().toString();
             String combinedScoreText = inputNumPlayers.getText().toString();
+            String gameName = inputGameName.getText().toString();
 
             // exit early if input is not entered
-            if (!isInt(numPlayersText) || !isInt(combinedScoreText)) {
+            if ( !isInt(numPlayersText) || !isInt(combinedScoreText) || gameName.equals("")) {
                 Toast.makeText(this, "Please Finish Entering Inputs.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -44,11 +57,13 @@ public class AddGameActivity extends AppCompatActivity {
             numPlayers = Integer.parseInt(numPlayersText);
             combinedScore = Integer.parseInt(combinedScoreText);
 
-            // save to game config
+            // create Game config
+            gameConfig = new GameConfig(gameName, numPlayers, combinedScore);
 
+            // save to game manager:
+            gameConfigManager.addConfig(gameConfig);
 
             Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
-
         });
     }
 
