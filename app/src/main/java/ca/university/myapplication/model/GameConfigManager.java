@@ -52,6 +52,18 @@ public class GameConfigManager implements Iterable<GameConfig> {
 		return gameConfigs.size();
 	}
 
+	//NEW UTILITY METHOD------------------------
+	public void setConfig(int index, String name, String poorScore, String greatScore){
+		//get the config and set
+		GameConfig editThisConfig = gameConfigs.get(index);
+		editThisConfig.setName(name);
+		int poorScoreInt = Integer.parseInt(poorScore);
+		editThisConfig.setExpectedPoorScore(poorScoreInt);
+		int greatScoreInt = Integer.parseInt(greatScore);
+		editThisConfig.setExpectedGreatScore(greatScoreInt);
+	}
+	//------------------------------------------
+
 	@Override
 	public Iterator<GameConfig> iterator() {
 		return gameConfigs.iterator();

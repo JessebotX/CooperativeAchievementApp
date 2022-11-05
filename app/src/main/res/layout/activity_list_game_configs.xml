@@ -20,7 +20,7 @@
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <ListView
-        android:id="@+id/listOfConfigs"
+        android:id="@+id/listOfConfigsListView"
         android:layout_width="410dp"
         android:layout_height="575dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -6,4 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".EditTheConfig">
 
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
+
+    <EditText
+        android:id="@+id/editGameName"
+        android:layout_width="262dp"
+        android:layout_height="83dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="New game name"
+        app:layout_constraintBottom_toTopOf="@+id/editPoorScore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.964" />
+
+    <EditText
+        android:id="@+id/editPoorScore"
+        android:layout_width="262dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="4dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="New expected poor score"
+        app:layout_constraintBottom_toTopOf="@+id/editGreatScore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editGreatScore"
+        android:layout_width="260dp"
+        android:layout_height="86dp"
+        android:layout_marginBottom="368dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="New expected great score"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
