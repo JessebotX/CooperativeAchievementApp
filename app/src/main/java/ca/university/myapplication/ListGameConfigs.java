@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ca.university.myapplication.model.GameConfigManager;
+
 public class ListGameConfigs extends AppCompatActivity {
 
     @Override
@@ -48,6 +50,23 @@ public class ListGameConfigs extends AppCompatActivity {
         /**
          * if no configs we need to display a message
          */
+        ListView listView = findViewById(R.id.listOfConfigs);
+        int size = GameConfigManager.getInstance().totalConfigs();
+
+        /**
+         * Name (String)
+         * expected poor score (int)
+         * expected great score (int)
+         */
+        String[] listOfConfigs = new String[size];
+        for (int i = 0; i < size; i++) {
+            GameConfigManager.getInstance().getConfig(i);
+        }
+        /**
+         * ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+         *                 this,R.layout.activity_display_history,R.id.TextViewID,arr);
+         *         listView.setAdapter(arrayAdapter);
+         */
     }
 
     private void clickConfigToLaunchGameConfigInfo() {
@@ -66,7 +85,6 @@ public class ListGameConfigs extends AppCompatActivity {
 
     private void setUpAddNewGameConfigButton() {
         FloatingActionButton addGame = findViewById(R.id.addGameConfig);
-
         addGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
