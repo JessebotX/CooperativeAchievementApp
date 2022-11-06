@@ -32,9 +32,8 @@ public class ListGameConfigs extends AppCompatActivity {
     // [CHECK] Lists game configs.
     // [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
     // [CHECK] On the click of a game config it launches the GameConfigInfoActivity
-    //On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
-    //Has a delete button next to every game config that deletes the game config and updates the list view
-
+    // [HALT] On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
+    // Has a delete button next to every game config that deletes the game config and updates the list view
 
 
     private void longClickConfigToOpenAnEditor() {
