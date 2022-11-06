@@ -33,16 +33,23 @@ public class ListGameConfigs extends AppCompatActivity {
     // [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
     // [CHECK] On the click of a game config it launches the GameConfigInfoActivity
     // [HALT] On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
-    // Has a delete button next to every game config that deletes the game config and updates the list view
+    // [HALT] Has a delete button next to every game config that deletes the game config and updates the list view
 
 
     private void longClickConfigToOpenAnEditor() {
+
         ListView listView = findViewById(R.id.listOfConfigsListView);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                GameConfig config = GameConfigManager.getInstance().getConfig(i);
+                String name = config.getName();
+                int poorScore = config.getExpectedPoorScore();
+                int greatScore = config.getExpectedGreatScore();
                 Intent intent = new Intent(ListGameConfigs.this, EditTheConfig.class);
-                intent.putExtra("configID",i);
+                intent.putExtra("name",name);
+                intent.putExtra("poorScore",poorScore);
+                intent.putExtra("greatScore",greatScore);
                 startActivity(intent);
                 return false;
             }
@@ -102,13 +109,5 @@ public class ListGameConfigs extends AppCompatActivity {
                  */
             }
         });
-    }
-
-    private void retrieveInputsFromEditTheConfigActivity(){
-
-    }
-
-    private void updateListView(){
-
     }
 }
