@@ -28,13 +28,12 @@ public class ListGameConfigs extends AppCompatActivity {
         longClickConfigToOpenAnEditor();
     }
 
-    //Displays info if there are no game configs added
+    // [CHECK] Displays info if there are no game configs added
     // [CHECK] Lists game configs.
     // [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
     // [CHECK] On the click of a game config it launches the GameConfigInfoActivity
-    // [HALT] On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
+    // [CHECK] On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
     // [HALT] Has a delete button next to every game config that deletes the game config and updates the list view
-
 
     private void longClickConfigToOpenAnEditor() {
 
@@ -46,10 +45,16 @@ public class ListGameConfigs extends AppCompatActivity {
                 String name = config.getName();
                 int poorScore = config.getExpectedPoorScore();
                 int greatScore = config.getExpectedGreatScore();
+
                 Intent intent = new Intent(ListGameConfigs.this, EditTheConfig.class);
-                intent.putExtra("name",name);
-                intent.putExtra("poorScore",poorScore);
-                intent.putExtra("greatScore",greatScore);
+
+                //KEEPING THESE FOR NOW WILL BE DELETED IN FINAL PRODUCT IF NOT USED:
+                //intent.putExtra("name",name);
+                //intent.putExtra("poorScore",poorScore);
+                //intent.putExtra("greatScore",greatScore);
+                //Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigs.this,name,poorScore,greatScore);
+
+                intent.putExtra("configIndex", i);
                 startActivity(intent);
                 return false;
             }
