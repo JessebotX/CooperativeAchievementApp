@@ -4,4 +4,13 @@
 
     <string name="no_games_msg">No games are currently present in this game configuration.
     To add a game, go back to the previous screen and click the add button!</string>
+    <string name="achievement_level_zero">Shiny Butterflies</string>
+    <string name="achievement_level_one">Busy Bees</string>
+    <string name="achievement_level_two">Adorable Chickens</string>
+    <string name="achievement_level_three">Fantastic Foxes</string>
+    <string name="achievement_level_four">Tactical Tigers</string>
+    <string name="achievement_level_five">Merciless Gorillas</string>
+    <string name="achievement_level_six">Rampaging Rhinoceros</string>
+    <string name="achievement_level_seven">Whooping Whales</string>
+    <string name="achievement_level_eight">Fire-breathing Dragons</string>
 </resources>
