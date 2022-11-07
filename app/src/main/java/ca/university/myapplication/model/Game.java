@@ -114,7 +114,6 @@ public class Game implements Comparable<Game> {
 				return level;
 			}
 		}
-
 		return ACHIEVEMENT_LEVELS;
 	}
 

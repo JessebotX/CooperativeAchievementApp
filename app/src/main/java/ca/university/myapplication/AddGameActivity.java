@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import ca.university.myapplication.model.GameConfigManager;
 public class AddGameActivity extends AppCompatActivity {
 
     private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
+    private static final String TAG = "ADD_GAME_ACTIVITY";
     GameConfig gameConfig;
 
     GameConfigManager gameConfigManager;
@@ -50,7 +52,7 @@ public class AddGameActivity extends AppCompatActivity {
 
         gameConfigManager = GameConfigManager.getInstance();
         // add fake data
-        gameConfigManager.addConfig("Poker", 0, 100);
+        gameConfigManager.addConfig("Poker", 10, 100);
 
         // get Game index from caller
         int gameIndex = extractDataFromIntent();
@@ -98,6 +100,7 @@ public class AddGameActivity extends AppCompatActivity {
             combinedScore = Integer.parseInt(combinedScoreText);
 
             // add to config
+
             gameConfig.addGame(numPlayers, combinedScore);
 
             Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
@@ -107,7 +110,7 @@ public class AddGameActivity extends AppCompatActivity {
 
     private void refreshAchievementText() {
         String numPlayersText = inputNumPlayers.getText().toString();
-        String combinedScoreText = inputNumPlayers.getText().toString();
+        String combinedScoreText = inputCombinedScore.getText().toString();
 
         if (!isInt(numPlayersText) || !isInt(combinedScoreText) || Integer.parseInt(numPlayersText) < 1) {
             return;
