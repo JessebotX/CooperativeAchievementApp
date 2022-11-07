@@ -48,16 +48,15 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
         scoreViews = getTextViews();
         gameConfigManager = GameConfigManager.getInstance();
+
         // add fake data, delete when merged
         gameConfigManager.addConfig("Poker", 10, 100);
         gameConfigManager.getConfig(0).addGame(2,100);
         gameConfig = gameConfigManager.getConfig(gameIndex);
         game = gameConfigManager.getConfig(gameConfigIndex).getGame(gameIndex);
 
-
         setUpListener();
         setUpFab();
-
     }
 
     private void setUpFab() {
