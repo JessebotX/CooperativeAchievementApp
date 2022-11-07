@@ -39,6 +39,19 @@ public class AddGameActivity extends AppCompatActivity {
 	int combinedScore;
 
 
+	private String[] achievementNames = {
+			"Shiny Butterflies (lowest)",
+			"Busy Bees",
+			"Adorable Chickens",
+			"Fantastic Foxes",
+			"Tactical Tigers",
+			"Merciless Gorillas",
+			"Rampaging Rhinoceros",
+			"Whooping Whales",
+			"Firebreathing Dragons"
+	};
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,7 +139,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 		int achievementLevel = calculateAchievementLevel(numPlayers, numCombinedScore);
 		// update text
-		tvAchievement.setText(Integer.toString(achievementLevel));
+		tvAchievement.setText(achievementNames[achievementLevel]);
 	}
 
 	private int calculateAchievementLevel(int numPlayers, int combinedScore) {
