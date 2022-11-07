@@ -15,11 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import ca.university.myapplication.model.Game;
@@ -35,6 +32,7 @@ public class ListGamesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list_games);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.list_games_toolbar);
 
@@ -43,31 +41,39 @@ public class ListGamesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        manager = GameConfigManager.getInstance();
-        extractGameConfigExtra();
-        displayInfo();
+//        manager = GameConfigManager.getInstance();
+//        extractGameConfigExtra();
+//        displayInfo();
+        gameConfig = new GameConfig("Hot Pot",1,30);
+        gameConfig.addGame(2,10);
+        gameConfig.addGame(3,30);
+        gameConfig.addGame(2,1);
+        gameConfig.addGame(5,0);
+        gameConfig.addGame(4,40);
+        gameConfig.addGame(4,70);
+        gameList = gameConfig.getGames();
         populateListView();
     }
 
-    private void extractGameConfigExtra() {
-        Intent intent = getIntent();
-        int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
-        gameConfig = manager.getConfig(gameConfigIndex);
-        gameList = gameConfig.getGamesList();
-    }
+//    private void extractGameConfigExtra() {
+//        Intent intent = getIntent();
+//        int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
+//        gameConfig = manager.getConfig(gameConfigIndex);
+//        gameList = gameConfig.getGames();
+//    }
 
-    public static Intent makeIntent(Context context,int gameConfigIndex) {
-        Intent intent = new Intent(context, ListGamesActivity.class);
-        intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
-        return intent;
-    }
+//    public static Intent makeIntent(Context context,int gameConfigIndex) {
+//        Intent intent = new Intent(context, ListGamesActivity.class);
+//        intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
+//        return intent;
+//    }
 
-    private void displayInfo() {
-        if (gameConfig.totalGames() == 0) {
-            TextView tv_msg = findViewById(R.id.tv_no_games_msg);
-            tv_msg.setText(getString(R.string.no_games_msg));
-        }
-    }
+//    private void displayInfo() {
+//        if (gameConfig.totalGames() == 0) {
+//            TextView tv_msg = findViewById(R.id.tv_no_games_msg);
+//            tv_msg.setText(getString(R.string.no_games_msg));
+//        }
+//    }
 
     private void populateListView() {
         ArrayAdapter<Game> adapter = new MyListAdapter();
@@ -93,7 +99,6 @@ public class ListGamesActivity extends AppCompatActivity {
             Game currentGame = gameList.get(position);
 
             //fill the view
-
             //image
             if (fillImage(currentGame) != -1) {
                 ImageView imageView = itemView.findViewById(R.id.item_image);
@@ -102,7 +107,10 @@ public class ListGamesActivity extends AppCompatActivity {
 
             //date
             TextView textDate = itemView.findViewById(R.id.item_date);
-            textDate.setText("" + currentGame.getTimeOfCreation());
+            LocalDateTime date = currentGame.getTimeOfCreation();
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
+            String formattedDate = date.format(dateFormat);
+            textDate.setText(formattedDate);
 
             //number of players
             TextView textNumPlayers = itemView.findViewById(R.id.item_num_players);
@@ -120,16 +128,18 @@ public class ListGamesActivity extends AppCompatActivity {
         }
 
 
+        //get id for the image matching with the achievement
         private int fillImage(Game game) {
             int achievement = game.getAchievementLevel();
-            int imageID = -1;
-            switch (achievement) {
-                case 0:
-
-            }
+            int imageID = R.drawable.butterfly;
+//            switch (achievement) {
+//                case 0:
+//
+//            }
             return imageID;
         }
 
+        //set text of achievement level
         private void setAchievementLevelText(TextView textLevel, Game currentGame) {
             int level = currentGame.getAchievementLevel();
             switch (level) {
