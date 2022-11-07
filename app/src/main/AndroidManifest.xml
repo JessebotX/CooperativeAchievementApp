@@ -17,6 +17,7 @@
             android:name=".AddGameConfigActivity"
             android:exported="true"
             android:label="@string/activity_name"
+            android:parentActivityName=".ListGameConfigsActivity"
             android:theme="@style/Theme.MyApplication.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
