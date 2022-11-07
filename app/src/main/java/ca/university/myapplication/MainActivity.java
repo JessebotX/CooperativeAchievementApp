@@ -37,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        int gameIndex = 0;
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addGameIntent = AddGameActivity.make_intent(MainActivity.this);
+                Intent addGameIntent = AddGameActivity.makeIntent(MainActivity.this, gameIndex);
                 startActivity(addGameIntent);
 
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
     }
