@@ -54,13 +54,19 @@ public class GameConfigManager implements Iterable<GameConfig> {
 
 	//NEW UTILITY METHOD------------------------
 	public void setConfig(int index, String name, String poorScore, String greatScore){
-		//get the config and set
-		GameConfig editThisConfig = gameConfigs.get(index);
-		editThisConfig.setName(name);
-		int poorScoreInt = Integer.parseInt(poorScore);
-		editThisConfig.setExpectedPoorScore(poorScoreInt);
-		int greatScoreInt = Integer.parseInt(greatScore);
-		editThisConfig.setExpectedGreatScore(greatScoreInt);
+		//input validation
+		if(index < 0 || index > gameConfigs.size()){
+			throw new IllegalArgumentException("index is out of bounds");
+		}
+		else {
+			//get the config and set
+			GameConfig editThisConfig = gameConfigs.get(index);
+			editThisConfig.setName(name);
+			int poorScoreInt = Integer.parseInt(poorScore);
+			editThisConfig.setExpectedPoorScore(poorScoreInt);
+			int greatScoreInt = Integer.parseInt(greatScore);
+			editThisConfig.setExpectedGreatScore(greatScoreInt);
+		}
 	}
 	//------------------------------------------
 

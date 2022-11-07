@@ -28,6 +28,12 @@ public class ListGameConfigs extends AppCompatActivity {
         longClickConfigToOpenAnEditor();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayListOfConfigsUsingListView();
+    }
+
     // [CHECK] Displays info if there are no game configs added
     // [CHECK] Lists game configs.
     // [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
@@ -46,15 +52,7 @@ public class ListGameConfigs extends AppCompatActivity {
                 int poorScore = config.getExpectedPoorScore();
                 int greatScore = config.getExpectedGreatScore();
 
-                Intent intent = new Intent(ListGameConfigs.this, EditTheConfig.class);
-
-                //KEEPING THESE FOR NOW WILL BE DELETED IN FINAL PRODUCT IF NOT USED:
-                //intent.putExtra("name",name);
-                //intent.putExtra("poorScore",poorScore);
-                //intent.putExtra("greatScore",greatScore);
-                //Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigs.this,name,poorScore,greatScore);
-
-                intent.putExtra("configIndex", i);
+                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigs.this, i);
                 startActivity(intent);
                 return false;
             }
@@ -94,10 +92,9 @@ public class ListGameConfigs extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                /**
-                 * Intent intent = new Intent(ListGameConfigs.this, GameConfigInfoActivity.class);
-                 * startActivity(intent);
-                 */
+
+                Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigs.this, i);
+                startActivity(intent);
                 return false;
             }
         });
@@ -108,10 +105,10 @@ public class ListGameConfigs extends AppCompatActivity {
         addGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                /**
-                 * Intent intent = new Intent(ListGameConfigs.this, AddGameConfigActivity.class);
-                 * startActivity(intent);
-                 */
+
+                Intent intent = AddGameConfigActivity.makeIntent(-1);
+                startActivity(intent);
+
             }
         });
     }
