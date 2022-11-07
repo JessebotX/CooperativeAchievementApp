@@ -1,14 +1,25 @@
 package ca.university.myapplication;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import ca.university.myapplication.model.GameConfig;
+import ca.university.myapplication.model.GameConfigManager;
+
 public class AddGameConfigActivity extends AppCompatActivity {
+    private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
     private GameConfigManager manager;
+    private GameConfig gameConfig;
+    boolean isInAddMode;
+    private int gameConfigIndex;
+    boolean hasDeletedGame = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +35,43 @@ public class AddGameConfigActivity extends AppCompatActivity {
 
         manager = GameConfigManager.getInstance();
 
+        extractGameConfigExtra();
+        fillInfoForEdit();
+        if (isInAddMode) {
+            findViewById(R.id.btn_delete_config).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.btn_delete_config).setOnClickListener(v -> deleteGameConfig());
+        }
         findViewById(R.id.btn_save_game_config).setOnClickListener(v -> saveGameConfig());
+    }
 
+    private void extractGameConfigExtra() {
+        Intent intent = getIntent();
+        gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
+        if (gameConfigIndex == -1) {
+            isInAddMode = true;
+            return;
+        }
+        gameConfig = manager.getConfig(gameConfigIndex);
+    }
+
+    public static Intent makeIntent(Context context,int gameConfigIndex) {
+        Intent intent = new Intent(context, AddGameConfigActivity.class);
+        intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
+        return intent;
+    }
+
+    private void fillInfoForEdit() {
+        if(!isInAddMode) {
+            EditText etName = findViewById(R.id.et_name_game_config);
+            etName.setText(gameConfig.getName());
+
+            EditText etPoorScore = findViewById(R.id.et_poor_score_game_config);
+            etPoorScore.setText("" + gameConfig.getExpectedPoorScore());
+
+            EditText etGreatScore = findViewById(R.id.et_great_score_game_config);
+            etGreatScore.setText("" + gameConfig.getExpectedGreatScore());
+        }
     }
 
     private void saveGameConfig() {
@@ -61,7 +107,27 @@ public class AddGameConfigActivity extends AppCompatActivity {
         }
 
         //save
-        manager.addConfig(name,poorScore,greatScore);
+        if (isInAddMode) {
+            manager.addConfig(name, poorScore, greatScore);
+        } else if (!isInAddMode && !hasDeletedGame) {
+            gameConfig.setName(name);
+            gameConfig.setExpectedPoorScore(poorScore);
+            gameConfig.setExpectedGreatScore(greatScore);
+        }
+    }
+
+    private void deleteGameConfig() {
+        if (hasDeletedGame) return;
+        manager.removeConfig(gameConfigIndex);
+        EditText etName = findViewById(R.id.et_name_game_config);
+        etName.setText("");
+
+        EditText etPoorScore = findViewById(R.id.et_poor_score_game_config);
+        etPoorScore.setText("");
+
+        EditText etGreatScore = findViewById(R.id.et_great_score_game_config);
+        etGreatScore.setText("");
+        hasDeletedGame = true;
     }
 
 }
