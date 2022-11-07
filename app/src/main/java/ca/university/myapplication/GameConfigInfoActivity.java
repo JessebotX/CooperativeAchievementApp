@@ -45,7 +45,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
         gameConfigIndex = intentData[0];
         gameIndex = intentData[1];
 
-
         scoreViews = getTextViews();
         gameConfigManager = GameConfigManager.getInstance();
 
@@ -77,12 +76,9 @@ public class GameConfigInfoActivity extends AppCompatActivity {
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Toast.makeText(GameConfigInfoActivity.this, "Detected num players", Toast.LENGTH_SHORT).show();
-
                 refreshScoreView();
             }
         });
-
     }
 
     private TextView[] getTextViews() {
@@ -111,6 +107,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
         setUpScoreViews(numPlayers);
     }
+
     public static boolean isInt(String str) {
         try {
             @SuppressWarnings("unused")
@@ -122,7 +119,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
     }
 
-
     private void setUpScoreViews(int numPlayers) {
         Game tempGame = new Game(numPlayers, game.getTotalScore(), game.getExpectedPoorScore(), game.getExpectedGreatScore());
         int[] achievementLevels = tempGame.getAchievementLevelRequiredScores();
@@ -132,9 +128,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
             i ++;
         }
     }
-
-
-
 
     public static Intent makeIntent(Context context, int gameConfigIndex, int gameIndex){
         Intent intent = new Intent(context, GameConfigInfoActivity.class);

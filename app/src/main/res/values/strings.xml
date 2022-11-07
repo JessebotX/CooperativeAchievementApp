@@ -20,4 +20,6 @@
     <string name="tactical_tigers">Tactical Tigers:</string>
     <string name="adorable_chickens">Adorable Chickens:</string>
     <string name="whooping_whales">Whooping Whales</string>
+    <string name="dash">-</string>
+    <string name="number_of_players">Number of Players</string>
 </resources>
