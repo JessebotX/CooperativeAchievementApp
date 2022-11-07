@@ -34,10 +34,8 @@ public class AddGameActivity extends AppCompatActivity {
 
 	Button saveButton;
 
-
 	int numPlayers;
 	int combinedScore;
-
 
 	private String[] achievementNames = {
 			"Shiny Butterflies (lowest)",
@@ -50,7 +48,6 @@ public class AddGameActivity extends AppCompatActivity {
 			"Whooping Whales",
 			"Firebreathing Dragons"
 	};
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
