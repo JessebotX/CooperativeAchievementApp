@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
     EditText userInput;
 
+    Button fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,18 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 
         setUpListener();
+        setUpFab();
 
+    }
 
+    private void setUpFab() {
+        fab = findViewById(R.id.GameConfigAddFab);
+
+        fab.setOnClickListener(view -> {
+            // start add game activity: uncomment after merge
+//            Intent addGameIntent = AddGameActivity.makeIntent(MainActivity.this, gameIndex);
+//            startActivity(addGameIntent);
+        });
     }
 
     private void setUpListener() {
