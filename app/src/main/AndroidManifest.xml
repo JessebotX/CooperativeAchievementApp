@@ -22,14 +22,14 @@
         <activity
             android:name=".GameConfigInfoActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ListGameConfigsActivity" />
 
         <activity
-            android:name=".ListGamesActivity"
+            android:name=".AddGameConfigActivity"
             android:exported="true"
-            android:label="@string/list_games_activity_name"
-            android:theme="@style/Theme.MyApplication.NoActionBar"
-            android:parentActivityName=".GameConfigInfoActivity">
+            android:label="@string/activity_name"
+            android:parentActivityName=".ListGameConfigsActivity"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
 
         </activity>
     </application>
