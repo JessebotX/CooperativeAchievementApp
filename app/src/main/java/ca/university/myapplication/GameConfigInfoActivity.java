@@ -70,8 +70,8 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		fab.setOnClickListener(view -> {
 			// start add game activity: uncomment after merge
-//            Intent addGameIntent = AddGameActivity.makeIntent(MainActivity.this, gameIndex);
-//            startActivity(addGameIntent);
+            Intent addGameIntent = AddGameActivity.makeIntent(GameConfigInfoActivity.this, gameIndex);
+            startActivity(addGameIntent);
 		});
 	}
 

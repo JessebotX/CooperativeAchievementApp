@@ -9,6 +9,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+<<<<<<< HEAD
+    <string name="combined_score">Combined Score</string>
+    <string name="achievement">Achievement:</string>
+    <string name="add_a_new_game">Add A New Game</string>
+    <string name="save">Save</string>
+    <string name="number_of_players">Number Of Players</string>
+=======
     <string name="view_list">View List</string>
     <string name="achievements">Achievements:</string>
     <string name="busy_bees">Busy Bees:</string>
@@ -22,4 +29,5 @@
     <string name="whooping_whales">Whooping Whales</string>
     <string name="dash">-</string>
     <string name="number_of_players">Number of Players</string>
+>>>>>>> master
 </resources>
