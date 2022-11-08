@@ -117,7 +117,9 @@ public class AddGameConfigActivity extends AppCompatActivity {
 	}
 
 	private void deleteGameConfig() {
-		if (hasDeletedGame) return;
+		if (hasDeletedGame) {
+			return;
+		}
 		manager.removeConfig(gameConfigIndex);
 		EditText etName = findViewById(R.id.et_name_game_config);
 		etName.setText("");
