@@ -3,14 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/activity_edit_the_config.xml" value="0.19701086956521738" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/activity_list_game_configs.xml" value="1.0" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/content_main.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/fragment_first.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/fragment_second.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/layout/list_game_configs_activity.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/aidan/Downloads/CoopAchievement/app/src/main/res/menu/menu_main.xml" value="0.20416666666666666" />
+<<<<<<< HEAD
+        <entry key="app/src/main/res/layout/activity_add_game.xml" value="0.30982513427734376" />
+=======
+        <entry key="app/src/main/res/layout/activity_add_game.xml" value="0.39391632080078126" />
+>>>>>>> master
+        <entry key="app/src/main/res/layout/activity_game_config_info.xml" value="0.29421539306640626" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22135009765625002" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.14842958459979735" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.14842958459979735" />
+        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.14842958459979735" />
       </map>
     </option>
   </component>

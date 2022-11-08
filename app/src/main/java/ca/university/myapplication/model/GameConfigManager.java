@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class GameConfigManager implements Iterable<GameConfig> {
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
+
 	private static GameConfigManager instance;
 	private List<GameConfig> gameConfigs;
 
@@ -33,7 +34,7 @@ public class GameConfigManager implements Iterable<GameConfig> {
 	}
 
 	public GameConfig getConfig(int index) {
-		if (index < 0 || index > gameConfigs.size()) {
+		if (index < 0 || index >= gameConfigs.size()) {
 			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
 
@@ -41,7 +42,7 @@ public class GameConfigManager implements Iterable<GameConfig> {
 	}
 
 	public void removeConfig(int index) {
-		if (index < 0 || index > gameConfigs.size()) {
+		if (index < 0 || index >= gameConfigs.size()) {
 			throw new IllegalArgumentException(INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE);
 		}
 
