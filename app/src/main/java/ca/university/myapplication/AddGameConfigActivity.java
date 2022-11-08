@@ -2,6 +2,7 @@ package ca.university.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,11 +11,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
 public class AddGameConfigActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
+	public static final String EMPTY_STRING = "";
 	private GameConfigManager manager;
 	private GameConfig gameConfig;
 	boolean isInAddMode;
@@ -45,6 +49,12 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		findViewById(R.id.btn_save_game_config).setOnClickListener(v -> saveGameConfig());
 	}
 
+	public static Intent makeIntent(Context context,int gameConfigIndex) {
+		Intent intent = new Intent(context, AddGameConfigActivity.class);
+		intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
+		return intent;
+	}
+
 	private void extractGameConfigExtra() {
 		Intent intent = getIntent();
 		gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
@@ -55,22 +65,16 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		gameConfig = manager.getConfig(gameConfigIndex);
 	}
 
-	public static Intent makeIntent(Context context,int gameConfigIndex) {
-		Intent intent = new Intent(context, AddGameConfigActivity.class);
-		intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
-		return intent;
-	}
-
 	private void fillInfoForEdit() {
 		if(!isInAddMode) {
 			EditText etName = findViewById(R.id.et_name_game_config);
 			etName.setText(gameConfig.getName());
 
 			EditText etPoorScore = findViewById(R.id.et_poor_score_game_config);
-			etPoorScore.setText("" + gameConfig.getExpectedPoorScore());
+			etPoorScore.setText(EMPTY_STRING + gameConfig.getExpectedPoorScore());
 
 			EditText etGreatScore = findViewById(R.id.et_great_score_game_config);
-			etGreatScore.setText("" + gameConfig.getExpectedGreatScore());
+			etGreatScore.setText(EMPTY_STRING + gameConfig.getExpectedGreatScore());
 		}
 	}
 
@@ -114,6 +118,8 @@ public class AddGameConfigActivity extends AppCompatActivity {
 			gameConfig.setExpectedPoorScore(poorScore);
 			gameConfig.setExpectedGreatScore(greatScore);
 		}
+
+		saveToSharedPreferences();
 	}
 
 	private void deleteGameConfig() {
@@ -122,14 +128,25 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		}
 		manager.removeConfig(gameConfigIndex);
 		EditText etName = findViewById(R.id.et_name_game_config);
-		etName.setText("");
+		etName.setText(EMPTY_STRING);
 
 		EditText etPoorScore = findViewById(R.id.et_poor_score_game_config);
-		etPoorScore.setText("");
+		etPoorScore.setText(EMPTY_STRING);
 
 		EditText etGreatScore = findViewById(R.id.et_great_score_game_config);
-		etGreatScore.setText("");
+		etGreatScore.setText(EMPTY_STRING);
 		hasDeletedGame = true;
+
+		saveToSharedPreferences();
 	}
 
+	private void saveToSharedPreferences() {
+		SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		Gson gson = new Gson();
+
+		String json = gson.toJson(manager.getGameConfigs());
+		editor.putString(MainActivity.SAVED_GAME_CONFIGS_KEY, json);
+		editor.apply();
+	}
 }

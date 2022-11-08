@@ -24,10 +24,6 @@ public class AddGameActivity extends AppCompatActivity {
 
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 
-	// TODO move these out into main activity
-	public static final String APP_PREFERENCES = "ca.university.myapplication App Prefs";
-	public static final String SAVED_GAME_CONFIGS_KEY = "ca.university.myapplication Saved Game Configs";
-
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
 	private Game newGame;
@@ -167,12 +163,12 @@ public class AddGameActivity extends AppCompatActivity {
 	}
 
 	private void saveToSharedPreferences() {
-		SharedPreferences prefs = this.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		Gson gson = new Gson();
 
 		String json = gson.toJson(gameConfigManager.getGameConfigs());
-		editor.putString(SAVED_GAME_CONFIGS_KEY, json);
+		editor.putString(MainActivity.SAVED_GAME_CONFIGS_KEY, json);
 		editor.apply();
 	}
 }
