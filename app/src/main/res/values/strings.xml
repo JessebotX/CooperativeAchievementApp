@@ -5,13 +5,16 @@
     <string name="list_games_activity_name">List of Added Games</string>
     <string name="no_games_msg">No games are currently present in this game configuration.
     To add a game, go back to the previous screen and click the add button!</string>
-    <string name="achievement_level_zero">Shiny Butterflies</string>
-    <string name="achievement_level_one">Busy Bees</string>
-    <string name="achievement_level_two">Adorable Chickens</string>
-    <string name="achievement_level_three">Fantastic Foxes</string>
-    <string name="achievement_level_four">Tactical Tigers</string>
-    <string name="achievement_level_five">Merciless Gorillas</string>
-    <string name="achievement_level_six">Rampaging Rhinoceros</string>
-    <string name="achievement_level_seven">Whooping Whales</string>
-    <string name="achievement_level_eight">Fire-breathing Dragons</string>
+    <string name="achievement_level_zero">Achievement: Shiny Butterflies</string>
+    <string name="achievement_level_one">Achievement: Busy Bees</string>
+    <string name="achievement_level_two">Achievement: Adorable Chickens</string>
+    <string name="achievement_level_three">Achievement: Fantastic Foxes</string>
+    <string name="achievement_level_four">Achievement: Tactical Tigers</string>
+    <string name="achievement_level_five">Achievement: Merciless Gorillas</string>
+    <string name="achievement_level_six">Achievement: Rampaging Rhinoceros</string>
+    <string name="achievement_level_seven">Achievement: Whooping Whales</string>
+    <string name="achievement_level_eight">Achievement: Fire-breathing Dragons</string>
+    <string name="date">Date:\ </string>
+    <string name="num_players"># of Players:\ </string>
+    <string name="combined_score">Combined Score:\ </string>
 </resources>

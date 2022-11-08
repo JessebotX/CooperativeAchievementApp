@@ -24,36 +24,36 @@ import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
 public class ListGamesActivity extends AppCompatActivity {
-    private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
-    private GameConfigManager manager;
-    private GameConfig gameConfig;
-    private List<Game> gameList;
+	private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
+	private GameConfigManager manager;
+	private GameConfig gameConfig;
+	private List<Game> gameList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_games);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_list_games);
 
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.list_games_toolbar);
+		androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.list_games_toolbar);
 
-        setSupportActionBar(toolbar);
+		setSupportActionBar(toolbar);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+		ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
 
 //        manager = GameConfigManager.getInstance();
 //        extractGameConfigExtra();
 //        displayInfo();
-        gameConfig = new GameConfig("Hot Pot",1,30);
-        gameConfig.addGame(2,10);
-        gameConfig.addGame(3,30);
-        gameConfig.addGame(2,1);
-        gameConfig.addGame(5,0);
-        gameConfig.addGame(4,40);
-        gameConfig.addGame(4,70);
-        gameList = gameConfig.getGames();
-        populateListView();
-    }
+		gameConfig = new GameConfig("Hot Pot",1,30);
+		gameConfig.addGame(2,10);
+		gameConfig.addGame(3,5);
+		gameConfig.addGame(2,20);
+		gameConfig.addGame(5,0);
+		gameConfig.addGame(4,80);
+		gameConfig.addGame(4,100);
+		gameList = gameConfig.getGames();
+		populateListView();
+	}
 
 //    private void extractGameConfigExtra() {
 //        Intent intent = getIntent();
@@ -75,104 +75,130 @@ public class ListGamesActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void populateListView() {
-        ArrayAdapter<Game> adapter = new MyListAdapter();
-        ListView list = findViewById(R.id.list_games);
-        list.setAdapter(adapter);
-    }
+	private void populateListView() {
+		ArrayAdapter<Game> adapter = new MyListAdapter();
+		ListView list = findViewById(R.id.list_games);
+		list.setAdapter(adapter);
+	}
 
-    private class MyListAdapter extends ArrayAdapter<Game> {
-        public MyListAdapter() {
-            super(ListGamesActivity.this, R.layout.item_view, gameList);
-        }
+	private class MyListAdapter extends ArrayAdapter<Game> {
+		public MyListAdapter() {
+			super(ListGamesActivity.this, R.layout.item_view, gameList);
+		}
 
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            //get view to work with in case it's given null
-            View itemView = convertView;
-            if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
-            }
+		@NonNull
+		@Override
+		public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+			//get view to work with in case it's given null
+			View itemView = convertView;
+			if (itemView == null) {
+				itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
+			}
 
-            //find the game
-            Game currentGame = gameList.get(position);
+			//find the game
+			Game currentGame = gameList.get(position);
 
-            //fill the view
-            //image
-            if (fillImage(currentGame) != -1) {
-                ImageView imageView = itemView.findViewById(R.id.item_image);
-                imageView.setImageResource(fillImage(currentGame));
-            }
+			//fill the view
+			//image
+			ImageView imageView = itemView.findViewById(R.id.item_image);
+			imageView.setImageResource(fillImage(currentGame));
 
-            //date
-            TextView textDate = itemView.findViewById(R.id.item_date);
-            LocalDateTime date = currentGame.getTimeOfCreation();
-            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
-            String formattedDate = date.format(dateFormat);
-            textDate.setText(formattedDate);
+			//date
+			TextView textDate = itemView.findViewById(R.id.item_date);
+			LocalDateTime date = currentGame.getTimeOfCreation();
+			DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
+			String formattedDate = date.format(dateFormat);
+			textDate.setText(getString(R.string.date) + formattedDate);
 
-            //number of players
-            TextView textNumPlayers = itemView.findViewById(R.id.item_num_players);
-            textNumPlayers.setText("" + currentGame.getPlayers());
+			//number of players
+			TextView textNumPlayers = itemView.findViewById(R.id.item_num_players);
+			textNumPlayers.setText(getString(R.string.num_players) + currentGame.getPlayers());
 
-            //combined score
-            TextView textScore = itemView.findViewById(R.id.item_score);
-            textScore.setText("" + currentGame.getTotalScore());
+			//combined score
+			TextView textScore = itemView.findViewById(R.id.item_score);
+			textScore.setText(getString(R.string.combined_score) + currentGame.getTotalScore());
 
-            //achievement level
-            TextView textLevel = itemView.findViewById(R.id.item_achievement);
-            setAchievementLevelText(textLevel, currentGame);
+			//achievement level
+			TextView textLevel = itemView.findViewById(R.id.item_achievement);
+			setAchievementLevelText(textLevel, currentGame);
 
-            return itemView;
-        }
+			return itemView;
+		}
 
 
-        //get id for the image matching with the achievement
-        private int fillImage(Game game) {
-            int achievement = game.getAchievementLevel();
-            int imageID = R.drawable.butterfly;
-//            switch (achievement) {
-//                case 0:
-//
-//            }
-            return imageID;
-        }
+		//get id for the image matching with the achievement
+		private int fillImage(Game game) {
+			int achievement = game.getAchievementLevel();
+			int imageID;
+			switch (achievement) {
+				case 0:
+					imageID = R.drawable.butterfly;
+					break;
+				case 1:
+					imageID = R.drawable.bee_icon;
+					break;
+				case 2:
+					imageID = R.drawable.chicken_icon;
+					break;
+				case 3:
+					imageID = R.drawable.fox_icon;
+					break;
+				case 4:
+					imageID = R.drawable.tiger_icon;
+					break;
+				case 5:
+					imageID = R.drawable.gorilla_icon;
+					break;
+				case 6:
+					imageID = R.drawable.rhinoceros_icon;
+					break;
+				case 7:
+					imageID = R.drawable.whale_icon;
+					break;
+				case 8:
+					imageID = R.drawable.dragon_icon;
+					break;
+				default:
+					imageID = R.drawable.ic_launcher_foreground;
+					break;
+			}
+			return imageID;
+		}
 
-        //set text of achievement level
-        private void setAchievementLevelText(TextView textLevel, Game currentGame) {
-            int level = currentGame.getAchievementLevel();
-            switch (level) {
-                case 0:
-                    textLevel.setText(R.string.achievement_level_zero);
-                    break;
-                case 1:
-                    textLevel.setText(R.string.achievement_level_one);
-                    break;
-                    case 2:
-                    textLevel.setText(R.string.achievement_level_two);
-                    break;
-                    case 3:
-                    textLevel.setText(R.string.achievement_level_three);
-                    break;
-                    case 4:
-                    textLevel.setText(R.string.achievement_level_four);
-                    break;
-                    case 5:
-                    textLevel.setText(R.string.achievement_level_five);
-                    break;
-                    case 6:
-                    textLevel.setText(R.string.achievement_level_six);
-                    break;
-                    case 7:
-                    textLevel.setText(R.string.achievement_level_seven);
-                    break;
-                    case 8:
-                    textLevel.setText(R.string.achievement_level_eight);
-                    break;
-            }
-        }
+		//set text of achievement level
+		private void setAchievementLevelText(TextView textLevel, Game currentGame) {
+			int level = currentGame.getAchievementLevel();
+			switch (level) {
+				case 0:
+					textLevel.setText(R.string.achievement_level_zero);
+					break;
+				case 1:
+					textLevel.setText(R.string.achievement_level_one);
+					break;
+				case 2:
+					textLevel.setText(R.string.achievement_level_two);
+					break;
+				case 3:
+					textLevel.setText(R.string.achievement_level_three);
+					break;
+				case 4:
+					textLevel.setText(R.string.achievement_level_four);
+					break;
+				case 5:
+					textLevel.setText(R.string.achievement_level_five);
+					break;
+				case 6:
+					textLevel.setText(R.string.achievement_level_six);
+					break;
+				case 7:
+					textLevel.setText(R.string.achievement_level_seven);
+					break;
+				case 8:
+					textLevel.setText(R.string.achievement_level_eight);
+					break;
+			}
+		}
 
-    }
+	}
 
 }
