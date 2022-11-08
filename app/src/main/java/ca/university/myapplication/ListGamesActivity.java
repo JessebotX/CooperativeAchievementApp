@@ -21,6 +21,9 @@ import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
+/**
+ * Activity that lists the existing games in a specific game configuration.
+ */
 public class ListGamesActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
 	private GameConfigManager manager;
