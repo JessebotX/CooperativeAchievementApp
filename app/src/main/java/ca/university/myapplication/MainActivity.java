@@ -40,14 +40,6 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent intent = GameConfigInfoActivity.makeIntent(
-                        MainActivity.this,
-                        0,
-                        0
-                );
-
-                startActivity(intent);
             }
         });
     }
