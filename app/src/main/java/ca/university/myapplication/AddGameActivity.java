@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
@@ -20,11 +23,11 @@ import ca.university.myapplication.model.GameConfigManager;
 public class AddGameActivity extends AppCompatActivity {
 
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
-	private static final String TAG = "ADD_GAME_ACTIVITY";
+	public static final String APP_PREFERENCES = "ca.university.myapplication App Prefs";
+	public static final String SAVED_GAME_CONFIGS_KEY = "ca.university.myapplication Saved Game Configs";
+
 	GameConfig gameConfig;
-
 	GameConfigManager gameConfigManager;
-
 	Game newGame;
 
 	EditText inputNumPlayers;
@@ -75,6 +78,12 @@ public class AddGameActivity extends AppCompatActivity {
 		setUpInputListeners();
 	}
 
+	public static Intent makeIntent(Context context, int gameIndex) {
+		Intent intent = new Intent(context, AddGameActivity.class);
+		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+		return intent;
+	}
+
 	/**
 	 * For each input box, we want to add a listener to update and recalculate the achievement level
 	 * everytime the user enters something.
@@ -119,6 +128,7 @@ public class AddGameActivity extends AppCompatActivity {
 			gameConfig.addGame(numPlayers, combinedScore);
 
 			Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
+			saveToSharedPreferences();
 			finish();
 		});
 	}
@@ -144,7 +154,7 @@ public class AddGameActivity extends AppCompatActivity {
 		return newGame.getAchievementLevel();
 	}
 
-	public static boolean isInt(String str) {
+	private static boolean isInt(String str) {
 		try {
 			@SuppressWarnings("unused")
 			int x = Integer.parseInt(str);
@@ -154,14 +164,18 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 	}
 
-	public static Intent makeIntent(Context context, int gameIndex) {
-		Intent intent = new Intent(context, AddGameActivity.class);
-		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
-		return intent;
-	}
-
 	private int extractDataFromIntent() {
 		Intent intent = getIntent();
 		return intent.getIntExtra(EXTRA_GAME_INDEX, -1);
+	}
+
+	private void saveToSharedPreferences() {
+		SharedPreferences prefs = this.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		Gson gson = new Gson();
+
+		String json = gson.toJson(gameConfigManager.getGameConfigs());
+		editor.putString(SAVED_GAME_CONFIGS_KEY, json);
+		editor.apply();
 	}
 }
