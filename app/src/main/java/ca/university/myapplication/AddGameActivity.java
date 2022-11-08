@@ -23,22 +23,22 @@ import ca.university.myapplication.model.GameConfigManager;
 public class AddGameActivity extends AppCompatActivity {
 
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
+
+	// TODO move these out into main activity
 	public static final String APP_PREFERENCES = "ca.university.myapplication App Prefs";
 	public static final String SAVED_GAME_CONFIGS_KEY = "ca.university.myapplication Saved Game Configs";
 
-	GameConfig gameConfig;
-	GameConfigManager gameConfigManager;
-	Game newGame;
+	private GameConfig gameConfig;
+	private GameConfigManager gameConfigManager;
+	private Game newGame;
 
-	EditText inputNumPlayers;
-	EditText inputCombinedScore;
+	private EditText inputNumPlayers;
+	private EditText inputCombinedScore;
+	private TextView tvAchievement;
+	private Button saveButton;
 
-	TextView tvAchievement;
-
-	Button saveButton;
-
-	int numPlayers;
-	int combinedScore;
+	private int numPlayers;
+	private int combinedScore;
 
 	private String[] achievementNames = {
 			"Shiny Butterflies (lowest)",
@@ -66,13 +66,10 @@ public class AddGameActivity extends AppCompatActivity {
 		saveButton = findViewById(R.id.btnSave);
 
 		gameConfigManager = GameConfigManager.getInstance();
-		// add fake data
-		gameConfigManager.addConfig("Poker", 10, 100);
 
 		// get Game index from caller
 		int gameIndex = extractDataFromIntent();
 		gameConfig = gameConfigManager.getConfig(gameIndex);
-
 
 		setUpSaveButton();
 		setUpInputListeners();
