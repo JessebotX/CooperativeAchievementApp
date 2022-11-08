@@ -15,8 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import ca.university.myapplication.model.Game;
@@ -41,39 +39,32 @@ public class ListGamesActivity extends AppCompatActivity {
 		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 
-//        manager = GameConfigManager.getInstance();
-//        extractGameConfigExtra();
-//        displayInfo();
-		gameConfig = new GameConfig("Hot Pot",1,30);
-		gameConfig.addGame(2,10);
-		gameConfig.addGame(3,5);
-		gameConfig.addGame(2,20);
-		gameConfig.addGame(5,0);
-		gameConfig.addGame(4,80);
-		gameConfig.addGame(4,100);
-		gameList = gameConfig.getGames();
+        manager = GameConfigManager.getInstance();
+        extractGameConfigExtra();
+        displayInfo();
+
 		populateListView();
 	}
 
-//    private void extractGameConfigExtra() {
-//        Intent intent = getIntent();
-//        int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
-//        gameConfig = manager.getConfig(gameConfigIndex);
-//        gameList = gameConfig.getGames();
-//    }
+    private void extractGameConfigExtra() {
+        Intent intent = getIntent();
+        int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
+        gameConfig = manager.getConfig(gameConfigIndex);
+        gameList = gameConfig.getGames();
+    }
 
-//    public static Intent makeIntent(Context context,int gameConfigIndex) {
-//        Intent intent = new Intent(context, ListGamesActivity.class);
-//        intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
-//        return intent;
-//    }
+    public static Intent makeIntent(Context context,int gameConfigIndex) {
+        Intent intent = new Intent(context, ListGamesActivity.class);
+        intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
+        return intent;
+    }
 
-//    private void displayInfo() {
-//        if (gameConfig.totalGames() == 0) {
-//            TextView tv_msg = findViewById(R.id.tv_no_games_msg);
-//            tv_msg.setText(getString(R.string.no_games_msg));
-//        }
-//    }
+    private void displayInfo() {
+        if (gameConfig.totalGames() == 0) {
+            TextView tv_msg = findViewById(R.id.tv_no_games_msg);
+            tv_msg.setText(getString(R.string.no_games_msg));
+        }
+    }
 
 	private void populateListView() {
 		ArrayAdapter<Game> adapter = new MyListAdapter();
@@ -105,10 +96,13 @@ public class ListGamesActivity extends AppCompatActivity {
 
 			//date
 			TextView textDate = itemView.findViewById(R.id.item_date);
-			LocalDateTime date = currentGame.getTimeOfCreation();
-			DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
-			String formattedDate = date.format(dateFormat);
-			textDate.setText(getString(R.string.date) + formattedDate);
+			int year = currentGame.getTimeOfCreation().getYear();
+			int month = currentGame.getTimeOfCreation().getMonth();
+			int day = currentGame.getTimeOfCreation().getDay();
+			int hour = currentGame.getTimeOfCreation().getHour();
+			int minute = currentGame.getTimeOfCreation().getMinute();
+			int second = currentGame.getTimeOfCreation().getSecond();
+			textDate.setText(getString(R.string.date,year,month,day,hour,minute,second));
 
 			//number of players
 			TextView textNumPlayers = itemView.findViewById(R.id.item_num_players);
@@ -116,7 +110,7 @@ public class ListGamesActivity extends AppCompatActivity {
 
 			//combined score
 			TextView textScore = itemView.findViewById(R.id.item_score);
-			textScore.setText(getString(R.string.combined_score) + currentGame.getTotalScore());
+			textScore.setText(getString(R.string.combined_score_colon) + currentGame.getTotalScore());
 
 			//achievement level
 			TextView textLevel = itemView.findViewById(R.id.item_achievement);

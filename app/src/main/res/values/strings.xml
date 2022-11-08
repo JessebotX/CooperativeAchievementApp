@@ -14,12 +14,12 @@
     <string name="achievement_level_six">Achievement: Rampaging Rhinoceros</string>
     <string name="achievement_level_seven">Achievement: Whooping Whales</string>
     <string name="achievement_level_eight">Achievement: Fire-breathing Dragons</string>
-    <string name="date">Date:\ </string>
+    <string name="date">Date: %1$d-%2$d-%3$d | %4$d:%5$d:%6$d</string>
     <string name="num_players"># of Players:\ </string>
-    <string name="combined_score">Combined Score:\ </string>
+    <string name="combined_score_colon">Combined Score:\ </string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-<<<<<<< HEAD
+
     <string name="combined_score">Combined Score</string>
     <string name="achievement">Achievement:</string>
     <string name="add_a_new_game">Add A New Game</string>
@@ -38,6 +38,5 @@
     <string name="adorable_chickens">Adorable Chickens:</string>
     <string name="whooping_whales">Whooping Whales</string>
     <string name="dash">-</string>
-    <string name="number_of_players">Number of Players</string>
 >>>>>>> master
 </resources>
