@@ -78,6 +78,9 @@ public class AddGameConfigActivity extends AppCompatActivity {
 	}
 
 	private void saveGameConfig() {
+		if (hasDeletedGame) {
+			return;
+		}
 
 		//get inputs
 		EditText etName = findViewById(R.id.et_name_game_config);
@@ -112,7 +115,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		//save
 		if (isInAddMode) {
 			manager.addConfig(name, poorScore, greatScore);
-		} else if (!isInAddMode && !hasDeletedGame) {
+		} else if (!isInAddMode) {
 			gameConfig.setName(name);
 			gameConfig.setExpectedPoorScore(poorScore);
 			gameConfig.setExpectedGreatScore(greatScore);
