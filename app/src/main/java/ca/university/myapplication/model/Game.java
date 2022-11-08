@@ -16,7 +16,7 @@ public class Game implements Comparable<Game> {
 	private int expectedPoorScore;
 	private int expectedGreatScore;
 	private int[] achievementLevelRequiredScores;
-	private LocalDateTime timeOfCreation;
+	private CurrentDateTime timeOfCreation;
 
 	/**
 	 * Create a new Game under a GameConfig. Game creation should be done by GameConfig itself
@@ -31,7 +31,7 @@ public class Game implements Comparable<Game> {
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGreatScore = expectedGoodScore;
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
-		this.timeOfCreation = LocalDateTime.now();
+		this.timeOfCreation = new CurrentDateTime();
 
 		initializeAchievementLevelThresholds();
 	}
@@ -118,7 +118,7 @@ public class Game implements Comparable<Game> {
 		return ACHIEVEMENT_LEVELS;
 	}
 
-	public LocalDateTime getTimeOfCreation() {
+	public CurrentDateTime getTimeOfCreation() {
 		return timeOfCreation;
 	}
 

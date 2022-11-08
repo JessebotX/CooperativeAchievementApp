@@ -51,7 +51,6 @@ public class GameConfigTest {
 
 		Game game = gameConfig.getGame(0);
 		int level = game.getAchievementLevel();
-		LocalDateTime time = game.getTimeOfCreation();
 		int players = game.getPlayers();
 		int score = game.getTotalScore();
 
