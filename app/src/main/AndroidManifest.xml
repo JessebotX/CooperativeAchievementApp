@@ -17,12 +17,12 @@
         <activity
             android:name=".AddGameActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".GameConfigInfoActivity"/>
 
         <activity
             android:name=".GameConfigInfoActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ListGameConfigsActivity" />
 
         <activity
             android:name=".AddGameConfigActivity"
@@ -31,10 +31,6 @@
             android:parentActivityName=".ListGameConfigsActivity"
             android:theme="@style/Theme.MyApplication.NoActionBar">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
