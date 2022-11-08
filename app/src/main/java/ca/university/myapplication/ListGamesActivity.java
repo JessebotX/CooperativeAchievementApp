@@ -46,6 +46,12 @@ public class ListGamesActivity extends AppCompatActivity {
 		populateListView();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		populateListView();
+	}
+
 	private void extractGameConfigExtra() {
 		Intent intent = getIntent();
 		int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
@@ -119,7 +125,6 @@ public class ListGamesActivity extends AppCompatActivity {
 			return itemView;
 		}
 
-
 		//get id for the image matching with the achievement
 		private int fillImage(Game game) {
 			int achievement = game.getAchievementLevel();
@@ -192,7 +197,5 @@ public class ListGamesActivity extends AppCompatActivity {
 					break;
 			}
 		}
-
 	}
-
 }
