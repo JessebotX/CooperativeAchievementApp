@@ -39,32 +39,32 @@ public class ListGamesActivity extends AppCompatActivity {
 		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 
-        manager = GameConfigManager.getInstance();
-        extractGameConfigExtra();
-        displayInfo();
+		manager = GameConfigManager.getInstance();
+		extractGameConfigExtra();
+		displayInfo();
 
 		populateListView();
 	}
 
-    private void extractGameConfigExtra() {
-        Intent intent = getIntent();
-        int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);
-        gameConfig = manager.getConfig(gameConfigIndex);
-        gameList = gameConfig.getGames();
-    }
+	private void extractGameConfigExtra() {
+		Intent intent = getIntent();
+		int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
+		gameConfig = manager.getConfig(gameConfigIndex);
+		gameList = gameConfig.getGames();
+	}
 
-    public static Intent makeIntent(Context context,int gameConfigIndex) {
-        Intent intent = new Intent(context, ListGamesActivity.class);
-        intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
-        return intent;
-    }
+	public static Intent makeIntent(Context context, int gameConfigIndex) {
+		Intent intent = new Intent(context, ListGamesActivity.class);
+		intent.putExtra(EXTRA_GAME_CONFIG_INDEX, gameConfigIndex);
+		return intent;
+	}
 
-    private void displayInfo() {
-        if (gameConfig.totalGames() == 0) {
-            TextView tv_msg = findViewById(R.id.tv_no_games_msg);
-            tv_msg.setText(getString(R.string.no_games_msg));
-        }
-    }
+	private void displayInfo() {
+		if (gameConfig.totalGames() == 0) {
+			TextView tv_msg = findViewById(R.id.tv_no_games_msg);
+			tv_msg.setText(getString(R.string.no_games_msg));
+		}
+	}
 
 	private void populateListView() {
 		ArrayAdapter<Game> adapter = new MyListAdapter();
@@ -102,7 +102,7 @@ public class ListGamesActivity extends AppCompatActivity {
 			int hour = currentGame.getTimeOfCreation().getHour();
 			int minute = currentGame.getTimeOfCreation().getMinute();
 			int second = currentGame.getTimeOfCreation().getSecond();
-			textDate.setText(getString(R.string.date,year,month,day,hour,minute,second));
+			textDate.setText(getString(R.string.date, year, month, day, hour, minute, second));
 
 			//number of players
 			TextView textNumPlayers = itemView.findViewById(R.id.item_num_players);
