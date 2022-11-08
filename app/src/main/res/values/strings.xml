@@ -9,4 +9,17 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="view_list">View List</string>
+    <string name="achievements">Achievements:</string>
+    <string name="busy_bees">Busy Bees:</string>
+    <string name="fantastic_foxes">Fantastic Foxes:</string>
+    <string name="merciless_gorillas">Merciless Gorillas:</string>
+    <string name="rampaging_rhinoceros">Rampaging Rhinoceros:</string>
+    <string name="firebreathing_dragons">Firebreathing Dragons:</string>
+    <string name="shiny_butterflies">Shiny Butterflies:</string>
+    <string name="tactical_tigers">Tactical Tigers:</string>
+    <string name="adorable_chickens">Adorable Chickens:</string>
+    <string name="whooping_whales">Whooping Whales</string>
+    <string name="dash">-</string>
+    <string name="number_of_players">Number of Players</string>
 </resources>
