@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -112,17 +113,18 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		int size = GameConfigManager.getInstance().totalConfigs();
 
 		//display message if no configs are added
+		TextView tvEmpty = findViewById(R.id.emptyStateString);
 		if(size == 0){
-			Toast.makeText(this,"no configurations have been added yet",Toast.LENGTH_LONG);
-			return;
+			tvEmpty.setText("Add a Game Config by Clicking Add button.");
+		} else {
+			tvEmpty.setText("");
 		}
 
 		String[] listOfConfigs = new String[size];
 		for (int i = 0; i < size; i++) {
 			GameConfig config = GameConfigManager.getInstance().getConfig(i);
 			//listOfConfigs contains the line we print
-			listOfConfigs[i] = config.getName() + " || " + config.getExpectedPoorScore()
-					+ " || " + config.getExpectedGreatScore();
+			listOfConfigs[i] = "Game Name: " + config.getName();
 		}
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
 				this,

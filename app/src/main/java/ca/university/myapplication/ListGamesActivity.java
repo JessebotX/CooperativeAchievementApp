@@ -55,7 +55,6 @@ public class ListGamesActivity extends AppCompatActivity {
 	private void extractGameConfigExtra() {
 		Intent intent = getIntent();
 		int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
-		Toast.makeText(ListGamesActivity.this, Integer.toString(gameConfigIndex), Toast.LENGTH_SHORT).show();
 		gameConfig = manager.getConfig(gameConfigIndex);
 		gameList = gameConfig.getGames();
 	}
