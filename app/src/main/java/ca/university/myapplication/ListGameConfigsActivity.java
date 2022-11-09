@@ -83,7 +83,10 @@ public class ListGameConfigsActivity extends AppCompatActivity {
                     + " || " + config.getExpectedGreatScore();
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this, R.layout.activity_list_game_configs, R.id.listOfConfigsListView, listOfConfigs);
+                this,
+                R.layout.game_config_item,
+                listOfConfigs
+        );
         listView.setAdapter(arrayAdapter);
     }
 

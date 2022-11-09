@@ -80,6 +80,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 	private void saveGameConfig() {
 		if (hasDeletedGame) {
 			return;
+
 		}
 
 		//get inputs
@@ -120,6 +121,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 			gameConfig.setExpectedPoorScore(poorScore);
 			gameConfig.setExpectedGreatScore(greatScore);
 		}
+		finish();
 	}
 
 	private void deleteGameConfig() {
