@@ -180,12 +180,12 @@ public class AddGameActivity extends AppCompatActivity {
 	}
 
 	private void saveToSharedPreferences() {
-		SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(ListGameConfigsActivity.APP_PREFERENCES, MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		Gson gson = new Gson();
 
 		String json = gson.toJson(gameConfigManager.getGameConfigs());
-		editor.putString(MainActivity.SAVED_GAME_CONFIGS_KEY, json);
+		editor.putString(ListGameConfigsActivity.SAVED_GAME_CONFIGS_KEY, json);
 		editor.apply();
 	}
 }

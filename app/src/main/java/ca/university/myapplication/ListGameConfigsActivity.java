@@ -3,6 +3,7 @@ package ca.university.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,130 +12,148 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
 public class ListGameConfigsActivity extends AppCompatActivity {
+	public static final String APP_PREFERENCES = "ca.university.myapplication appPrefs";
+	public static final String SAVED_GAME_CONFIGS_KEY = "ca.university.myapplication savedList";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_game_configs);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_list_game_configs);
 
-        setUpAddNewGameConfigButton();
-        displayListOfConfigsUsingListView();
-        clickConfigToLaunchGameConfigInfo();
-        longClickConfigToOpenAnEditor();
-        setUpSingleClick();
-    }
+		getFromSharedPreferences();
+		setUpAddNewGameConfigButton();
+		displayListOfConfigsUsingListView();
+		clickConfigToLaunchGameConfigInfo();
+		longClickConfigToOpenAnEditor();
+		setUpSingleClick();
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        displayListOfConfigsUsingListView();
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		displayListOfConfigsUsingListView();
+	}
 
-    // [CHECK] Displays info if there are no game configs added
-    // [CHECK] Lists game configs.
-    // [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
-    // [CHECK] On the click of a game config it launches the GameConfigInfoActivity
-    // [CHECK] On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
-    // [HALT] Has a delete button next to every game config that deletes the game config and updates the list view
+	private void getFromSharedPreferences() {
+		Gson gson = new Gson();
+		SharedPreferences prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+		GameConfigManager manager = GameConfigManager.getInstance();
+		String json = prefs.getString(SAVED_GAME_CONFIGS_KEY, null);
+		Type type = new TypeToken<ArrayList<GameConfig>>() {}.getType();
 
-    private void longClickConfigToOpenAnEditor() {
+		manager.setGameConfigs(gson.fromJson(json, type));
+	}
 
-        ListView listView = findViewById(R.id.listOfConfigsListView);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                GameConfig config = GameConfigManager.getInstance().getConfig(i);
-                String name = config.getName();
-                int poorScore = config.getExpectedPoorScore();
-                int greatScore = config.getExpectedGreatScore();
+	// [CHECK] Displays info if there are no game configs added
+	// [CHECK] Lists game configs.
+	// [CHECK] Has a button to add a game config (launches the AddGameConfigActivity).
+	// [CHECK] On the click of a game config it launches the GameConfigInfoActivity
+	// [CHECK] On the long click of a game config it launches the AddGameConfigActivity with putting extras of the game config info to give the possibility of editing the game config.
+	// [HALT] Has a delete button next to every game config that deletes the game config and updates the list view
 
-                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this, i);
-                startActivity(intent);
-                return false;
-            }
-        });
-    }
+	private void longClickConfigToOpenAnEditor() {
 
-    /**
-     * Open Add Game Config Activity
-     */
-    private void setUpSingleClick() {
+		ListView listView = findViewById(R.id.listOfConfigsListView);
+		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+				GameConfig config = GameConfigManager.getInstance().getConfig(i);
+				String name = config.getName();
+				int poorScore = config.getExpectedPoorScore();
+				int greatScore = config.getExpectedGreatScore();
 
-        ListView listView = findViewById(R.id.listOfConfigsListView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                GameConfig config = GameConfigManager.getInstance().getConfig(i);
-                String name = config.getName();
-                int poorScore = config.getExpectedPoorScore();
-                int greatScore = config.getExpectedGreatScore();
+				Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this, i);
+				startActivity(intent);
+				return false;
+			}
+		});
+	}
 
-                Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
-                startActivity(intent);
-                Toast.makeText(ListGameConfigsActivity.this, "toasted", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+	/**
+	 * Open Add Game Config Activity
+	 */
+	private void setUpSingleClick() {
 
-    private void displayListOfConfigsUsingListView() {
-        /**
-         * if no configs we need to display a message
-         * Name (String)
-         * expected poor score (int)
-         * expected great score (int)
-         */
-        ListView listView = findViewById(R.id.listOfConfigsListView);
-        int size = GameConfigManager.getInstance().totalConfigs();
+		ListView listView = findViewById(R.id.listOfConfigsListView);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				GameConfig config = GameConfigManager.getInstance().getConfig(i);
+				String name = config.getName();
+				int poorScore = config.getExpectedPoorScore();
+				int greatScore = config.getExpectedGreatScore();
 
-        //display message if no configs are added
-        if(size == 0){
-            Toast.makeText(this,"no configurations have been added yet",Toast.LENGTH_LONG);
-            return;
-        }
+				Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
+				startActivity(intent);
+				Toast.makeText(ListGameConfigsActivity.this, "toasted", Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
 
-        String[] listOfConfigs = new String[size];
-        for (int i = 0; i < size; i++) {
-            GameConfig config = GameConfigManager.getInstance().getConfig(i);
-            //listOfConfigs contains the line we print
-            listOfConfigs[i] = config.getName() + " || " + config.getExpectedPoorScore()
-                    + " || " + config.getExpectedGreatScore();
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                R.layout.game_config_item,
-                listOfConfigs
-        );
-        listView.setAdapter(arrayAdapter);
-    }
+	private void displayListOfConfigsUsingListView() {
+		/**
+		 * if no configs we need to display a message
+		 * Name (String)
+		 * expected poor score (int)
+		 * expected great score (int)
+		 */
+		ListView listView = findViewById(R.id.listOfConfigsListView);
+		int size = GameConfigManager.getInstance().totalConfigs();
 
-    private void clickConfigToLaunchGameConfigInfo() {
-        ListView listView = findViewById(R.id.listOfConfigsListView);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+		//display message if no configs are added
+		if(size == 0){
+			Toast.makeText(this,"no configurations have been added yet",Toast.LENGTH_LONG);
+			return;
+		}
 
-                Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
-                startActivity(intent);
-                return false;
-            }
-        });
-    }
+		String[] listOfConfigs = new String[size];
+		for (int i = 0; i < size; i++) {
+			GameConfig config = GameConfigManager.getInstance().getConfig(i);
+			//listOfConfigs contains the line we print
+			listOfConfigs[i] = config.getName() + " || " + config.getExpectedPoorScore()
+					+ " || " + config.getExpectedGreatScore();
+		}
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				this,
+				R.layout.game_config_item,
+				listOfConfigs
+		);
+		listView.setAdapter(arrayAdapter);
+	}
 
-    private void setUpAddNewGameConfigButton() {
-        FloatingActionButton addGame = findViewById(R.id.addGameConfig);
-        addGame.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
+	private void clickConfigToLaunchGameConfigInfo() {
+		ListView listView = findViewById(R.id.listOfConfigsListView);
+		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this,-1);
-                startActivity(intent);
+				Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
+				startActivity(intent);
+				return false;
+			}
+		});
+	}
 
-            }
-        });
-    }
+	private void setUpAddNewGameConfigButton() {
+		FloatingActionButton addGame = findViewById(R.id.addGameConfig);
+		addGame.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View view) {
+
+				Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this,-1);
+				startActivity(intent);
+
+			}
+		});
+	}
 }
