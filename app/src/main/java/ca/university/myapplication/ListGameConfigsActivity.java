@@ -76,7 +76,6 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 
                 Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
                 startActivity(intent);
-                Toast.makeText(ListGameConfigsActivity.this, "toasted", Toast.LENGTH_SHORT).show();
             }
         });
     }

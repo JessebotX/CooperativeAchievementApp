@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,12 +36,8 @@ public class ListGamesActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_games);
 
-		androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.list_games_toolbar);
-
-		setSupportActionBar(toolbar);
-
-		ActionBar ab = getSupportActionBar();
-		ab.setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle("List Games Activity");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		manager = GameConfigManager.getInstance();
 		extractGameConfigExtra();
@@ -58,6 +55,7 @@ public class ListGamesActivity extends AppCompatActivity {
 	private void extractGameConfigExtra() {
 		Intent intent = getIntent();
 		int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
+		Toast.makeText(ListGamesActivity.this, Integer.toString(gameConfigIndex), Toast.LENGTH_SHORT).show();
 		gameConfig = manager.getConfig(gameConfigIndex);
 		gameList = gameConfig.getGames();
 	}
