@@ -49,6 +49,14 @@ public class GameConfigManager implements Iterable<GameConfig> {
 		gameConfigs.remove(index);
 	}
 
+	public List<GameConfig> getGameConfigs() {
+		return gameConfigs;
+	}
+
+	public void setGameConfigs(List<GameConfig> gameConfigs) {
+		this.gameConfigs = gameConfigs;
+	}
+
 	public int totalConfigs() {
 		return gameConfigs.size();
 	}

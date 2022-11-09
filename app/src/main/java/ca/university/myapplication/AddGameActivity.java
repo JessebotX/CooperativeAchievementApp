@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
@@ -23,22 +26,18 @@ import ca.university.myapplication.model.GameConfigManager;
 public class AddGameActivity extends AppCompatActivity {
 
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
-	private static final String TAG = "ADD_GAME_ACTIVITY";
-	GameConfig gameConfig;
 
-	GameConfigManager gameConfigManager;
+	private GameConfig gameConfig;
+	private GameConfigManager gameConfigManager;
+	private Game newGame;
 
-	Game newGame;
+	private EditText inputNumPlayers;
+	private EditText inputCombinedScore;
+	private TextView tvAchievement;
+	private Button saveButton;
 
-	EditText inputNumPlayers;
-	EditText inputCombinedScore;
-
-	TextView tvAchievement;
-
-	Button saveButton;
-
-	int numPlayers;
-	int combinedScore;
+	private int numPlayers;
+	private int combinedScore;
 
 	private String[] achievementNames = {
 			"Shiny Butterflies (lowest)",
@@ -66,13 +65,19 @@ public class AddGameActivity extends AppCompatActivity {
 		saveButton = findViewById(R.id.btnSave);
 
 		gameConfigManager = GameConfigManager.getInstance();
+
 		// get Game index from caller
 		int gameIndex = extractDataFromIntent();
 		gameConfig = gameConfigManager.getConfig(gameIndex);
 
-
 		setUpSaveButton();
 		setUpInputListeners();
+	}
+
+	public static Intent makeIntent(Context context, int gameIndex) {
+		Intent intent = new Intent(context, AddGameActivity.class);
+		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+		return intent;
 	}
 
 	/**
@@ -105,7 +110,7 @@ public class AddGameActivity extends AppCompatActivity {
 		saveButton.setOnClickListener(view -> {
 
 			String numPlayersText = inputNumPlayers.getText().toString();
-			String combinedScoreText = inputNumPlayers.getText().toString();
+			String combinedScoreText = inputCombinedScore.getText().toString();
 
 			// exit early if input is not entered
 			if (!isInt(numPlayersText) || !isInt(combinedScoreText) || Integer.parseInt(numPlayersText) < 1) {
@@ -121,6 +126,7 @@ public class AddGameActivity extends AppCompatActivity {
 			gameConfig.addGame(numPlayers, combinedScore);
 
 			Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
+			saveToSharedPreferences();
 			finish();
 		});
 	}
@@ -166,16 +172,19 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 	}
 
-	// returns an intent to add game activity
-	public static Intent makeIntent(Context context, int gameIndex) {
-		Intent intent = new Intent(context, AddGameActivity.class);
-		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
-		return intent;
-	}
-
 	// helper function to extract data from intent
 	private int extractDataFromIntent() {
 		Intent intent = getIntent();
 		return intent.getIntExtra(EXTRA_GAME_INDEX, -1);
+	}
+
+	private void saveToSharedPreferences() {
+		SharedPreferences prefs = getSharedPreferences(ListGameConfigsActivity.APP_PREFERENCES, MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		Gson gson = new Gson();
+
+		String json = gson.toJson(gameConfigManager.getGameConfigs());
+		editor.putString(ListGameConfigsActivity.SAVED_GAME_CONFIGS_KEY, json);
+		editor.apply();
 	}
 }
