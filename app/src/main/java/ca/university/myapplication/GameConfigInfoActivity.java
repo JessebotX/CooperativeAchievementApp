@@ -26,7 +26,6 @@ import ca.university.myapplication.model.GameConfigManager;
  */
 public class GameConfigInfoActivity extends AppCompatActivity {
 
-	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 	private static final String EXTRA_GAME_CONFIG_INDEX = "EXTRA_GAME_CONFIG_INDEX";
 
 	GameConfigManager gameConfigManager;
@@ -59,7 +58,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 		gameConfigManager = GameConfigManager.getInstance();
 
 		// add fake data, delete when merged
-		gameConfig = gameConfigManager.getConfig(gameIndex);
+		gameConfig = gameConfigManager.getConfig(gameConfigIndex);
 		game = new Game(1, 0, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 
 		setUpListener();
@@ -81,7 +80,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		fab.setOnClickListener(view -> {
 			// start add game activity: uncomment after merge
-            Intent addGameIntent = AddGameActivity.makeIntent(GameConfigInfoActivity.this, gameIndex);
+            Intent addGameIntent = AddGameActivity.makeIntent(GameConfigInfoActivity.this, gameConfigIndex);
             startActivity(addGameIntent);
 		});
 	}
@@ -156,7 +155,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * updates all Achivement scores given the number of players
+	 * updates all Achievement scores given the number of players
 	 * @param numPlayers user input
 	 */
 	private void setUpScoreViews(int numPlayers) {
@@ -173,7 +172,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	 * Returns the Intent for game config info activity
 	 * @param context
 	 * @param gameConfigIndex
-	 * @param gameIndex
 	 * @return
 	 */
 	public static Intent makeIntent(Context context, int gameConfigIndex) {

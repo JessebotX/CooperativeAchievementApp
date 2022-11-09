@@ -134,14 +134,6 @@ public class AddGameConfigActivity extends AppCompatActivity {
 			return;
 		}
 		manager.removeConfig(gameConfigIndex);
-		EditText etName = findViewById(R.id.et_name_game_config);
-		etName.setText(EMPTY_STRING);
-
-		EditText etPoorScore = findViewById(R.id.et_poor_score_game_config);
-		etPoorScore.setText(EMPTY_STRING);
-
-		EditText etGreatScore = findViewById(R.id.et_great_score_game_config);
-		etGreatScore.setText(EMPTY_STRING);
 		hasDeletedGame = true;
 
 		saveToSharedPreferences();
