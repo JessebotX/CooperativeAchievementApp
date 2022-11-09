@@ -145,8 +145,8 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		hasDeletedGame = true;
 
 		saveToSharedPreferences();
+		finish();
 	}
-
 	private void saveToSharedPreferences() {
 		SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFERENCES, MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();

@@ -61,7 +61,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		// add fake data, delete when merged
 		gameConfig = gameConfigManager.getConfig(gameIndex);
-		game = gameConfigManager.getConfig(gameConfigIndex).getGame(gameIndex);
+//		game = gameConfigManager.getConfig(gameConfigIndex).getGame(gameIndex);
 
 		setUpListener();
 		setUpFab();
