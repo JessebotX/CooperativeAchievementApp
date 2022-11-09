@@ -17,6 +17,9 @@ import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
+/**
+ * This Add Game Activity class helps the user add a new game to a game info.
+ */
 public class AddGameActivity extends AppCompatActivity {
 
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
@@ -99,6 +102,9 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * Update UI dynamically when number of players or combined score is changed
+	 */
 	private void setUpSaveButton() {
 		saveButton.setOnClickListener(view -> {
 
@@ -123,6 +129,9 @@ public class AddGameActivity extends AppCompatActivity {
 		});
 	}
 
+	/**
+	 * Refresh the current achievement level that the users reached
+	 */
 	private void refreshAchievementText() {
 		String numPlayersText = inputNumPlayers.getText().toString();
 		String combinedScoreText = inputCombinedScore.getText().toString();
@@ -139,11 +148,18 @@ public class AddGameActivity extends AppCompatActivity {
 		tvAchievement.setText(achievementNames[achievementLevel]);
 	}
 
+	/**
+	 * uses the Game model to return a achivement level
+	 * @param numPlayers
+	 * @param combinedScore
+	 * @return
+	 */
 	private int calculateAchievementLevel(int numPlayers, int combinedScore) {
 		newGame = new Game(numPlayers, combinedScore, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 		return newGame.getAchievementLevel();
 	}
 
+	// helper function to check weather or not a string is a number
 	public static boolean isInt(String str) {
 		try {
 			@SuppressWarnings("unused")
@@ -154,12 +170,14 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 	}
 
+	// returns an intent to add game activity
 	public static Intent makeIntent(Context context, int gameIndex) {
 		Intent intent = new Intent(context, AddGameActivity.class);
 		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
 		return intent;
 	}
 
+	// helper function to extract data from intent
 	private int extractDataFromIntent() {
 		Intent intent = getIntent();
 		return intent.getIntExtra(EXTRA_GAME_INDEX, -1);
