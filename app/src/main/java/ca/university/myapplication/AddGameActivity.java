@@ -97,7 +97,6 @@ public class AddGameActivity extends AppCompatActivity {
 				}
 
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					Toast.makeText(AddGameActivity.this, "Detected num players", Toast.LENGTH_SHORT).show();
 					refreshAchievementText();
 				}
 			});
