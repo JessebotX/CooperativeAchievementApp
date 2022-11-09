@@ -106,7 +106,7 @@ public class ListGameConfigs extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = AddGameConfigActivity.makeIntent(-1);
+                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigs.this,-1);
                 startActivity(intent);
 
             }

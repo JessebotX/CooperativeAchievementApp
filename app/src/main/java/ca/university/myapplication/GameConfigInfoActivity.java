@@ -98,7 +98,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	}
 
 	/**
-	 *
 	 * @return an array of text views for all achievement
 	 */
 	private TextView[] getTextViews() {
@@ -164,9 +163,10 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	 * @param gameIndex
 	 * @return
 	 */
-	public static Intent makeIntent(Context context, int gameConfigIndex, int gameIndex) {
+	public static Intent makeIntent(Context context, int gameConfigIndex) {
 		Intent intent = new Intent(context, GameConfigInfoActivity.class);
-		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+		// fix this later
+		intent.putExtra(EXTRA_GAME_INDEX, 0);
 		intent.putExtra(EXTRA_GAME_CONFIG_INDEX, gameConfigIndex);
 		return intent;
 	}
