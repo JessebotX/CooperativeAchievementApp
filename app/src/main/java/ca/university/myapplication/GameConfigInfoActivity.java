@@ -52,19 +52,28 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		// extract data
 		userInput = findViewById(R.id.etNumPlayersGameConfig);
-		int[] intentData = extractDataFromIntent();
-		gameConfigIndex = intentData[0];
-		gameIndex = intentData[1];
+
+		gameConfigIndex = extractDataFromIntent();
 
 		scoreViews = getTextViews();
 		gameConfigManager = GameConfigManager.getInstance();
 
 		// add fake data, delete when merged
 		gameConfig = gameConfigManager.getConfig(gameIndex);
-//		game = gameConfigManager.getConfig(gameConfigIndex).getGame(gameIndex);
+		game = new Game(1, 0, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 
 		setUpListener();
 		setUpFab();
+		setUpViewListButton();
+	}
+
+	private void setUpViewListButton() {
+		Button saveButton = findViewById(R.id.btnGameConfigViewGameList);
+
+		saveButton.setOnClickListener(view -> {
+			Intent intent = ListGamesActivity.makeIntent(GameConfigInfoActivity.this, gameConfigIndex);
+			startActivity(intent);
+		});
 	}
 
 	private void setUpFab() {
@@ -120,12 +129,19 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 		// exit early if input is not entered
 		if (!isInt(numPlayersText) || Integer.parseInt(numPlayersText) < 1) {
 			Toast.makeText(this, "Please Finish Entering Inputs.", Toast.LENGTH_SHORT).show();
+			convertAllAchievementsToBlank();
 			return;
 		}
 
 		int numPlayers = Integer.parseInt(numPlayersText);
 
 		setUpScoreViews(numPlayers);
+	}
+
+	private void convertAllAchievementsToBlank() {
+		for(TextView tv: scoreViews) {
+			tv.setText("-");
+		}
 	}
 
 	// helper function to check if an string is an integer
@@ -137,7 +153,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 		} catch (NumberFormatException e) {
 			return false; //String is not an Integer
 		}
-
 	}
 
 	/**
@@ -163,8 +178,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	 */
 	public static Intent makeIntent(Context context, int gameConfigIndex) {
 		Intent intent = new Intent(context, GameConfigInfoActivity.class);
-		// fix this later
-		intent.putExtra(EXTRA_GAME_INDEX, 0);
 		intent.putExtra(EXTRA_GAME_CONFIG_INDEX, gameConfigIndex);
 		return intent;
 	}
@@ -173,11 +186,8 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	 * helper function to extract data from intent
 	 * @return
 	 */
-	private int[] extractDataFromIntent() {
+	private int extractDataFromIntent() {
 		Intent intent = getIntent();
-		return new int[]{
-				intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, -1),
-				intent.getIntExtra(EXTRA_GAME_INDEX, -1)
-		};
+		return intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, -1);
 	}
 }
