@@ -25,13 +25,24 @@
             android:parentActivityName=".ListGameConfigsActivity" />
 
         <activity
+            android:name=".ListGamesActivity"
+            android:exported="false"
+            android:parentActivityName=".GameConfigInfoActivity" />
+
+        <activity
             android:name=".AddGameConfigActivity"
             android:exported="true"
             android:label="@string/activity_name"
             android:parentActivityName=".ListGameConfigsActivity"
-            android:theme="@style/Theme.MyApplication.NoActionBar">
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
 
+        <activity
+            android:name=".ListGameConfigsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
-
 </manifest>

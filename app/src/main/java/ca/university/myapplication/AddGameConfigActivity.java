@@ -126,6 +126,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		}
 
 		saveToSharedPreferences();
+		finish();
 	}
 
 	private void deleteGameConfig() {

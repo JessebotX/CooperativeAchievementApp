@@ -24,7 +24,6 @@
     <string name="combined_score">Combined Score</string>
     <string name="achievement">Achievement:</string>
     <string name="add_a_new_game">Add A New Game</string>
-=======
     <string name="view_list">View List</string>
     <string name="achievements">Achievements:</string>
     <string name="busy_bees">Busy Bees:</string>
@@ -37,7 +36,6 @@
     <string name="adorable_chickens">Adorable Chickens:</string>
     <string name="whooping_whales">Whooping Whales</string>
     <string name="dash">-</string>
->>>>>>> master
     <string name="save">SAVE</string>
     <string name="hint_game_config_name">Name</string>
     <string name="hint_game_config_poor_score">Expected Poor Per-Player Score</string>
