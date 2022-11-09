@@ -26,6 +26,7 @@ public class ListGameConfigsActivity extends AppCompatActivity {
         displayListOfConfigsUsingListView();
         clickConfigToLaunchGameConfigInfo();
         longClickConfigToOpenAnEditor();
+        setUpSingleClick();
     }
 
     @Override
@@ -55,6 +56,27 @@ public class ListGameConfigsActivity extends AppCompatActivity {
                 Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this, i);
                 startActivity(intent);
                 return false;
+            }
+        });
+    }
+
+    /**
+     * Open Add Game Config Activity
+     */
+    private void setUpSingleClick() {
+
+        ListView listView = findViewById(R.id.listOfConfigsListView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                GameConfig config = GameConfigManager.getInstance().getConfig(i);
+                String name = config.getName();
+                int poorScore = config.getExpectedPoorScore();
+                int greatScore = config.getExpectedGreatScore();
+
+                Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
+                startActivity(intent);
+                Toast.makeText(ListGameConfigsActivity.this, "toasted", Toast.LENGTH_SHORT).show();
             }
         });
     }

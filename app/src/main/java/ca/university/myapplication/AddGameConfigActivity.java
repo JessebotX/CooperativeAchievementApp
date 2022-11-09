@@ -138,6 +138,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		EditText etGreatScore = findViewById(R.id.et_great_score_game_config);
 		etGreatScore.setText("");
 		hasDeletedGame = true;
+		finish();
 	}
 
 }
