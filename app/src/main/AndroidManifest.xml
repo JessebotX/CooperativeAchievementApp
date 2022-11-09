@@ -25,6 +25,11 @@
             android:parentActivityName=".ListGameConfigsActivity" />
 
         <activity
+            android:name=".ListGamesActivity"
+            android:exported="false"
+            android:parentActivityName=".ListGamesActivity" />
+
+        <activity
             android:name=".AddGameConfigActivity"
             android:exported="true"
             android:label="@string/activity_name"
