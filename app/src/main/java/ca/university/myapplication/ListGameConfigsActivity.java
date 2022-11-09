@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
@@ -51,7 +52,11 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		String json = prefs.getString(SAVED_GAME_CONFIGS_KEY, null);
 		Type type = new TypeToken<ArrayList<GameConfig>>() {}.getType();
 
-		manager.setGameConfigs(gson.fromJson(json, type));
+        List<GameConfig> gameConfigs = gson.fromJson(json, type);
+
+        if (gameConfigs != null) {
+            manager.setGameConfigs(gameConfigs);
+        }
 	}
 
 	// [CHECK] Displays info if there are no game configs added
