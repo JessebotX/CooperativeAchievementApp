@@ -110,7 +110,7 @@ public class AddGameActivity extends AppCompatActivity {
 		saveButton.setOnClickListener(view -> {
 
 			String numPlayersText = inputNumPlayers.getText().toString();
-			String combinedScoreText = inputNumPlayers.getText().toString();
+			String combinedScoreText = inputCombinedScore.getText().toString();
 
 			// exit early if input is not entered
 			if (!isInt(numPlayersText) || !isInt(combinedScoreText) || Integer.parseInt(numPlayersText) < 1) {
