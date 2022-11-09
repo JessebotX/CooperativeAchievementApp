@@ -16,6 +16,9 @@ import com.google.gson.Gson;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
+/**
+ * Activity that allows user to add or edit or delete a game configuration.
+ */
 public class AddGameConfigActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
 	public static final String EMPTY_STRING = "";
@@ -79,6 +82,9 @@ public class AddGameConfigActivity extends AppCompatActivity {
 	}
 
 	private void saveGameConfig() {
+		if (hasDeletedGame) {
+			return;
+		}
 
 		//get inputs
 		EditText etName = findViewById(R.id.et_name_game_config);
@@ -113,7 +119,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 		//save
 		if (isInAddMode) {
 			manager.addConfig(name, poorScore, greatScore);
-		} else if (!isInAddMode && !hasDeletedGame) {
+		} else if (!isInAddMode) {
 			gameConfig.setName(name);
 			gameConfig.setExpectedPoorScore(poorScore);
 			gameConfig.setExpectedGreatScore(greatScore);

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Manages a list of Game Configurations. Access through singleton.
+ * Manages a list of Game Configurations
  */
 public class GameConfigManager implements Iterable<GameConfig> {
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
@@ -60,6 +60,24 @@ public class GameConfigManager implements Iterable<GameConfig> {
 	public int totalConfigs() {
 		return gameConfigs.size();
 	}
+
+	//NEW UTILITY METHOD------------------------
+	public void setConfig(int index, String name, String poorScore, String greatScore){
+		//input validation
+		if(index < 0 || index > gameConfigs.size()){
+			throw new IllegalArgumentException("index is out of bounds");
+		}
+		else {
+			//get the config and set
+			GameConfig editThisConfig = gameConfigs.get(index);
+			editThisConfig.setName(name);
+			int poorScoreInt = Integer.parseInt(poorScore);
+			editThisConfig.setExpectedPoorScore(poorScoreInt);
+			int greatScoreInt = Integer.parseInt(greatScore);
+			editThisConfig.setExpectedGreatScore(greatScoreInt);
+		}
+	}
+	//------------------------------------------
 
 	@Override
 	public Iterator<GameConfig> iterator() {
