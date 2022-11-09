@@ -66,9 +66,6 @@ public class AddGameActivity extends AppCompatActivity {
 		saveButton = findViewById(R.id.btnSave);
 
 		gameConfigManager = GameConfigManager.getInstance();
-		// add fake data
-		gameConfigManager.addConfig("Poker", 10, 100);
-
 		// get Game index from caller
 		int gameIndex = extractDataFromIntent();
 		gameConfig = gameConfigManager.getConfig(gameIndex);
