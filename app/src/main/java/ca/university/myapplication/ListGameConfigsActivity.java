@@ -15,7 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
-public class ListGameConfigs extends AppCompatActivity {
+public class ListGameConfigsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class ListGameConfigs extends AppCompatActivity {
                 int poorScore = config.getExpectedPoorScore();
                 int greatScore = config.getExpectedGreatScore();
 
-                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigs.this, i);
+                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this, i);
                 startActivity(intent);
                 return false;
             }
@@ -93,7 +93,7 @@ public class ListGameConfigs extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigs.this, i);
+                Intent intent = GameConfigInfoActivity.makeIntent(ListGameConfigsActivity.this, i);
                 startActivity(intent);
                 return false;
             }
@@ -106,7 +106,7 @@ public class ListGameConfigs extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigs.this,-1);
+                Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this,-1);
                 startActivity(intent);
 
             }
