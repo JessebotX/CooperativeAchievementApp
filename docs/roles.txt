@@ -6,3 +6,8 @@ Iteration 1:
 - Repo Manager: Tomi
 - Team Member: Andy
 
+Iteration 2:
+- Scrum Master: Tomi
+- Product Owner: Aidan
+- Repo Manager: Nathalie
+- Team Member: Jesse
