@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		clickConfigToLaunchGameConfigInfo();
 		longClickConfigToOpenAnEditor();
 		setUpSingleClick();
+		setupOptionsButton();
 	}
 
 	@Override
@@ -74,9 +76,6 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 				GameConfig config = GameConfigManager.getInstance().getConfig(i);
-				String name = config.getName();
-				int poorScore = config.getExpectedPoorScore();
-				int greatScore = config.getExpectedGreatScore();
 
 				Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this, i);
 				startActivity(intent);
@@ -152,10 +151,20 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		addGame.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View view) {
-
 				Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this,-1);
 				startActivity(intent);
 
+			}
+		});
+	}
+
+	private void setupOptionsButton() {
+		Button btn = findViewById(R.id.button_options);
+		btn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = OptionsActivity.makeIntent(ListGameConfigsActivity.this);
+				startActivity(intent);
 			}
 		});
 	}
