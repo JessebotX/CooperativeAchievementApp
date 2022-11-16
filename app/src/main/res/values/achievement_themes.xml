@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="achievement_themes">
-        <string>Animals</string>
-        <string>Resources/Minerals</string>
-        <string>TODO</string>
+        <item>Animals</item>
+        <item>Resources/Minerals</item>
+        <item>TODO</item>
     </string-array>
 </resources>
