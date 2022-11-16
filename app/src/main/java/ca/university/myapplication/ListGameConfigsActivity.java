@@ -27,6 +27,7 @@ import ca.university.myapplication.model.GameConfigManager;
 public class ListGameConfigsActivity extends AppCompatActivity {
 	public static final String APP_PREFERENCES = "ca.university.myapplication appPrefs";
 	public static final String SAVED_GAME_CONFIGS_KEY = "ca.university.myapplication savedList";
+	public static final String SAVED_THEME_ID_KEY = "ca.university.myapplication themeId";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +50,33 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 	}
 
 	private void getFromSharedPreferences() {
-		Gson gson = new Gson();
 		SharedPreferences prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
 		GameConfigManager manager = GameConfigManager.getInstance();
+
+		getListGameConfigsFromSharedPrefs(prefs, manager);
+		getAchievementTheme(prefs, manager);
+	}
+
+	private void getListGameConfigsFromSharedPrefs(SharedPreferences prefs, GameConfigManager manager) {
+		Gson gson = new Gson();
 		String json = prefs.getString(SAVED_GAME_CONFIGS_KEY, null);
 		Type type = new TypeToken<ArrayList<GameConfig>>() {}.getType();
 
-        List<GameConfig> gameConfigs = gson.fromJson(json, type);
+		List<GameConfig> gameConfigs = gson.fromJson(json, type);
 
-        if (gameConfigs != null) {
-            manager.setGameConfigs(gameConfigs);
-        }
+		if (gameConfigs != null) {
+			manager.setGameConfigs(gameConfigs);
+		}
+	}
+
+	private void getAchievementTheme(SharedPreferences prefs, GameConfigManager manager) {
+		int theme = prefs.getInt(SAVED_THEME_ID_KEY, GameConfigManager.THEME_ANIMALS);
+
+		try {
+			manager.setTheme(theme);
+		} catch (IllegalArgumentException e) {
+			manager.setTheme(GameConfigManager.THEME_ANIMALS);
+		}
 	}
 
 	// [CHECK] Displays info if there are no game configs added
