@@ -56,7 +56,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		setAchievementLabelTextViews();
 
-		// add fake data, delete when merged
 		gameConfig = gameConfigManager.getConfig(gameConfigIndex);
 		game = new Game(1, 0, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 
