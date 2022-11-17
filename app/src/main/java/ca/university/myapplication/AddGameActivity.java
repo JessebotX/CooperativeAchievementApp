@@ -125,8 +125,8 @@ public class AddGameActivity extends AppCompatActivity {
 
 			// add to config
 			// REMEMBER TO UPDATE THIS TEMPORARY FIX UNTIL DYNAMIC ARRAY IS COMPLETE
-			ArrayList<Integer> playerScores = new ArrayList<Integer>();
-			playerScores.add(0);
+			ArrayList<Integer> playerScores = new ArrayList<>();
+			playerScores.add(combinedScore);
 			gameConfig.addGame(numPlayers, playerScores);
 
 			Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();

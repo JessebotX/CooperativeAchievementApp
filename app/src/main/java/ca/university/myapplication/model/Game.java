@@ -29,13 +29,13 @@ public class Game implements Comparable<Game> {
 	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore) {
 		setPlayers(players);
 		this.playerScores = playerScores;
+		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGreatScore = expectedGoodScore;
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 		this.timeOfCreation = new CurrentDateTime();
 
 		initializeAchievementLevelThresholds();
 	}
-
 
 	public int getPlayers() {
 		return players;
