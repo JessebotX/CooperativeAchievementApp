@@ -21,8 +21,8 @@ public class GameTest {
 	@Test
 	public void setPlayersThrowsError() {
 		ArrayList<Integer> playerScores = new ArrayList<Integer>();
-		playerScores.add(5);
-		playerScores.add(5);
+		playerScores.add(10);
+		playerScores.add(0);
 		Game game = new Game(playerScores.size(), playerScores, 10, 10);
 
 		assertThrows(IllegalArgumentException.class, () -> game.setPlayers(0));
@@ -45,20 +45,21 @@ public class GameTest {
 
 	@Test
 	public void getCorrectAchievementLevelRequirementsScores40to100() {
-		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		ArrayList<Integer> playerScores = new ArrayList<>();
 		playerScores.add(1);
 		Game game = new Game(1, playerScores, 40, 100);
 
 		int[] levelRequirements = { 40, 48, 57, 65, 74, 82, 91, 100 };
-
 		for (int i = 0; i < levelRequirements.length; i++) {
 			assertEquals(levelRequirements[i], game.getAchievementLevelRequiredScores()[i]);
 		}
 	}
 
+
+
 	@Test
 	public void getCorrectAchievementLevel0Scores1to8with4Players() {
-		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		ArrayList<Integer> playerScores = new ArrayList<>();
 		playerScores.add(0);
 		playerScores.add(0);
 		playerScores.add(0);
@@ -79,7 +80,7 @@ public class GameTest {
 
 	@Test
 	public void getCorrectAchievementLevel1Scores1to8with4Players() {
-		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		ArrayList<Integer> playerScores = new ArrayList<>();
 		playerScores.add(0);
 		playerScores.add(0);
 		playerScores.add(0);
