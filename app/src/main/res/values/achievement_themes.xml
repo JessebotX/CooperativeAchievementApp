@@ -3,7 +3,7 @@
     <string-array name="achievement_themes">
         <item>Animals</item>
         <item>Resources/Minerals</item>
-        <item>TODO</item>
+        <item>Weapons</item>
     </string-array>
 
     <string-array name="achievement_theme_animals">
@@ -33,10 +33,10 @@
     <string-array name="achievement_theme_weapons">
         <item>Toy Stick (lowest)</item>
         <item>Wooden Staff</item>
+        <item>Wooden Sword</item>
         <item>Dagger</item>
         <item>Shortsword</item>
         <item>Dual Daggers</item>
-        <item>Sword and Dagger</item>
         <item>Broadsword</item>
         <item>Excalibur</item>
         <item>Nuke</item>
