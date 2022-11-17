@@ -126,6 +126,8 @@ public class ListGamesActivity extends AppCompatActivity {
 		}
 
 		//get id for the image matching with the achievement
+		// TODO (for a new issue) refactor this to support different themes
+		// themes[0] = animals, themes[1] = resources/minerals, themes[2] = weapons
 		private int fillImage(Game game) {
 			int achievement = game.getAchievementLevel();
 			int imageID;
@@ -166,36 +168,15 @@ public class ListGamesActivity extends AppCompatActivity {
 
 		//set text of achievement level
 		private void setAchievementLevelText(TextView textLevel, Game currentGame) {
+			String[][] themes = new String[][] {
+					getResources().getStringArray(R.array.achievement_theme_animals),
+					getResources().getStringArray(R.array.achievement_theme_resources),
+					getResources().getStringArray(R.array.achievement_theme_weapons)
+			};
+			int theme = manager.getTheme();
+
 			int level = currentGame.getAchievementLevel();
-			switch (level) {
-				case 0:
-					textLevel.setText(R.string.achievement_level_zero);
-					break;
-				case 1:
-					textLevel.setText(R.string.achievement_level_one);
-					break;
-				case 2:
-					textLevel.setText(R.string.achievement_level_two);
-					break;
-				case 3:
-					textLevel.setText(R.string.achievement_level_three);
-					break;
-				case 4:
-					textLevel.setText(R.string.achievement_level_four);
-					break;
-				case 5:
-					textLevel.setText(R.string.achievement_level_five);
-					break;
-				case 6:
-					textLevel.setText(R.string.achievement_level_six);
-					break;
-				case 7:
-					textLevel.setText(R.string.achievement_level_seven);
-					break;
-				case 8:
-					textLevel.setText(R.string.achievement_level_eight);
-					break;
-			}
+			textLevel.setText(themes[theme][level]);
 		}
 	}
 }
