@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
@@ -122,8 +124,10 @@ public class AddGameActivity extends AppCompatActivity {
 			combinedScore = Integer.parseInt(combinedScoreText);
 
 			// add to config
-
-			gameConfig.addGame(numPlayers, combinedScore);
+			// REMEMBER TO UPDATE THIS TEMPORARY FIX UNTIL DYNAMIC ARRAY IS COMPLETE
+			ArrayList<Integer> playerScores = new ArrayList<Integer>();
+			playerScores.add(0);
+			gameConfig.addGame(numPlayers, playerScores);
 
 			Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
@@ -157,7 +161,9 @@ public class AddGameActivity extends AppCompatActivity {
 	 * @return
 	 */
 	private int calculateAchievementLevel(int numPlayers, int combinedScore) {
-		newGame = new Game(numPlayers, combinedScore, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
+		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		playerScores.add(0);
+		newGame = new Game(numPlayers, playerScores, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 		return newGame.getAchievementLevel();
 	}
 

@@ -76,8 +76,8 @@ public class GameConfig implements Iterable<Game> {
 		this.games = games;
 	}
 
-	public void addGame(int players, int totalScore) {
-		Game game = new Game(players, totalScore, expectedPoorScore, expectedGreatScore);
+	public void addGame(int players, ArrayList<Integer> playerScores) {
+		Game game = new Game(players, playerScores, expectedPoorScore, expectedGreatScore);
 		games.add(game);
 	}
 

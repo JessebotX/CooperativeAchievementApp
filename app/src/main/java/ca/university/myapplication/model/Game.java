@@ -1,6 +1,7 @@
 package ca.university.myapplication.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  * Represents a single game.
@@ -12,7 +13,7 @@ public class Game implements Comparable<Game> {
 	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
 
 	private int players;
-	private int totalScore;
+	private ArrayList<Integer> playerScores;
 	private int expectedPoorScore;
 	private int expectedGreatScore;
 	private int[] achievementLevelRequiredScores;
@@ -21,20 +22,20 @@ public class Game implements Comparable<Game> {
 	/**
 	 * Create a new Game under a GameConfig. Game creation should be done by GameConfig itself
 	 * @param players number of players
-	 * @param totalScore total score from the sum of player scores
+	 * @param playerScores an arraylist to contain the scores for each player
 	 * @param expectedPoorScore the expected poor score for a single individual
 	 * @param expectedGoodScore the expected great score for a single individual
 	 */
-	public Game(int players, int totalScore, int expectedPoorScore, int expectedGoodScore) {
+	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore) {
 		setPlayers(players);
-		this.totalScore = totalScore;
-		this.expectedPoorScore = expectedPoorScore;
+		this.playerScores = playerScores;
 		this.expectedGreatScore = expectedGoodScore;
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 		this.timeOfCreation = new CurrentDateTime();
 
 		initializeAchievementLevelThresholds();
 	}
+
 
 	public int getPlayers() {
 		return players;
@@ -57,15 +58,19 @@ public class Game implements Comparable<Game> {
 	}
 
 	public int getTotalScore() {
-		return totalScore;
+		int sum = 0;
+		for (int i = 0; i < this.playerScores.size(); i++) {
+			sum += this.playerScores.get(i);
+		}
+		return sum;
 	}
 
-	/**
-	 * Set a new total score
-	 * @param totalScore new value
+	/***
+	 * Edit the score for the player index i
+	 * @param playerIndex the index of the player in the array
 	 */
-	public void setTotalScore(int totalScore) {
-		this.totalScore = totalScore;
+	public void setPlayerScore(int playerIndex, int newScoreValue) {
+		this.playerScores.set(playerIndex, newScoreValue );
 	}
 
 	public int getExpectedPoorScore() {
@@ -110,11 +115,19 @@ public class Game implements Comparable<Game> {
 	 */
 	public int getAchievementLevel() {
 		for (int level = 0; level < ACHIEVEMENT_LEVELS; level++) {
-			if (totalScore < achievementLevelRequiredScores[level]) {
+			if (getTotalScore() < achievementLevelRequiredScores[level]) {
 				return level;
 			}
 		}
 		return ACHIEVEMENT_LEVELS;
+	}
+
+	public ArrayList<Integer> getPlayerScores() {
+		return this.playerScores;
+	}
+
+	public int getPlayerScore(int playerIndex) {
+		return this.playerScores.get(playerIndex);
 	}
 
 	public CurrentDateTime getTimeOfCreation() {

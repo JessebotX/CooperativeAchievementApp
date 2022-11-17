@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThrows;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  * Test out GameConfig
@@ -32,8 +33,20 @@ public class GameConfigTest {
 	public void getGameThrowsError() {
 		GameConfig gameConfig = new GameConfig("Snakes & Ladders", 40, 100);
 
-		gameConfig.addGame(4, 100);
-		gameConfig.addGame(100, 100000);
+		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		playerScores.add(100);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+		gameConfig.addGame(4, playerScores);
+
+		ArrayList<Integer> playerScores2 = new ArrayList<Integer>();
+		playerScores.add(100000);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+		gameConfig.addGame(5, playerScores2);
 
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.getGame(-1));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.getGame(2));
@@ -45,7 +58,12 @@ public class GameConfigTest {
 	public void accessingGame() {
 		GameConfig gameConfig = new GameConfig("Placeholder Game", 1, 8);
 
-		gameConfig.addGame(4, 100);
+		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		playerScores.add(100);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+		gameConfig.addGame(4, playerScores);
 
 		gameConfig.getGame(0).setPlayers(5);
 
@@ -64,8 +82,20 @@ public class GameConfigTest {
 	public void removeGameThrowsError() {
 		GameConfig gameConfig = new GameConfig("Snakes & Ladders", 40, 100);
 
-		gameConfig.addGame(4, 100);
-		gameConfig.addGame(100, 100000);
+		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		playerScores.add(100);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+
+		gameConfig.addGame(4, playerScores);
+
+		ArrayList<Integer> playerScores2 = new ArrayList<Integer>();
+		playerScores.add(10000);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+		gameConfig.addGame(100, playerScores2);
 
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(-1));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(2));
