@@ -28,6 +28,10 @@ public class Game implements Comparable<Game> {
 	 */
 	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore) {
 		setPlayers(players);
+		if (players != playerScores.size()) {
+			throw new IllegalArgumentException("Number of Players must be equal to the number of" +
+					" scores entered by the user.");
+		}
 		this.playerScores = playerScores;
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGreatScore = expectedGoodScore;
@@ -70,6 +74,10 @@ public class Game implements Comparable<Game> {
 	 * @param playerIndex the index of the player in the array
 	 */
 	public void setPlayerScore(int playerIndex, int newScoreValue) {
+		if (playerIndex >= this.playerScores.size() || playerIndex < 0) {
+			throw new IllegalArgumentException("Player Index out of range. Please enter an index" +
+					" between " + 0 + "-" + (this.playerScores.size() -1));
+		}
 		this.playerScores.set(playerIndex, newScoreValue );
 	}
 

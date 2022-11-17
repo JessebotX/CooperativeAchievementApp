@@ -77,6 +77,10 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public void addGame(int players, ArrayList<Integer> playerScores) {
+		if (players >= playerScores.size() || players < 0) {
+			throw new IllegalArgumentException("Player Index out of range. Please enter an index" +
+					" between " + 0 + "-" + (playerScores.size() -1));
+		}
 		Game game = new Game(players, playerScores, expectedPoorScore, expectedGreatScore);
 		games.add(game);
 	}

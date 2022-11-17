@@ -227,7 +227,7 @@ public class GameTest {
 
 		game.setPlayerScore(0,100);
 		assertEquals(100, game.getPlayerScore(0));
-//
+
 		game.setPlayerScore(0,100);
 		game.setPlayerScore(1,100);
 		game.setPlayerScore(2,100);
@@ -252,7 +252,7 @@ public class GameTest {
 
 		game.setPlayerScore(0,100);
 		assertEquals(100, game.getTotalScore());
-//
+
 		game.setPlayerScore(0,100);
 		game.setPlayerScore(1,100);
 		game.setPlayerScore(2,100);
