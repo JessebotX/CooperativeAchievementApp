@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="achievement_themes">
+        <item>Animals</item>
+        <item>Resources/Minerals</item>
+        <item>Weapons</item>
+    </string-array>
+
+    <string-array name="achievement_theme_animals">
+        <item>Shiny Butterflies (lowest)</item>
+        <item>Busy Bees</item>
+        <item>Adorable Chickens</item>
+        <item>Fantastic Foxes</item>
+        <item>Tactical Tigers</item>
+        <item>Merciless Gorillas</item>
+        <item>Rampaging Rhinoceros</item>
+        <item>Whooping Whales</item>
+        <item>Firebreathing Dragons</item>
+    </string-array>
+
+    <string-array name="achievement_theme_resources">
+        <item>Dirt (lowest)</item>
+        <item>Wood</item>
+        <item>Stone</item>
+        <item>Copper</item>
+        <item>Bronze</item>
+        <item>Quartz</item>
+        <item>Iron</item>
+        <item>Gold</item>
+        <item>Diamond</item>
+    </string-array>
+
+    <string-array name="achievement_theme_weapons">
+        <item>Toy Stick (lowest)</item>
+        <item>Wooden Staff</item>
+        <item>Wooden Sword</item>
+        <item>Dagger</item>
+        <item>Shortsword</item>
+        <item>Dual Daggers</item>
+        <item>Broadsword</item>
+        <item>Excalibur</item>
+        <item>Nuke</item>
+    </string-array>
+</resources>

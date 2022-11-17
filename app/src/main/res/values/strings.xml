@@ -44,4 +44,6 @@
     <string name="invalid_name_toast_msg">Invalid Name</string>
     <string name="delete_configuration">Delete Configuration</string>
     <string name="long_press_to_edit_a_game_config">Long Press to Edit a Game Config!</string>
+    <string name="options">Options</string>
+    <string name="themes">Themes</string>
 </resources>

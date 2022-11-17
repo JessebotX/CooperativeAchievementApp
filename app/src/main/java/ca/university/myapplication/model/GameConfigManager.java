@@ -8,13 +8,20 @@ import java.util.List;
  * Manages a list of Game Configurations
  */
 public class GameConfigManager implements Iterable<GameConfig> {
+	public static final int NUM_THEMES = 3;
+	public static final int THEME_ANIMALS = 0;
+	public static final int THEME_RESOURCES = 1;
+	public static final int THEME_WEAPONS = 2;
+
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
 
 	private static GameConfigManager instance;
 	private List<GameConfig> gameConfigs;
+	private int theme;
 
 	public GameConfigManager() {
 		gameConfigs = new ArrayList<>();
+		theme = 0;
 	}
 
 	public static GameConfigManager getInstance() {
@@ -59,6 +66,17 @@ public class GameConfigManager implements Iterable<GameConfig> {
 
 	public int totalConfigs() {
 		return gameConfigs.size();
+	}
+
+	public int getTheme() {
+		return theme;
+	}
+
+	public void setTheme(int theme) {
+		if (theme > NUM_THEMES || theme < 0) {
+			throw new IllegalArgumentException("Theme does not exist.");
+		}
+		this.theme = theme;
 	}
 
 	//NEW UTILITY METHOD------------------------

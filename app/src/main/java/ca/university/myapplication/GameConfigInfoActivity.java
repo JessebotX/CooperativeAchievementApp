@@ -1,8 +1,6 @@
 package ca.university.myapplication;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +31,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	Game game;
 
 	int gameConfigIndex;
-	int gameIndex;
 
 	TextView[] scoreViews;
 
@@ -54,10 +51,11 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		gameConfigIndex = extractDataFromIntent();
 
-		scoreViews = getTextViews();
+		scoreViews = getAchievementTextViews();
 		gameConfigManager = GameConfigManager.getInstance();
 
-		// add fake data, delete when merged
+		setAchievementLabelTextViews();
+
 		gameConfig = gameConfigManager.getConfig(gameConfigIndex);
 		game = new Game(1, 0, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 
@@ -106,7 +104,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	/**
 	 * @return an array of text views for all achievement
 	 */
-	private TextView[] getTextViews() {
+	private TextView[] getAchievementTextViews() {
 		return new TextView[]{
 				findViewById(R.id.tvAchievement0),
 				findViewById(R.id.tvAchievement1),
@@ -117,6 +115,38 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 				findViewById(R.id.tvAchievement6),
 				findViewById(R.id.tvAchievement7),
 		};
+	}
+
+	/**
+	 * @return an array of text views for achievement display names
+	 */
+	private TextView[] getAchievementLabelsTextViews() {
+		return new TextView[] {
+				findViewById(R.id.tvAchievementLabel0),
+				findViewById(R.id.tvAchievementLabel1),
+				findViewById(R.id.tvAchievementLabel2),
+				findViewById(R.id.tvAchievementLabel3),
+				findViewById(R.id.tvAchievementLabel4),
+				findViewById(R.id.tvAchievementLabel5),
+				findViewById(R.id.tvAchievementLabel6),
+				findViewById(R.id.tvAchievementLabel7),
+				findViewById(R.id.tvAchievementLabel8),
+		};
+	}
+
+	private void setAchievementLabelTextViews() {
+		String[][] themes = new String[][] {
+			getResources().getStringArray(R.array.achievement_theme_animals),
+			getResources().getStringArray(R.array.achievement_theme_resources),
+			getResources().getStringArray(R.array.achievement_theme_weapons)
+		};
+
+		TextView[] views = getAchievementLabelsTextViews();
+		int theme = gameConfigManager.getTheme();
+
+		for (int i = 0; i < views.length; i++) {
+			views[i].setText(themes[theme][i]);
+		}
 	}
 
 	/**

@@ -24,7 +24,6 @@ import ca.university.myapplication.model.GameConfigManager;
  * This Add Game Activity class helps the user add a new game to a game info.
  */
 public class AddGameActivity extends AppCompatActivity {
-
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 
 	private GameConfig gameConfig;
@@ -39,17 +38,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private int numPlayers;
 	private int combinedScore;
 
-	private String[] achievementNames = {
-			"Shiny Butterflies (lowest)",
-			"Busy Bees",
-			"Adorable Chickens",
-			"Fantastic Foxes",
-			"Tactical Tigers",
-			"Merciless Gorillas",
-			"Rampaging Rhinoceros",
-			"Whooping Whales",
-			"Firebreathing Dragons"
-	};
+	private String[][] achievementNames;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +47,12 @@ public class AddGameActivity extends AppCompatActivity {
 
 		getSupportActionBar().setTitle("Add Game Info");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		achievementNames = new String[][] {
+				getResources().getStringArray(R.array.achievement_theme_animals),
+				getResources().getStringArray(R.array.achievement_theme_resources),
+				getResources().getStringArray(R.array.achievement_theme_weapons)
+		};
 
 		inputNumPlayers = findViewById(R.id.inputNumPlayers);
 		inputCombinedScore = findViewById(R.id.inputCombinedScore);
@@ -144,10 +139,11 @@ public class AddGameActivity extends AppCompatActivity {
 
 		int numPlayers = Integer.parseInt(numPlayersText);
 		int numCombinedScore = Integer.parseInt(combinedScoreText);
-
 		int achievementLevel = calculateAchievementLevel(numPlayers, numCombinedScore);
+		int theme = gameConfigManager.getTheme();
+
 		// update text
-		tvAchievement.setText(achievementNames[achievementLevel]);
+		tvAchievement.setText(achievementNames[theme][achievementLevel]);
 	}
 
 	/**
