@@ -11,6 +11,7 @@ public class GameConfigManager implements Iterable<GameConfig> {
 	public static final int NUM_THEMES = 3;
 	public static final int THEME_ANIMALS = 0;
 	public static final int THEME_RESOURCES = 1;
+	public static final int THEME_WEAPONS = 2;
 
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
 
