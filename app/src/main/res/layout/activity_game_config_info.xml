@@ -278,7 +278,7 @@
         android:id="@+id/tvAchievementLabel0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/dash"
         app:layout_constraintBottom_toTopOf="@+id/tvAchievementLabel1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
