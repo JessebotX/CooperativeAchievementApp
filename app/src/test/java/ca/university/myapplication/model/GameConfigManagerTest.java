@@ -4,6 +4,8 @@ import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 /**
  * Basic testing for GameConfigManager
  */
@@ -20,7 +22,9 @@ public class GameConfigManagerTest {
 		manager.addConfig("Placeholder board game", 0, Integer.MAX_VALUE);
 
 		for (GameConfig config : manager) {
-			config.addGame(4, 100);
+			ArrayList<Integer> playerScores = new ArrayList<Integer>();
+			playerScores.add(100);
+			config.addGame(4, playerScores);
 		}
 
 		for (int i = manager.totalConfigs() - 1; i >= 0; i--) {

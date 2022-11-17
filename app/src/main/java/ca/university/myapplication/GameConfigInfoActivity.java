@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
@@ -57,7 +59,10 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 		setAchievementLabelTextViews();
 
 		gameConfig = gameConfigManager.getConfig(gameConfigIndex);
-		game = new Game(1, 0, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
+		// temp array
+		ArrayList<Integer> playerScores = new ArrayList<Integer>();
+		playerScores.add(0);
+		game = new Game(1, playerScores, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
 
 		setUpListener();
 		setUpFab();
@@ -189,7 +194,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	 * @param numPlayers user input
 	 */
 	private void setUpScoreViews(int numPlayers) {
-		Game tempGame = new Game(numPlayers, game.getTotalScore(), game.getExpectedPoorScore(), game.getExpectedGreatScore());
+		Game tempGame = new Game(numPlayers, game.getPlayerScores(), game.getExpectedPoorScore(), game.getExpectedGreatScore());
 		int[] achievementLevels = tempGame.getAchievementLevelRequiredScores();
 		int i = 0;
 		for (TextView scoreView : scoreViews) {
