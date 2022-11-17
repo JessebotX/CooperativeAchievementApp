@@ -38,11 +38,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private int numPlayers;
 	private int combinedScore;
 
-	private String[][] achievementNames = new String[][] {
-			getResources().getStringArray(R.array.achievement_theme_animals),
-			getResources().getStringArray(R.array.achievement_theme_resources),
-			getResources().getStringArray(R.array.achievement_theme_weapons)
-	};
+	private String[][] achievementNames;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +47,12 @@ public class AddGameActivity extends AppCompatActivity {
 
 		getSupportActionBar().setTitle("Add Game Info");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		achievementNames = new String[][] {
+				getResources().getStringArray(R.array.achievement_theme_animals),
+				getResources().getStringArray(R.array.achievement_theme_resources),
+				getResources().getStringArray(R.array.achievement_theme_weapons)
+		};
 
 		inputNumPlayers = findViewById(R.id.inputNumPlayers);
 		inputCombinedScore = findViewById(R.id.inputCombinedScore);
