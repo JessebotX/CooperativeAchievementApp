@@ -53,11 +53,12 @@
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollTable" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupDifficulty" />
 
     <TextView
         android:id="@+id/textView2"
@@ -74,6 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_marginTop="20dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputNumPlayers">
@@ -84,9 +86,28 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:isScrollContainer="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputNumPlayers" />
     </ScrollView>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollTable" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
