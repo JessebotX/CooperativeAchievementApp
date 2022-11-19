@@ -1,10 +1,12 @@
 package ca.university.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,6 +41,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private int numPlayers;
 	private int combinedScore;
 
+
 	private String[] achievementNames = {
 			"Shiny Butterflies (lowest)",
 			"Busy Bees",
@@ -69,6 +72,7 @@ public class AddGameActivity extends AppCompatActivity {
 		// get Game index from caller
 		int gameIndex = extractDataFromIntent();
 		gameConfig = gameConfigManager.getConfig(gameIndex);
+
 
 		setUpSaveButton();
 		setUpInputListeners();
@@ -127,8 +131,17 @@ public class AddGameActivity extends AppCompatActivity {
 
 			Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
-			finish();
+			showAchievementCelebration();
 		});
+	}
+
+	/**
+	 * Display the dialog for the achievement celebration
+	 */
+	private void showAchievementCelebration() {
+		FragmentManager manager = getSupportFragmentManager();
+		MessageFragment dialog = new MessageFragment();
+		dialog.show(manager,"Celebration!");
 	}
 
 	/**

@@ -3,6 +3,7 @@ package ca.university.myapplication;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,17 +20,21 @@ public class MessageFragment extends AppCompatDialogFragment {
 		View v = LayoutInflater.from(getActivity())
 				.inflate(R.layout.achievement_celebration,null);
 
+		//play sound
+		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),R.raw.celebration);
+		mediaPlayer.start();
+
 		//create a button listener
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialogInterface, int i) {
-
+				getActivity().finish();
 			}
 		};
 
 		//build the alert dialog
 		return new AlertDialog.Builder(getActivity())
-				.setTitle("Congratulations!")
+//				.setTitle("Congratulations!")
 				.setView(v)
 				.setPositiveButton(android.R.string.ok,listener)
 				.create();
