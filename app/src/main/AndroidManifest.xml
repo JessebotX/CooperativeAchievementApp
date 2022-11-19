@@ -20,6 +20,7 @@
             android:exported="false" />
         <activity
             android:name=".AddGameActivity"
+            android:label="@string/add_game_activity_title"
             android:exported="false"
             android:parentActivityName=".GameConfigInfoActivity" />
         <activity
