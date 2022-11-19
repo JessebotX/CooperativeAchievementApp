@@ -190,11 +190,24 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * Helper function to generate temporary array to display game achievements
+	 * @param size
+	 * @return
+	 */
+	private ArrayList<Integer> createArrayListOfSizeN(int size) {
+		ArrayList<Integer> playerScores = new ArrayList<>();
+		for (int i = 0; i < size; i++) {
+			playerScores.add(0);
+		}
+		return playerScores;
+	}
+
+	/**
 	 * updates all Achievement scores given the number of players
 	 * @param numPlayers user input
 	 */
 	private void setUpScoreViews(int numPlayers) {
-		Game tempGame = new Game(numPlayers, game.getPlayerScores(), game.getExpectedPoorScore(), game.getExpectedGreatScore());
+		Game tempGame = new Game(numPlayers, createArrayListOfSizeN(numPlayers), game.getExpectedPoorScore(), game.getExpectedGreatScore());
 		int[] achievementLevels = tempGame.getAchievementLevelRequiredScores();
 		int i = 0;
 		for (TextView scoreView : scoreViews) {
