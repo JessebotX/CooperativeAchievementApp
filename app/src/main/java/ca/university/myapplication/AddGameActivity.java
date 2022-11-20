@@ -1,22 +1,27 @@
 package ca.university.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.university.myapplication.model.Game;
 import ca.university.myapplication.model.GameConfig;
@@ -26,56 +31,35 @@ import ca.university.myapplication.model.GameConfigManager;
  * This Add Game Activity class helps the user add a new game to a game info.
  */
 public class AddGameActivity extends AppCompatActivity {
-
+	private static final int DEFAULT = -1;
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
+	private static final int MIN_PLAYERS = 1;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
 	private Game newGame;
 
+	private List<EditText> inputPlayerScores = new ArrayList<>();
 	private EditText inputNumPlayers;
-	private EditText inputCombinedScore;
 	private TextView tvAchievement;
 	private Button saveButton;
 
 	private int numPlayers;
-	private int combinedScore;
+	private double difficultyModifier = Game.NORMAL_DIFFICULTY;
 
-
-	private String[] achievementNames = {
-			"Shiny Butterflies (lowest)",
-			"Busy Bees",
-			"Adorable Chickens",
-			"Fantastic Foxes",
-			"Tactical Tigers",
-			"Merciless Gorillas",
-			"Rampaging Rhinoceros",
-			"Whooping Whales",
-			"Firebreathing Dragons"
-	};
+	private String[][] achievementNames;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_game);
 
-		getSupportActionBar().setTitle("Add Game Info");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		inputNumPlayers = findViewById(R.id.inputNumPlayers);
-		inputCombinedScore = findViewById(R.id.inputCombinedScore);
-		tvAchievement = findViewById(R.id.tvAchievement);
-		saveButton = findViewById(R.id.btnSave);
-
-		gameConfigManager = GameConfigManager.getInstance();
-
-		// get Game index from caller
-		int gameIndex = extractDataFromIntent();
-		gameConfig = gameConfigManager.getConfig(gameIndex);
-
-
+		initializeFields();
+		setupDifficultySelect();
+		setupPlayerInputs();
 		setUpSaveButton();
-		setUpInputListeners();
 	}
 
 	public static Intent makeIntent(Context context, int gameIndex) {
@@ -84,27 +68,64 @@ public class AddGameActivity extends AppCompatActivity {
 		return intent;
 	}
 
-	/**
-	 * For each input box, we want to add a listener to update and recalculate the achievement level
-	 * everytime the user enters something.
-	 */
-	private void setUpInputListeners() {
+	private void initializeFields() {
+		gameConfigManager = GameConfigManager.getInstance();
+		int gameIndex = extractDataFromIntent();
+		gameConfig = gameConfigManager.getConfig(gameIndex);
 
-		EditText[] userInputs = {inputNumPlayers, inputCombinedScore};
+		achievementNames = new String[][] {
+				getResources().getStringArray(R.array.achievement_theme_animals),
+				getResources().getStringArray(R.array.achievement_theme_resources),
+				getResources().getStringArray(R.array.achievement_theme_weapons)
+		};
 
-		for (EditText userInput : userInputs) {
-			userInput.addTextChangedListener(new TextWatcher() {
-				public void afterTextChanged(Editable s) {
-				}
+		inputNumPlayers = findViewById(R.id.inputNumPlayers);
+		tvAchievement = findViewById(R.id.tvAchievement);
+		saveButton = findViewById(R.id.btnSave);
+	}
 
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				}
+	private void setupDifficultySelect() {
+		RadioGroup group = findViewById(R.id.radioGroupDifficulty);
+		String[] difficulties = getResources().getStringArray(R.array.difficulties);
+		double[] difficultyModifiers = new double[] {
+				Game.EASY_DIFFICULTY, Game.NORMAL_DIFFICULTY, Game.HARD_DIFFICULTY
+		};
+		double defaultDifficulty = Game.NORMAL_DIFFICULTY;
 
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					refreshAchievementText();
-				}
+		for (int i = 0; i < difficulties.length; i++) {
+			final int INDEX = i;
+
+			RadioButton button = new RadioButton(this);
+
+			button.setText(difficulties[i]);
+			button.setOnClickListener(v -> {
+				difficultyModifier = difficultyModifiers[INDEX];
+				refreshAchievementText();
 			});
+
+			group.addView(button);
+
+			if (difficultyModifiers[i] == defaultDifficulty) {
+				button.setChecked(true);
+			}
 		}
+	}
+
+	private void setupPlayerInputs() {
+		inputNumPlayers.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable editable) {
+				generateIndividualPlayerInputs();
+			}
+		});
 	}
 
 	/**
@@ -112,36 +133,69 @@ public class AddGameActivity extends AppCompatActivity {
 	 */
 	private void setUpSaveButton() {
 		saveButton.setOnClickListener(view -> {
-
 			String numPlayersText = inputNumPlayers.getText().toString();
-			String combinedScoreText = inputCombinedScore.getText().toString();
 
-			// exit early if input is not entered
-			if (!isInt(numPlayersText) || !isInt(combinedScoreText) || Integer.parseInt(numPlayersText) < 1) {
-				Toast.makeText(this, "Please Finish Entering Inputs.", Toast.LENGTH_SHORT).show();
+			if (!isValidInput()) {
+				Toast.makeText(this, getString(R.string.saved_game_err_toast), Toast.LENGTH_SHORT).show();
 				return;
 			}
 
 			numPlayers = Integer.parseInt(numPlayersText);
-			combinedScore = Integer.parseInt(combinedScoreText);
+			ArrayList<Integer> playerScores = getPlayerScoresFromInputs();
+			gameConfig.addGame(numPlayers, playerScores, difficultyModifier);
 
-			// add to config
-
-			gameConfig.addGame(numPlayers, combinedScore);
-
-			Toast.makeText(this, "New Game Saved!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
-			showAchievementCelebration();
+			finish();
 		});
 	}
 
-	/**
-	 * Display the dialog for the achievement celebration
-	 */
-	private void showAchievementCelebration() {
-		FragmentManager manager = getSupportFragmentManager();
-		MessageFragment dialog = new MessageFragment();
-		dialog.show(manager,"Celebration!");
+	private void generateIndividualPlayerInputs() {
+		clearAchievementText();
+
+		TableLayout table = findViewById(R.id.tablePlayerInputs);
+		table.removeAllViews();
+
+		if (!isValidNumPlayers()) {
+			return;
+		}
+
+		inputPlayerScores = new ArrayList<>();
+		int numPlayers = Integer.parseInt(inputNumPlayers.getText().toString());
+
+		for (int i = 0; i < numPlayers; i++) {
+			TableRow tableRow = new TableRow(this);
+			tableRow.setLayoutParams(new TableLayout.LayoutParams(
+					TableLayout.LayoutParams.MATCH_PARENT,
+					TableLayout.LayoutParams.MATCH_PARENT
+			));
+			table.addView(tableRow);
+
+			EditText playerInput = new EditText(this);
+			playerInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+			playerInput.setLayoutParams(new TableRow.LayoutParams(
+					TableRow.LayoutParams.MATCH_PARENT,
+					TableRow.LayoutParams.MATCH_PARENT
+			));
+			playerInput.setHint(getString(R.string.player_input_hint, i + MIN_PLAYERS));
+			playerInput.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				}
+
+				@Override
+				public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				}
+
+				@Override
+				public void afterTextChanged(Editable editable) {
+					refreshAchievementText();
+				}
+			});
+			tableRow.addView(playerInput);
+
+			inputPlayerScores.add(playerInput);
+		}
 	}
 
 	/**
@@ -149,46 +203,84 @@ public class AddGameActivity extends AppCompatActivity {
 	 */
 	private void refreshAchievementText() {
 		String numPlayersText = inputNumPlayers.getText().toString();
-		String combinedScoreText = inputCombinedScore.getText().toString();
 
-		if (!isInt(numPlayersText) || !isInt(combinedScoreText) || Integer.parseInt(numPlayersText) < 1) {
+		if (!isValidInput()) {
+			clearAchievementText();
 			return;
 		}
 
-		int numPlayers = Integer.parseInt(numPlayersText);
-		int numCombinedScore = Integer.parseInt(combinedScoreText);
+		ArrayList<Integer> playerScores = getPlayerScoresFromInputs();
 
-		int achievementLevel = calculateAchievementLevel(numPlayers, numCombinedScore);
-		// update text
-		tvAchievement.setText(achievementNames[achievementLevel]);
+		int numPlayers = Integer.parseInt(numPlayersText);
+		int achievementLevel = calculateAchievementLevel(numPlayers, playerScores);
+		int theme = gameConfigManager.getTheme();
+
+		tvAchievement.setText(achievementNames[theme][achievementLevel]);
+	}
+
+	private boolean isValidNumPlayers() {
+		String inputNumPlayersText = inputNumPlayers.getText().toString();
+		if (!isInt(inputNumPlayersText) || Integer.parseInt(inputNumPlayersText) < MIN_PLAYERS) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isValidInput() {
+		if (!isValidNumPlayers()) {
+			return false;
+		}
+
+		for (TextView playerInput : inputPlayerScores) {
+			if (!isInt(playerInput.getText().toString())) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private ArrayList<Integer> getPlayerScoresFromInputs() {
+		if (!isValidInput()) {
+			return null;
+		}
+
+		ArrayList<Integer> playerScores = new ArrayList<>();
+		for (TextView playerInput : inputPlayerScores) {
+			int score = Integer.parseInt(playerInput.getText().toString());
+			playerScores.add(score);
+		}
+
+		return playerScores;
 	}
 
 	/**
 	 * uses the Game model to return a achivement level
-	 * @param numPlayers
-	 * @param combinedScore
 	 * @return
 	 */
-	private int calculateAchievementLevel(int numPlayers, int combinedScore) {
-		newGame = new Game(numPlayers, combinedScore, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore());
+	private int calculateAchievementLevel(int numPlayers, ArrayList<Integer> playerScores) {
+		newGame = new Game(numPlayers, playerScores, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore(), difficultyModifier);
 		return newGame.getAchievementLevel();
 	}
 
-	// helper function to check weather or not a string is a number
-	public static boolean isInt(String str) {
+	private static boolean isInt(String str) {
 		try {
 			@SuppressWarnings("unused")
 			int x = Integer.parseInt(str);
-			return true; //String is an Integer
+			return true;
 		} catch (NumberFormatException e) {
-			return false; //String is not an Integer
+			return false;
 		}
 	}
 
-	// helper function to extract data from intent
+	private void clearAchievementText() {
+		tvAchievement.setText(R.string.dash);
+	}
+
 	private int extractDataFromIntent() {
 		Intent intent = getIntent();
-		return intent.getIntExtra(EXTRA_GAME_INDEX, -1);
+		return intent.getIntExtra(EXTRA_GAME_INDEX, DEFAULT);
 	}
 
 	private void saveToSharedPreferences() {

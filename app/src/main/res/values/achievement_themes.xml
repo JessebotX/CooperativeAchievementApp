@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="achievement_themes">
+        <item>Animals</item>
+        <item>Resources/Minerals</item>
+        <item>Weapons</item>
+    </string-array>
+
+    <string-array name="achievement_theme_animals">
+        <item>Shiny Butterflies (lowest)</item>
+        <item>Busy Bees (1)</item>
+        <item>Adorable Chickens (2)</item>
+        <item>Fantastic Foxes (3)</item>
+        <item>Tactical Tigers (4)</item>
+        <item>Merciless Gorillas (5)</item>
+        <item>Rampaging Rhinoceros (6)</item>
+        <item>Whooping Whales (7)</item>
+        <item>Firebreathing Dragons (8)</item>
+    </string-array>
+
+    <string-array name="achievement_theme_resources">
+        <item>Dirt (lowest)</item>
+        <item>Wood (1)</item>
+        <item>Stone (2)</item>
+        <item>Copper (3)</item>
+        <item>Bronze (4)</item>
+        <item>Quartz (5)</item>
+        <item>Iron (6)</item>
+        <item>Gold (7)</item>
+        <item>Diamond (8)</item>
+    </string-array>
+
+    <string-array name="achievement_theme_weapons">
+        <item>Toy Stick (lowest)</item>
+        <item>Wooden Staff (1)</item>
+        <item>Wooden Sword (2)</item>
+        <item>Dagger (3)</item>
+        <item>Shortsword (4)</item>
+        <item>Dual Daggers (5)</item>
+        <item>Broadsword (6)</item>
+        <item>Excalibur (7)</item>
+        <item>Nuke (8)</item>
+    </string-array>
+</resources>

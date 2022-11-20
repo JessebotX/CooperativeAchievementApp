@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import ca.university.myapplication.model.GameConfigManager;
 public class ListGameConfigsActivity extends AppCompatActivity {
 	public static final String APP_PREFERENCES = "ca.university.myapplication appPrefs";
 	public static final String SAVED_GAME_CONFIGS_KEY = "ca.university.myapplication savedList";
+	public static final String SAVED_THEME_ID_KEY = "ca.university.myapplication themeId";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		clickConfigToLaunchGameConfigInfo();
 		longClickConfigToOpenAnEditor();
 		setUpSingleClick();
+		setupOptionsButton();
 	}
 
 	@Override
@@ -47,17 +50,33 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 	}
 
 	private void getFromSharedPreferences() {
-		Gson gson = new Gson();
 		SharedPreferences prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
 		GameConfigManager manager = GameConfigManager.getInstance();
+
+		getListGameConfigsFromSharedPrefs(prefs, manager);
+		getAchievementTheme(prefs, manager);
+	}
+
+	private void getListGameConfigsFromSharedPrefs(SharedPreferences prefs, GameConfigManager manager) {
+		Gson gson = new Gson();
 		String json = prefs.getString(SAVED_GAME_CONFIGS_KEY, null);
 		Type type = new TypeToken<ArrayList<GameConfig>>() {}.getType();
 
-        List<GameConfig> gameConfigs = gson.fromJson(json, type);
+		List<GameConfig> gameConfigs = gson.fromJson(json, type);
 
-        if (gameConfigs != null) {
-            manager.setGameConfigs(gameConfigs);
-        }
+		if (gameConfigs != null) {
+			manager.setGameConfigs(gameConfigs);
+		}
+	}
+
+	private void getAchievementTheme(SharedPreferences prefs, GameConfigManager manager) {
+		int theme = prefs.getInt(SAVED_THEME_ID_KEY, GameConfigManager.THEME_ANIMALS);
+
+		try {
+			manager.setTheme(theme);
+		} catch (IllegalArgumentException e) {
+			manager.setTheme(GameConfigManager.THEME_ANIMALS);
+		}
 	}
 
 	// [CHECK] Displays info if there are no game configs added
@@ -74,9 +93,6 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 				GameConfig config = GameConfigManager.getInstance().getConfig(i);
-				String name = config.getName();
-				int poorScore = config.getExpectedPoorScore();
-				int greatScore = config.getExpectedGreatScore();
 
 				Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this, i);
 				startActivity(intent);
@@ -152,10 +168,20 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		addGame.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View view) {
-
 				Intent intent = AddGameConfigActivity.makeIntent(ListGameConfigsActivity.this,-1);
 				startActivity(intent);
 
+			}
+		});
+	}
+
+	private void setupOptionsButton() {
+		Button btn = findViewById(R.id.button_options);
+		btn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = OptionsActivity.makeIntent(ListGameConfigsActivity.this);
+				startActivity(intent);
 			}
 		});
 	}
