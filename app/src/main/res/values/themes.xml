@@ -22,4 +22,13 @@
     <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MyApplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@style/animation</item>
+        <item name="windowMinWidthMinor">85%</item>
+    </style>
+    
+    <style name="animation">
+        <item name="android:windowEnterAnimation">@anim/celebration_tv_animation</item>
+    </style>
 </resources>
