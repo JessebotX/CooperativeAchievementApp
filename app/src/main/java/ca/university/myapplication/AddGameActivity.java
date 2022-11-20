@@ -47,7 +47,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private TextView tvAchievement;
 	private Button saveButton;
 
-	private Boolean editActivity;
+	private Boolean editActivity = false;
 	private int numPlayers;
 
 	private String[][] achievementNames;
@@ -59,7 +59,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		extractDataFromIntent();
-		Toast.makeText(this, "" + gameIndex + " in editgame: " + editActivity, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "configIndex: " + configIndex+ "gameIndex: " + gameIndex + " in editgame: " + editActivity, Toast.LENGTH_SHORT).show();
 
 		initializeFields();
 		setupPlayerInputs();
@@ -67,6 +67,9 @@ public class AddGameActivity extends AppCompatActivity {
 
 		if (editActivity) {
 			setUpForEditActivity();
+		} else{
+			TextView tv = findViewById(R.id.AddGameTextView);
+			tv.setText("Add New Game");
 		}
 	}
 
@@ -75,9 +78,9 @@ public class AddGameActivity extends AppCompatActivity {
 		setUpIndividualPlayerInputs();
 	}
 
-	public static Intent makeIntent(Context context, int gameIndex) {
+	public static Intent makeIntent(Context context, int configIndex) {
 		Intent intent = new Intent(context, AddGameActivity.class);
-		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+		intent.putExtra(EXTRA_CONFIG_INDEX, configIndex);
 		return intent;
 	}
 
@@ -90,12 +93,12 @@ public class AddGameActivity extends AppCompatActivity {
 
 	private void initializeFields() {
 		gameConfigManager = GameConfigManager.getInstance();
-
+		gameConfig = gameConfigManager.getConfig(configIndex);
 		if (editActivity) {
-			gameConfig = gameConfigManager.getConfig(configIndex);
+			currentGame = gameConfig.getGame(gameIndex);
 		}
-		currentGame = gameConfig.getGame(gameIndex);
 
+//
 		achievementNames = new String[][] {
 				getResources().getStringArray(R.array.achievement_theme_animals),
 				getResources().getStringArray(R.array.achievement_theme_resources),
@@ -328,7 +331,7 @@ public class AddGameActivity extends AppCompatActivity {
 		configIndex = intent.getIntExtra(EXTRA_CONFIG_INDEX, DEFAULT);
 		gameIndex = intent.getIntExtra(EXTRA_GAME_INDEX, DEFAULT);
 
-		if (configIndex != -1) {
+		if (gameIndex != -1) {
 			editActivity = true;
 		}
 	}
