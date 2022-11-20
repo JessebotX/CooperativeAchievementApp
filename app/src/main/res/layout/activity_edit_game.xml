@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddGameActivity">
+    tools:context=".EditGameActivity">
+
 
     <TextView
-        android:id="@+id/tvAchievement"
+        android:id="@+id/edit_tvAchievement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -15,20 +16,20 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAchievementLabel3" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_tvAchievementLabel3" />
 
     <TextView
-        android:id="@+id/tvAchievementLabel3"
+        android:id="@+id/edit_tvAchievementLabel3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/achievement"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_textView" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/edit_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -39,54 +40,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/inputNumPlayers"
-        android:layout_width="118dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/tvAchievement" />
-
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/edit_btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollTable" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_scrollTable" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/edit_textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="10dp"
         android:text="@string/num_players"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAchievement" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_tvAchievement" />
 
     <ScrollView
-        android:id="@+id/scrollTable"
+        android:id="@+id/edit_scrollTable"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="240dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputNumPlayers">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
-            android:id="@+id/tablePlayerInputs"
+            android:id="@+id/edit_tablePlayerInputs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:isScrollContainer="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputNumPlayers" />
+            app:layout_constraintTop_toBottomOf="@+id/editInputNumPlayers" />
     </ScrollView>
+
+    <EditText
+        android:id="@+id/editInputNumPlayers"
+        android:layout_width="118dp"
+        android:layout_height="42dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_textView2"
+        app:layout_constraintTop_toBottomOf="@+id/edit_tvAchievement"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

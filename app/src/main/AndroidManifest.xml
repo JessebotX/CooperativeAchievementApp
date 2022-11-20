@@ -14,14 +14,17 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".OptionsActivity"
-            android:label="@string/options"
-            android:parentActivityName=".ListGameConfigsActivity"
+            android:name=".EditGameActivity"
             android:exported="false" />
         <activity
-            android:name=".AddGameActivity"
-            android:label="@string/add_game_activity_title"
+            android:name=".OptionsActivity"
             android:exported="false"
+            android:label="@string/options"
+            android:parentActivityName=".ListGameConfigsActivity" />
+        <activity
+            android:name=".AddGameActivity"
+            android:exported="false"
+            android:label="@string/add_game_activity_title"
             android:parentActivityName=".GameConfigInfoActivity" />
         <activity
             android:name=".GameConfigInfoActivity"

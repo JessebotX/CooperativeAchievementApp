@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ public class ListGamesActivity extends AppCompatActivity {
 	private GameConfigManager manager;
 	private GameConfig gameConfig;
 	private List<Game> gameList;
+	private int gameConfigIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class ListGamesActivity extends AppCompatActivity {
 
 	private void extractGameConfigExtra() {
 		Intent intent = getIntent();
-		int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
+		gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
 		gameConfig = manager.getConfig(gameConfigIndex);
 		gameList = gameConfig.getGames();
 	}
@@ -76,6 +78,12 @@ public class ListGamesActivity extends AppCompatActivity {
 		ArrayAdapter<Game> adapter = new MyListAdapter();
 		ListView list = findViewById(R.id.list_games);
 		list.setAdapter(adapter);
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = EditGameActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, position);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private class MyListAdapter extends ArrayAdapter<Game> {
