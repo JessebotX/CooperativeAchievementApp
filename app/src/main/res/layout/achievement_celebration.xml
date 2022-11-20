@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/fireworks" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/tv_celebration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

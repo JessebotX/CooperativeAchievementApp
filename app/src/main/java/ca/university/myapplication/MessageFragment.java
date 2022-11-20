@@ -7,12 +7,16 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class MessageFragment extends AppCompatDialogFragment {
+//	Animation tv_animation;
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -23,6 +27,11 @@ public class MessageFragment extends AppCompatDialogFragment {
 		//play sound
 		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),R.raw.celebration);
 		mediaPlayer.start();
+
+		//animation
+//		tv_animation = AnimationUtils.loadAnimation(getActivity(),R.anim.celebration_tv_animation);
+//		TextView tv_celebration = getActivity().findViewById(R.id.tv_celebration);
+//		tv_celebration.setAnimation(tv_animation);
 
 		//create a button listener
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
