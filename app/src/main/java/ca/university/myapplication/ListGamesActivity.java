@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.List;
 
 import ca.university.myapplication.model.Game;
@@ -80,7 +81,7 @@ public class ListGamesActivity extends AppCompatActivity {
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = EditGameActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, position);
+				Intent intent = AddGameActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, position);
 				startActivity(intent);
 			}
 		});
