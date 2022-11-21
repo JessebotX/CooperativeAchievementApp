@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
@@ -30,6 +29,7 @@ public class ListGamesActivity extends AppCompatActivity {
     private GameConfigManager manager;
     private GameConfig gameConfig;
     private List<Game> gameList;
+    private int gameConfigIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class ListGamesActivity extends AppCompatActivity {
         displayInfo();
 
         populateListView();
+        setUpSingleClick();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class ListGamesActivity extends AppCompatActivity {
 
     private void extractGameConfigExtra() {
         Intent intent = getIntent();
-        int gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
+        gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
         gameConfig = manager.getConfig(gameConfigIndex);
         gameList = gameConfig.getGames();
     }
@@ -76,6 +77,20 @@ public class ListGamesActivity extends AppCompatActivity {
         ArrayAdapter<Game> adapter = new MyListAdapter();
         ListView list = findViewById(R.id.list_games);
         list.setAdapter(adapter);
+    }
+
+    /**
+     * Show achievement screen
+     */
+    private void setUpSingleClick() {
+        ListView listView = findViewById(R.id.list_games);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = AchievementScreenActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, i);
+                startActivity(intent);
+            }
+        });
     }
 
     private class MyListAdapter extends ArrayAdapter<Game> {
