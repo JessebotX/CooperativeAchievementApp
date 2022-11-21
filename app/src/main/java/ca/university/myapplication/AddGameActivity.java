@@ -34,17 +34,23 @@ import ca.university.myapplication.model.GameConfigManager;
 public class AddGameActivity extends AppCompatActivity {
 	private static final int DEFAULT = -1;
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
+	private static final String EXTRA_CONFIG_INDEX = "EXTRA_CONFIG_INDEX";
 	private static final int MIN_PLAYERS = 1;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
 	private Game newGame;
+	private Game currentGame;
 
-	private List<EditText> inputPlayerScores = new ArrayList<>();
+	private int configIndex;
+	private int gameIndex;
+
+	private List<EditText> newInputPlayerScores = new ArrayList<>();
 	private EditText inputNumPlayers;
 	private TextView tvAchievement;
 	private Button saveButton;
 
+	private Boolean editActivity = false;
 	private int numPlayers;
 	private double difficultyModifier = Game.NORMAL_DIFFICULTY;
 
@@ -56,24 +62,92 @@ public class AddGameActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_add_game);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		extractDataFromIntent();
 		initializeFields();
-		setupDifficultySelect();
 		setupPlayerInputs();
 		setUpSaveButton();
+
+		if (editActivity) {
+			setUpForEditActivity();
+		} else{
+			setupDifficultySelect();
+			TextView tv = findViewById(R.id.AddGameTextView);
+			tv.setText(R.string.addNewGame);
+		}
 	}
 
-	public static Intent makeIntent(Context context, int gameIndex) {
+	private void setUpForEditActivity() {
+		inputNumPlayers.setText(Integer.toString(currentGame.getPlayers()));
+		setUpIndividualPlayerInputs();
+		setUpRadioDifficultyForEdit();
+		displayAchievementOnEditActivity();
+	}
+
+	private void displayAchievementOnEditActivity() {
+
+		int achievementLevel = currentGame.getAchievementLevel();
+		int theme = gameConfigManager.getTheme();
+
+		tvAchievement.setText(achievementNames[theme][achievementLevel]);
+	}
+
+	private void setUpRadioDifficultyForEdit() {
+		RadioGroup group = findViewById(R.id.radioGroupDifficulty);
+		String[] difficulties = getResources().getStringArray(R.array.difficulties);
+		double[] difficultyModifiers = new double[] {
+				Game.EASY_DIFFICULTY, Game.NORMAL_DIFFICULTY, Game.HARD_DIFFICULTY
+		};
+		double defaultDifficulty = Game.NORMAL_DIFFICULTY;
+		double gameDifficulty = currentGame.getDifficultyModifier();
+
+		if (gameDifficulty == Game.EASY_DIFFICULTY) {
+			defaultDifficulty = Game.EASY_DIFFICULTY;
+		}
+		if (gameDifficulty == Game.HARD_DIFFICULTY) {
+			defaultDifficulty = Game.HARD_DIFFICULTY;
+		}
+
+		for (int i = 0; i < difficulties.length; i++) {
+			final int INDEX = i;
+
+			RadioButton button = new RadioButton(this);
+
+			button.setText(difficulties[i]);
+			button.setOnClickListener(v -> {
+				difficultyModifier = difficultyModifiers[INDEX];
+				refreshAchievementText();
+			});
+
+			group.addView(button);
+
+			if (difficultyModifiers[i] == defaultDifficulty) {
+				button.setChecked(true);
+			}
+		}
+
+	}
+
+	public static Intent makeIntent(Context context, int configIndex) {
 		Intent intent = new Intent(context, AddGameActivity.class);
+		intent.putExtra(EXTRA_CONFIG_INDEX, configIndex);
+		return intent;
+	}
+
+	public static Intent makeIntent(Context context,int configIndex, int gameIndex) {
+		Intent intent = new Intent(context, AddGameActivity.class);
+		intent.putExtra(EXTRA_CONFIG_INDEX,configIndex);
 		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
 		return intent;
 	}
 
 	private void initializeFields() {
 		gameConfigManager = GameConfigManager.getInstance();
-		int gameIndex = extractDataFromIntent();
-		gameConfig = gameConfigManager.getConfig(gameIndex);
+		gameConfig = gameConfigManager.getConfig(configIndex);
+		if (editActivity) {
+			currentGame = gameConfig.getGame(gameIndex);
+		}
 
+//
 		achievementNames = new String[][] {
 				getResources().getStringArray(R.array.achievement_theme_animals),
 				getResources().getStringArray(R.array.achievement_theme_resources),
@@ -143,7 +217,13 @@ public class AddGameActivity extends AppCompatActivity {
 
 			numPlayers = Integer.parseInt(numPlayersText);
 			ArrayList<Integer> playerScores = getPlayerScoresFromInputs();
-			gameConfig.addGame(numPlayers, playerScores, difficultyModifier);
+
+			if (editActivity) {
+				gameConfig.editGame(gameIndex, playerScores, difficultyModifier);
+			} else {
+				assert playerScores != null;
+				gameConfig.addGame(numPlayers, playerScores, difficultyModifier);
+			}
 
 			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
@@ -170,7 +250,7 @@ public class AddGameActivity extends AppCompatActivity {
 			return;
 		}
 
-		inputPlayerScores = new ArrayList<>();
+		newInputPlayerScores = new ArrayList<>();
 		int numPlayers = Integer.parseInt(inputNumPlayers.getText().toString());
 
 		for (int i = 0; i < numPlayers; i++) {
@@ -204,7 +284,52 @@ public class AddGameActivity extends AppCompatActivity {
 			});
 			tableRow.addView(playerInput);
 
-			inputPlayerScores.add(playerInput);
+			newInputPlayerScores.add(playerInput);
+		}
+	}
+	private void setUpIndividualPlayerInputs() {
+		clearAchievementText();
+
+		TableLayout table = findViewById(R.id.tablePlayerInputs);
+		table.removeAllViews();
+
+		newInputPlayerScores = new ArrayList<>();
+		ArrayList<Integer> currentInputPlayerScores = currentGame.getPlayerScores();
+		int numPlayers = currentGame.getPlayers();
+
+		for (int i = 0; i < numPlayers; i++) {
+			TableRow tableRow = new TableRow(this);
+			tableRow.setLayoutParams(new TableLayout.LayoutParams(
+					TableLayout.LayoutParams.MATCH_PARENT,
+					TableLayout.LayoutParams.MATCH_PARENT
+			));
+			table.addView(tableRow);
+
+			EditText playerInput = new EditText(this);
+			playerInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+			playerInput.setLayoutParams(new TableRow.LayoutParams(
+					TableRow.LayoutParams.MATCH_PARENT,
+					TableRow.LayoutParams.MATCH_PARENT
+			));
+			playerInput.setHint(getString(R.string.player_input_hint, i + MIN_PLAYERS));
+			playerInput.setText(Integer.toString(currentInputPlayerScores.get(i)));
+			playerInput.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				}
+
+				@Override
+				public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				}
+
+				@Override
+				public void afterTextChanged(Editable editable) {
+					refreshAchievementText();
+				}
+			});
+			tableRow.addView(playerInput);
+
+			newInputPlayerScores.add(playerInput);
 		}
 	}
 
@@ -242,7 +367,7 @@ public class AddGameActivity extends AppCompatActivity {
 			return false;
 		}
 
-		for (TextView playerInput : inputPlayerScores) {
+		for (TextView playerInput : newInputPlayerScores) {
 			if (!isInt(playerInput.getText().toString())) {
 				return false;
 			}
@@ -257,7 +382,7 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 
 		ArrayList<Integer> playerScores = new ArrayList<>();
-		for (TextView playerInput : inputPlayerScores) {
+		for (TextView playerInput : newInputPlayerScores) {
 			int score = Integer.parseInt(playerInput.getText().toString());
 			playerScores.add(score);
 		}
@@ -288,9 +413,14 @@ public class AddGameActivity extends AppCompatActivity {
 		tvAchievement.setText(R.string.dash);
 	}
 
-	private int extractDataFromIntent() {
+	private void extractDataFromIntent() {
 		Intent intent = getIntent();
-		return intent.getIntExtra(EXTRA_GAME_INDEX, DEFAULT);
+		configIndex = intent.getIntExtra(EXTRA_CONFIG_INDEX, DEFAULT);
+		gameIndex = intent.getIntExtra(EXTRA_GAME_INDEX, DEFAULT);
+
+		if (gameIndex != -1) {
+			editActivity = true;
+		}
 	}
 
 	private void saveToSharedPreferences() {
