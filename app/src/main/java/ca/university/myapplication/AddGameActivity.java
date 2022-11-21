@@ -79,7 +79,17 @@ public class AddGameActivity extends AppCompatActivity {
 		inputNumPlayers.setText(Integer.toString(currentGame.getPlayers()));
 		setUpIndividualPlayerInputs();
 		setUpRadioDifficultyForEdit();
+		displayAchievementOnEditActivity();
 	}
+
+	private void displayAchievementOnEditActivity() {
+
+		int achievementLevel = currentGame.getAchievementLevel();
+		int theme = gameConfigManager.getTheme();
+
+		tvAchievement.setText(achievementNames[theme][achievementLevel]);
+	}
+
 	private void setUpRadioDifficultyForEdit() {
 		RadioGroup group = findViewById(R.id.radioGroupDifficulty);
 		String[] difficulties = getResources().getStringArray(R.array.difficulties);
