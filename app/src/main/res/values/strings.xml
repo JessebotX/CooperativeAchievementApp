@@ -51,4 +51,7 @@
     <string name="saved_game_toast">New Game Saved!</string>
     <string name="saved_game_err_toast">Please Finish Entering Inputs.</string>
     <string name="difficulty">Difficulty</string>
+    <string name="difficulty_easy">Difficulty: Easy</string>
+    <string name="difficulty_medium">Difficulty: Medium</string>
+    <string name="difficulty_hard">Difficulty: Hard</string>
 </resources>
