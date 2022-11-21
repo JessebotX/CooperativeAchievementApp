@@ -1,6 +1,7 @@
 package ca.university.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -226,8 +227,17 @@ public class AddGameActivity extends AppCompatActivity {
 
 			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
-			finish();
+			showAchievementCelebration();
 		});
+	}
+
+	/**
+	 * Display the dialog for the achievement celebration
+	 */
+	private void showAchievementCelebration() {
+		FragmentManager manager = getSupportFragmentManager();
+		MessageFragment dialog = new MessageFragment();
+		dialog.show(manager,"Celebration!");
 	}
 
 	private void generateIndividualPlayerInputs() {

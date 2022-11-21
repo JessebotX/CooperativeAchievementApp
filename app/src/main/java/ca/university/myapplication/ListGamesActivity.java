@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.nio.channels.InterruptedByTimeoutException;
 import java.util.List;
 
 import ca.university.myapplication.model.Game;
@@ -130,6 +129,10 @@ public class ListGamesActivity extends AppCompatActivity {
 			TextView textScore = itemView.findViewById(R.id.item_score);
 			textScore.setText(getString(R.string.combined_score_colon) + currentGame.getTotalScore());
 
+			//difficulty level
+			TextView textDifficulty = itemView.findViewById(R.id.item_difficulty);
+			setDifficultyLevelText(textDifficulty, currentGame);
+
 			//achievement level
 			TextView textLevel = itemView.findViewById(R.id.item_achievement);
 			setAchievementLevelText(textLevel, currentGame);
@@ -137,46 +140,108 @@ public class ListGamesActivity extends AppCompatActivity {
 			return itemView;
 		}
 
-		//get id for the image matching with the achievement
-		// TODO (for a new issue) refactor this to support different themes
-		// themes[0] = animals, themes[1] = resources/minerals, themes[2] = weapons
-		private int fillImage(Game game) {
-			int achievement = game.getAchievementLevel();
-			int imageID;
-			switch (achievement) {
-				case 0:
-					imageID = R.drawable.butterfly;
-					break;
-				case 1:
-					imageID = R.drawable.bee_icon;
-					break;
-				case 2:
-					imageID = R.drawable.chicken_icon;
-					break;
-				case 3:
-					imageID = R.drawable.fox_icon;
-					break;
-				case 4:
-					imageID = R.drawable.tiger_icon;
-					break;
-				case 5:
-					imageID = R.drawable.gorilla_icon;
-					break;
-				case 6:
-					imageID = R.drawable.rhinoceros_icon;
-					break;
-				case 7:
-					imageID = R.drawable.whale_icon;
-					break;
-				case 8:
-					imageID = R.drawable.dragon_icon;
-					break;
-				default:
-					imageID = R.drawable.ic_launcher_foreground;
-					break;
-			}
-			return imageID;
-		}
+        //get id for the image matching with the achievement
+        // themes[0] = animals, themes[1] = resources/minerals, themes[2] = weapons
+        private int fillImage(Game game) {
+            // assuming 0 = animals, 1 = resources, 2 = weapons
+            int theme = manager.getTheme();
+            int achievement = game.getAchievementLevel();
+            int imageID;
+            switch (achievement) {
+                case 0:
+                    if (theme == 0) {
+                        imageID = R.drawable.butterfly;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.dirt_icon;
+                    } else {
+                        imageID = R.drawable.toy_stick_icon;
+                    }
+                    break;
+                case 1:
+                    if (theme == 0) {
+                        imageID = R.drawable.bee_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.wood_icon;
+                    } else {
+                        imageID = R.drawable.wooden_staff_icon;
+                    }
+                    break;
+                case 2:
+                    if (theme == 0) {
+                        imageID = R.drawable.chicken_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.stone_icon;
+                    } else {
+                        imageID = R.drawable.wooden_sword_icon;
+                    }
+
+                    break;
+                case 3:
+                    if (theme == 0) {
+                        imageID = R.drawable.fox_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.copper_icon;
+                    } else {
+                        imageID = R.drawable.dagger_icon;
+                    }
+
+                    break;
+                case 4:
+                    if (theme == 0) {
+                        imageID = R.drawable.tiger_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.bronze_icon;
+                    } else {
+                        imageID = R.drawable.shortsword_icon;
+                    }
+
+                    break;
+                case 5:
+                    if (theme == 0) {
+                        imageID = R.drawable.gorilla_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.quartz_icon;
+                    } else {
+                        imageID = R.drawable.dual_dagger_icon;
+                    }
+
+                    break;
+                case 6:
+                    if (theme == 0) {
+                        imageID = R.drawable.rhinoceros_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.iron_icon;
+                    } else {
+                        imageID = R.drawable.broad_sword_icon;
+                    }
+
+                    break;
+                case 7:
+                    if (theme == 0) {
+                        imageID = R.drawable.whale_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.gold_icon;
+                    } else {
+                        imageID = R.drawable.excalibur_icon;
+                    }
+
+                    break;
+                case 8:
+                    if (theme == 0) {
+                        imageID = R.drawable.dragon_icon;
+                    } else if (theme == 1) {
+                        imageID = R.drawable.diamond_icon;
+                    } else {
+                        imageID = R.drawable.nuke_icon;
+                    }
+
+                    break;
+                default:
+                    imageID = R.drawable.ic_launcher_foreground;
+                    break;
+            }
+            return imageID;
+        }
 
 		//set text of achievement level
 		private void setAchievementLevelText(TextView textLevel, Game currentGame) {
@@ -190,5 +255,18 @@ public class ListGamesActivity extends AppCompatActivity {
 			int level = currentGame.getAchievementLevel();
 			textLevel.setText(themes[theme][level]);
 		}
+
+		//set text of difficulty level
+		private void setDifficultyLevelText(TextView textLevel, Game currentGame) {
+			double difficulty = currentGame.getDifficultyModifier();
+			if (difficulty == 0.75) {
+				textLevel.setText(getString(R.string.difficulty_easy));
+			} else if (difficulty == 1) {
+				textLevel.setText(getString(R.string.difficulty_medium));
+			} else if (difficulty == 1.25) {
+				textLevel.setText(getString(R.string.difficulty_hard));
+			}
+		}
+
 	}
 }

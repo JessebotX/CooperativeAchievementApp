@@ -31,7 +31,6 @@
             android:id="@+id/item_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"
             android:textColor="#0E0C0C"
             android:textSize="18sp" />
 
@@ -39,7 +38,6 @@
             android:id="@+id/item_num_players"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Number of Players"
             android:textColor="#0E0C0C"
             android:textSize="18sp" />
 
@@ -47,7 +45,13 @@
             android:id="@+id/item_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total Score"
+            android:textColor="#0E0C0C"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/item_difficulty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="#0E0C0C"
             android:textSize="18sp" />
 
@@ -55,7 +59,6 @@
             android:id="@+id/item_achievement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Achievement"
             android:textColor="#0E0C0C"
             android:textSize="18sp" />
     </LinearLayout>
