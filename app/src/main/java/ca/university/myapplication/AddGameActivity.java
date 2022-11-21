@@ -71,7 +71,7 @@ public class AddGameActivity extends AppCompatActivity {
 		} else{
 			setupDifficultySelect();
 			TextView tv = findViewById(R.id.AddGameTextView);
-			tv.setText("Add New Game");
+			tv.setText(R.string.addNewGame);
 		}
 	}
 

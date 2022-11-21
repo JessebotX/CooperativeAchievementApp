@@ -77,6 +77,10 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public void editGame(int gameIndex, ArrayList<Integer> newPlayerScores, double difficultyModifier) {
+		if (gameIndex < 0 || gameIndex >= this.games.size()) {
+			throw new IllegalArgumentException("Player Index out of range. Please enter an index" +
+					" between " + 0 + "-" + (newPlayerScores.size() - 1));
+		}
 		Game gameToEdit = this.games.get(gameIndex);
 		gameToEdit.setPlayerScores(newPlayerScores);
 		gameToEdit.setDifficultyModifier(difficultyModifier);
