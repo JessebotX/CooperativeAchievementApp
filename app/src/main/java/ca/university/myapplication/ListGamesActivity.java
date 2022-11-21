@@ -118,6 +118,10 @@ public class ListGamesActivity extends AppCompatActivity {
 			TextView textScore = itemView.findViewById(R.id.item_score);
 			textScore.setText(getString(R.string.combined_score_colon) + currentGame.getTotalScore());
 
+			//difficulty level
+			TextView textDifficulty = itemView.findViewById(R.id.item_difficulty);
+			setDifficultyLevelText(textDifficulty, currentGame);
+
 			//achievement level
 			TextView textLevel = itemView.findViewById(R.id.item_achievement);
 			setAchievementLevelText(textLevel, currentGame);
@@ -178,5 +182,18 @@ public class ListGamesActivity extends AppCompatActivity {
 			int level = currentGame.getAchievementLevel();
 			textLevel.setText(themes[theme][level]);
 		}
+
+		//set text of difficulty level
+		private void setDifficultyLevelText(TextView textLevel, Game currentGame) {
+			double difficulty = currentGame.getDifficultyModifier();
+			if (difficulty == 0.75) {
+				textLevel.setText(getString(R.string.difficulty_easy));
+			} else if (difficulty == 1) {
+				textLevel.setText(getString(R.string.difficulty_medium));
+			} else if (difficulty == 1.25) {
+				textLevel.setText(getString(R.string.difficulty_hard));
+			}
+		}
+
 	}
 }
