@@ -126,9 +126,7 @@ public class ListGamesActivity extends AppCompatActivity {
         }
 
         //get id for the image matching with the achievement
-        // TODO (for a new issue) refactor this to support different themes
         // themes[0] = animals, themes[1] = resources/minerals, themes[2] = weapons
-        // fillImage(Game game, Int themeID)
         private int fillImage(Game game) {
             // assuming 0 = animals, 1 = resources, 2 = weapons
             int theme = manager.getTheme();
