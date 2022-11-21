@@ -79,10 +79,13 @@ public class ListGamesActivity extends AppCompatActivity {
 		ArrayAdapter<Game> adapter = new MyListAdapter();
 		ListView list = findViewById(R.id.list_games);
 		list.setAdapter(adapter);
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = AddGameActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, position);
+
+		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Intent intent = AddGameActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, i);
 				startActivity(intent);
+				return false;
 			}
 		});
 	}

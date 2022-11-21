@@ -76,16 +76,22 @@ public class GameConfig implements Iterable<Game> {
 		this.games = games;
 	}
 
-	public void editGame(int gameIndex, ArrayList<Integer> newPlayerScores) {
-		this.games.get(gameIndex).setPlayerScores(newPlayerScores);
+	public void editGame(int gameIndex, ArrayList<Integer> newPlayerScores, double difficultyModifier) {
+		Game gameToEdit = this.games.get(gameIndex);
+		gameToEdit.setPlayerScores(newPlayerScores);
+		gameToEdit.setDifficultyModifier(difficultyModifier);
 	}
 
 	public void addGame(int players, ArrayList<Integer> playerScores) {
+		addGame(players, playerScores, Game.NORMAL_DIFFICULTY);
+	}
+
+	public void addGame(int players, ArrayList<Integer> playerScores, double difficultyModifier) {
 		if (players > playerScores.size() || players < 0) {
 			throw new IllegalArgumentException("Player Index out of range. Please enter an index" +
-					" between " + 0 + "-" + (playerScores.size() -1));
+					" between " + 0 + "-" + (playerScores.size() - 1));
 		}
-		Game game = new Game(players, playerScores, expectedPoorScore, expectedGreatScore);
+		Game game = new Game(players, playerScores, expectedPoorScore, expectedGreatScore, difficultyModifier);
 		games.add(game);
 	}
 

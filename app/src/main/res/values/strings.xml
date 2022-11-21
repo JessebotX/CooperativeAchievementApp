@@ -50,4 +50,5 @@
     <string name="player_input_hint">Player %d</string>
     <string name="saved_game_toast">New Game Saved!</string>
     <string name="saved_game_err_toast">Please Finish Entering Inputs.</string>
+    <string name="difficulty">Difficulty</string>
 </resources>

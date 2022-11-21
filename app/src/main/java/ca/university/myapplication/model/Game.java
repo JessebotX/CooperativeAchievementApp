@@ -9,9 +9,14 @@ import java.util.ArrayList;
  * Stores: Game name; num players; Total score; Expected individual poor/great scores
  */
 public class Game implements Comparable<Game> {
+	public static final double EASY_DIFFICULTY = 0.75;
+	public static final double NORMAL_DIFFICULTY = 1;
+	public static final double HARD_DIFFICULTY = 1.25;
+
 	private static final int MIN_PLAYERS = 1;
 	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
 
+	private double difficultyModifier = NORMAL_DIFFICULTY;
 	private int players;
 	private ArrayList<Integer> playerScores;
 	private int expectedPoorScore;
@@ -20,13 +25,18 @@ public class Game implements Comparable<Game> {
 	private CurrentDateTime timeOfCreation;
 
 	/**
-	 * Create a new Game under a GameConfig. Game creation should be done by GameConfig itself
+	 * Create a new Game (normal difficulty) under a GameConfig. Game creation should be done by
+	 * GameConfig itself
 	 * @param players number of players
 	 * @param playerScores an arraylist to contain the scores for each player
 	 * @param expectedPoorScore the expected poor score for a single individual
 	 * @param expectedGoodScore the expected great score for a single individual
 	 */
 	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore) {
+		this(players, playerScores, expectedPoorScore, expectedGoodScore, NORMAL_DIFFICULTY);
+	}
+
+	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore, double difficultyModifier) {
 		setPlayers(players);
 		if (players != playerScores.size()) {
 			throw new IllegalArgumentException("Number of Players must be equal to the number of" +
@@ -37,6 +47,7 @@ public class Game implements Comparable<Game> {
 		this.expectedGreatScore = expectedGoodScore;
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 		this.timeOfCreation = new CurrentDateTime();
+		this.difficultyModifier = difficultyModifier;
 
 		initializeAchievementLevelThresholds();
 	}
@@ -147,6 +158,14 @@ public class Game implements Comparable<Game> {
 		return timeOfCreation;
 	}
 
+	public double getDifficultyModifier() {
+		return difficultyModifier;
+	}
+
+	public void setDifficultyModifier(double difficultyModifier) {
+		this.difficultyModifier = difficultyModifier;
+	}
+
 	private void initializeAchievementLevelThresholds() {
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 
@@ -159,12 +178,13 @@ public class Game implements Comparable<Game> {
 		//   (60 / 7 * 1) + 40
 		//   (8.5.. * 1) + 40
 		//   = 48.5...
+		// multiply by difficulty modifier
 		// anything < 48.5... is considered level 1.
 		// divide difference by 7 because between poor and great, have 7 separations
 		// anything below poor = level 0, >= great means level 8
 
 		for (int i = 0; i < ACHIEVEMENT_LEVELS; i++) {
-			double mark = (greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * i) + collectivePoorScore;
+			double mark = ((greatPoorDifference / (ACHIEVEMENT_LEVELS - 1) * i) + collectivePoorScore) * difficultyModifier;
 			achievementLevelRequiredScores[i] = (int)mark;
 		}
 	}
