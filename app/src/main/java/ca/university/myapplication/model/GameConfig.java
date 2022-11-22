@@ -84,6 +84,7 @@ public class GameConfig implements Iterable<Game> {
 		Game gameToEdit = this.games.get(gameIndex);
 		gameToEdit.initializeAchievementLevelThresholds();
 		gameToEdit.setPlayerScores(newPlayerScores);
+		gameToEdit.setPlayers(newPlayerScores.size());
 		gameToEdit.setDifficultyModifier(difficultyModifier);
 	}
 
