@@ -162,7 +162,6 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 
 		// exit early if input is not entered
 		if (!isInt(numPlayersText) || Integer.parseInt(numPlayersText) < 1) {
-			Toast.makeText(this, "Please Finish Entering Inputs.", Toast.LENGTH_SHORT).show();
 			convertAllAchievementsToBlank();
 			return;
 		}
