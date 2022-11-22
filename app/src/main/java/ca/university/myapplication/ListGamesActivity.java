@@ -145,7 +145,11 @@ public class ListGamesActivity extends AppCompatActivity {
             int achievement = game.getAchievementLevel();
 
 			String drawableName = "theme_" + theme + "_level_" + achievement;
-            return getResources().getIdentifier(drawableName, "drawable", getPackageName());
+			try {
+				return getResources().getIdentifier(drawableName, "drawable", getPackageName());
+			} catch (Exception e) {
+				return R.drawable.fireworks;
+			}
         }
 
 		//set text of achievement level
