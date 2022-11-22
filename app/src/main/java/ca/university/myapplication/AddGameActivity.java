@@ -1,5 +1,7 @@
 package ca.university.myapplication;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -66,6 +69,7 @@ public class AddGameActivity extends AppCompatActivity {
 		initializeFields();
 		setupPlayerInputs();
 		setUpSaveButton();
+		registerBackButton();
 
 		if (editActivity) {
 			setUpForEditActivity();
@@ -74,6 +78,27 @@ public class AddGameActivity extends AppCompatActivity {
 			TextView tv = findViewById(R.id.AddGameTextView);
 			tv.setText(R.string.addNewGame);
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void registerBackButton() {
+		OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+			@Override
+			public void handleOnBackPressed() {
+				finish();
+			}
+		};
+		getOnBackPressedDispatcher().addCallback(this, callback);
 	}
 
 	private void setUpForEditActivity() {
@@ -147,7 +172,7 @@ public class AddGameActivity extends AppCompatActivity {
 			currentGame = gameConfig.getGame(gameIndex);
 		}
 
-//
+
 		achievementNames = new String[][] {
 				getResources().getStringArray(R.array.achievement_theme_animals),
 				getResources().getStringArray(R.array.achievement_theme_resources),
