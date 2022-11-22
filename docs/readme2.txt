@@ -92,3 +92,8 @@ http://www.iconexperience.com/v_collection/icons/?icon=gold_bars
 
 Diamond:
 https://freepngimg.com/png/13369-diamond-png-picture
+
+
+---------------------------------------
+Achievement Celebration Fireworks Image:
+https://cdn3.iconfinder.com/data/icons/celebrations-flat-colorful/614/4652_-_Fireworks-512.png
