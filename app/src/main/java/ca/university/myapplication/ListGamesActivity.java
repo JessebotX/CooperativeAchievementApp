@@ -140,9 +140,9 @@ public class ListGamesActivity extends AppCompatActivity {
 			return itemView;
 		}
 
-        private int fillImage(Game game) {
-            int theme = manager.getTheme();
-            int achievement = game.getAchievementLevel();
+		private int fillImage(Game game) {
+			int theme = manager.getTheme();
+			int achievement = game.getAchievementLevel();
 
 			String drawableName = "theme_" + theme + "_level_" + achievement;
 			try {
@@ -150,11 +150,11 @@ public class ListGamesActivity extends AppCompatActivity {
 			} catch (Exception e) {
 				return R.drawable.fireworks;
 			}
-        }
+		}
 
 		//set text of achievement level
 		private void setAchievementLevelText(TextView textLevel, Game currentGame) {
-			String[][] themes = new String[][] {
+			String[][] themes = new String[][]{
 					getResources().getStringArray(R.array.achievement_theme_animals),
 					getResources().getStringArray(R.array.achievement_theme_resources),
 					getResources().getStringArray(R.array.achievement_theme_weapons)
