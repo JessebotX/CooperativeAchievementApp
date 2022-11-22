@@ -10,11 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
@@ -46,6 +44,7 @@ public class ListGamesActivity extends AppCompatActivity {
 		displayInfo();
 
 		populateListView();
+		setUpSingleClick();
 	}
 
 	@Override
@@ -85,6 +84,20 @@ public class ListGamesActivity extends AppCompatActivity {
 				Intent intent = AddGameActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, i);
 				startActivity(intent);
 				return false;
+			}
+		});
+	}
+
+	/**
+	 * Show achievement screen
+	 */
+	private void setUpSingleClick() {
+		ListView listView = findViewById(R.id.list_games);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Intent intent = AchievementScreenActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, i);
+				startActivity(intent);
 			}
 		});
 	}
