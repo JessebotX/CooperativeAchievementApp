@@ -69,7 +69,6 @@ public class AddGameActivity extends AppCompatActivity {
 		initializeFields();
 		setupPlayerInputs();
 		setUpSaveButton();
-		registerBackButton();
 
 		if (editActivity) {
 			setUpForEditActivity();
@@ -78,27 +77,6 @@ public class AddGameActivity extends AppCompatActivity {
 			TextView tv = findViewById(R.id.AddGameTextView);
 			tv.setText(R.string.addNewGame);
 		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
-	private void registerBackButton() {
-		OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-			@Override
-			public void handleOnBackPressed() {
-				finish();
-			}
-		};
-		getOnBackPressedDispatcher().addCallback(this, callback);
 	}
 
 	private void setUpForEditActivity() {
