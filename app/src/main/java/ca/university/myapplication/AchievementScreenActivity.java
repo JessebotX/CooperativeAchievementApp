@@ -64,104 +64,15 @@ public class AchievementScreenActivity extends AppCompatActivity {
 	//get id for the image matching with the achievement
 	// themes[0] = animals, themes[1] = resources/minerals, themes[2] = weapons
 	private int fillImage(Game game) {
-		// assuming 0 = animals, 1 = resources, 2 = weapons
 		int theme = manager.getTheme();
 		int achievement = game.getAchievementLevel();
-		int imageID;
-		switch (achievement) {
-			case 0:
-				if (theme == 0) {
-					imageID = R.drawable.butterfly;
-				} else if (theme == 1) {
-					imageID = R.drawable.dirt_icon;
-				} else {
-					imageID = R.drawable.toy_stick_icon;
-				}
-				break;
-			case 1:
-				if (theme == 0) {
-					imageID = R.drawable.bee_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.wood_icon;
-				} else {
-					imageID = R.drawable.wooden_staff_icon;
-				}
-				break;
-			case 2:
-				if (theme == 0) {
-					imageID = R.drawable.chicken_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.stone_icon;
-				} else {
-					imageID = R.drawable.wooden_sword_icon;
-				}
 
-				break;
-			case 3:
-				if (theme == 0) {
-					imageID = R.drawable.fox_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.copper_icon;
-				} else {
-					imageID = R.drawable.dagger_icon;
-				}
-
-				break;
-			case 4:
-				if (theme == 0) {
-					imageID = R.drawable.tiger_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.bronze_icon;
-				} else {
-					imageID = R.drawable.shortsword_icon;
-				}
-
-				break;
-			case 5:
-				if (theme == 0) {
-					imageID = R.drawable.gorilla_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.quartz_icon;
-				} else {
-					imageID = R.drawable.dual_dagger_icon;
-				}
-
-				break;
-			case 6:
-				if (theme == 0) {
-					imageID = R.drawable.rhinoceros_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.iron_icon;
-				} else {
-					imageID = R.drawable.broad_sword_icon;
-				}
-
-				break;
-			case 7:
-				if (theme == 0) {
-					imageID = R.drawable.whale_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.gold_icon;
-				} else {
-					imageID = R.drawable.excalibur_icon;
-				}
-
-				break;
-			case 8:
-				if (theme == 0) {
-					imageID = R.drawable.dragon_icon;
-				} else if (theme == 1) {
-					imageID = R.drawable.diamond_icon;
-				} else {
-					imageID = R.drawable.nuke_icon;
-				}
-
-				break;
-			default:
-				imageID = R.drawable.ic_launcher_foreground;
-				break;
+		String drawableName = "theme_" + theme + "_level_" + achievement;
+		try {
+			return getResources().getIdentifier(drawableName, "drawable", getPackageName());
+		} catch (Exception e) {
+			return R.drawable.fireworks;
 		}
-		return imageID;
 	}
 
 	//set text of achievement level

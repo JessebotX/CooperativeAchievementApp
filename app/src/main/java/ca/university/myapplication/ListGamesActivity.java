@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
@@ -26,11 +25,11 @@ import ca.university.myapplication.model.GameConfigManager;
  * Activity that lists the existing games in a specific game configuration.
  */
 public class ListGamesActivity extends AppCompatActivity {
-    private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
-    private GameConfigManager manager;
-    private GameConfig gameConfig;
-    private List<Game> gameList;
-    private int gameConfigIndex;
+	private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
+	private GameConfigManager manager;
+	private GameConfig gameConfig;
+	private List<Game> gameList;
+	private int gameConfigIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +43,9 @@ public class ListGamesActivity extends AppCompatActivity {
 		extractGameConfigExtra();
 		displayInfo();
 
-        populateListView();
-        setUpSingleClick();
-    }
+		populateListView();
+		setUpSingleClick();
+	}
 
 	@Override
 	protected void onResume() {
@@ -54,12 +53,12 @@ public class ListGamesActivity extends AppCompatActivity {
 		populateListView();
 	}
 
-    private void extractGameConfigExtra() {
-        Intent intent = getIntent();
-        gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
-        gameConfig = manager.getConfig(gameConfigIndex);
-        gameList = gameConfig.getGames();
-    }
+	private void extractGameConfigExtra() {
+		Intent intent = getIntent();
+		gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX, 0);
+		gameConfig = manager.getConfig(gameConfigIndex);
+		gameList = gameConfig.getGames();
+	}
 
 	public static Intent makeIntent(Context context, int gameConfigIndex) {
 		Intent intent = new Intent(context, ListGamesActivity.class);
@@ -89,28 +88,24 @@ public class ListGamesActivity extends AppCompatActivity {
 		});
 	}
 
+	/**
+	 * Show achievement screen
+	 */
+	private void setUpSingleClick() {
+		ListView listView = findViewById(R.id.list_games);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Intent intent = AchievementScreenActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, i);
+				startActivity(intent);
+			}
+		});
+	}
+
 	private class MyListAdapter extends ArrayAdapter<Game> {
 		public MyListAdapter() {
 			super(ListGamesActivity.this, R.layout.item_view, gameList);
 		}
-    /**
-     * Show achievement screen
-     */
-    private void setUpSingleClick() {
-        ListView listView = findViewById(R.id.list_games);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = AchievementScreenActivity.makeIntent(ListGamesActivity.this, gameConfigIndex, i);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private class MyListAdapter extends ArrayAdapter<Game> {
-        public MyListAdapter() {
-            super(ListGamesActivity.this, R.layout.item_view, gameList);
-        }
 
 		@NonNull
 		@Override
