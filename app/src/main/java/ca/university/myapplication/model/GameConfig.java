@@ -82,6 +82,7 @@ public class GameConfig implements Iterable<Game> {
 					" between " + 0 + "-" + (newPlayerScores.size() - 1));
 		}
 		Game gameToEdit = this.games.get(gameIndex);
+		gameToEdit.initializeAchievementLevelThresholds();
 		gameToEdit.setPlayerScores(newPlayerScores);
 		gameToEdit.setDifficultyModifier(difficultyModifier);
 	}

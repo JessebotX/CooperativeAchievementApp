@@ -166,7 +166,7 @@ public class Game implements Comparable<Game> {
 		this.difficultyModifier = difficultyModifier;
 	}
 
-	private void initializeAchievementLevelThresholds() {
+	public void initializeAchievementLevelThresholds() {
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 
 		int collectiveGreatScore = expectedGreatScore * players;
