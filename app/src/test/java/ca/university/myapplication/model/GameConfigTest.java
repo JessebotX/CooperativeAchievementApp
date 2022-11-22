@@ -105,4 +105,48 @@ public class GameConfigTest {
 		gameConfig.removeGame(1);
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(1));
 	}
+
+	@Test
+	public void editGameTest() {
+		GameConfig gameConfig = new GameConfig("Snakes & Ladders", 40, 100);
+
+		ArrayList<Integer> playerScores = new ArrayList<>();
+		playerScores.add(100);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+
+		gameConfig.addGame(4, playerScores);
+
+		ArrayList<Integer> newPlayerScores = new ArrayList<>();
+		playerScores.add(5);
+		playerScores.add(0);
+		playerScores.add(0);
+		playerScores.add(0);
+
+		gameConfig.editGame(0, newPlayerScores, Game.HARD_DIFFICULTY);
+
+		assertEquals(newPlayerScores, gameConfig.getGame(0).getPlayerScores());
+	}
+
+	@Test
+	public void totalGamesTest() {
+		GameConfig gameConfig = new GameConfig("Snakes & Ladders", 40, 100);
+
+		ArrayList<Integer> playerScores1 = new ArrayList<>();
+		playerScores1.add(100);
+		playerScores1.add(0);
+		playerScores1.add(0);
+
+		ArrayList<Integer> playerScores2 = new ArrayList<>();
+		playerScores2.add(5);
+		playerScores2.add(0);
+		playerScores2.add(0);
+
+		gameConfig.addGame(playerScores1.size(), playerScores1);
+		gameConfig.addGame(playerScores2.size(), playerScores2);
+
+		assertEquals(2, gameConfig.totalGames());
+	}
+
 }

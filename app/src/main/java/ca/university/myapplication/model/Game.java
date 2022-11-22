@@ -92,6 +92,11 @@ public class Game implements Comparable<Game> {
 		this.playerScores.set(playerIndex, newScoreValue );
 	}
 
+	public void setPlayerScores(ArrayList<Integer> newPlayerScores) {
+		this.playerScores = newPlayerScores;
+		this.players = newPlayerScores.size();
+	}
+
 	public int getExpectedPoorScore() {
 		return expectedPoorScore;
 	}
