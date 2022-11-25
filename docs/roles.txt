@@ -11,3 +11,9 @@ Iteration 2:
 - Product Owner: Aidan
 - Repo Manager: Nathalie
 - Team Member: Jesse
+
+Iteration 3:
+- Scrum Master: Aidan
+- Product Owner: Tomi
+- Repo Manager: Jesse
+- Team Member: Nathalie
