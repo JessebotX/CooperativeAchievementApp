@@ -72,7 +72,7 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 	private void setUpViewStatsButton() {
 		Button statsButton = findViewById(R.id.btn_view_stats);
 		statsButton.setOnClickListener(view -> {
-			Intent intent = AchievementStatsActivity.makeIntent(GameConfigInfoActivity.this);
+			Intent intent = AchievementStatsActivity.makeIntent(GameConfigInfoActivity.this, gameConfigIndex);
 			startActivity(intent);
 		});
 	}
