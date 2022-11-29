@@ -57,4 +57,5 @@
     <string name="difficulty_hard">Difficulty: Hard</string>
     <string name="addNewGame">Add New Game</string>
     <string name="edit_game_by_long_pressing_an_item">Edit Game by Long Pressing an Item</string>
+    <string name="view_stats">View Stats</string>
 </resources>
