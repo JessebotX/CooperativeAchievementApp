@@ -39,6 +39,8 @@ public class AddGameActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 	private static final String EXTRA_CONFIG_INDEX = "EXTRA_CONFIG_INDEX";
 	private static final int MIN_PLAYERS = 1;
+	private static final int DEFAULT_NUM_PLAYERS = 1;
+	private static final int DEFAULT_SCORE = 0;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
@@ -68,6 +70,7 @@ public class AddGameActivity extends AppCompatActivity {
 		extractDataFromIntent();
 		initializeFields();
 		setupPlayerInputs();
+		generateIndividualPlayerInputs();
 		setUpSaveButton();
 
 		if (editActivity) {
@@ -158,6 +161,9 @@ public class AddGameActivity extends AppCompatActivity {
 		};
 
 		inputNumPlayers = findViewById(R.id.inputNumPlayers);
+		if (!editActivity) {
+			inputNumPlayers.setText(Integer.toString(DEFAULT_NUM_PLAYERS));
+		}
 		tvAchievement = findViewById(R.id.tvAchievement);
 		saveButton = findViewById(R.id.btnSave);
 	}
@@ -271,6 +277,7 @@ public class AddGameActivity extends AppCompatActivity {
 					TableRow.LayoutParams.MATCH_PARENT
 			));
 			playerInput.setHint(getString(R.string.player_input_hint, i + MIN_PLAYERS));
+			playerInput.setText(Integer.toString(DEFAULT_SCORE));
 			playerInput.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -288,6 +295,10 @@ public class AddGameActivity extends AppCompatActivity {
 			tableRow.addView(playerInput);
 
 			newInputPlayerScores.add(playerInput);
+		}
+
+		if (numPlayers == newInputPlayerScores.size()) {
+			refreshAchievementText();
 		}
 	}
 	private void setUpIndividualPlayerInputs() {
