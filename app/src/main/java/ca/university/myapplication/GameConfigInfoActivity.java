@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -67,6 +66,15 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 		setUpListener();
 		setUpFab();
 		setUpViewListButton();
+		setUpViewStatsButton();
+	}
+
+	private void setUpViewStatsButton() {
+		Button statsButton = findViewById(R.id.btn_view_stats);
+		statsButton.setOnClickListener(view -> {
+			Intent intent = AchievementStatsActivity.makeIntent(GameConfigInfoActivity.this, gameConfigIndex);
+			startActivity(intent);
+		});
 	}
 
 	private void setUpViewListButton() {
