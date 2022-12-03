@@ -1,17 +1,34 @@
 package ca.university.myapplication;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.cast.framework.media.ImagePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+
+import java.io.File;
+import java.util.UUID;
 
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
@@ -28,11 +45,22 @@ public class AddGameConfigActivity extends AppCompatActivity {
 	private int gameConfigIndex;
 	boolean hasDeletedGame = false;
 
+
+
+	Button uploadBtn;
+	ImageView configImage;
+
+	static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_game_config);
-
+		//1-----------------------------------------------------------
+		configImage = findViewById(R.id.gameConfigImage);
+		uploadBtn = findViewById(R.id.uploadImageBtn);
+		//1-----------------------------------------------------------
 		androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
 
 		setSupportActionBar(toolbar);
@@ -50,14 +78,48 @@ public class AddGameConfigActivity extends AppCompatActivity {
 			findViewById(R.id.btn_delete_config).setOnClickListener(v -> deleteGameConfig());
 		}
 		findViewById(R.id.btn_save_game_config).setOnClickListener(v -> saveGameConfig());
-	}
 
+
+		//2-----------------------------------------------------------
+		setupUploadImageButton();
+		//2-----------------------------------------------------------
+
+	}
 	public static Intent makeIntent(Context context,int gameConfigIndex) {
 		Intent intent = new Intent(context, AddGameConfigActivity.class);
 		intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
 		return intent;
 	}
+	private void setupUploadImageButton(){
+		uploadBtn = findViewById(R.id.uploadImageBtn);
+		uploadBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				dispatchTakePictureIntent();
+			}
+		});
+	}
+	//4-----------------------------------------------------------
+	private void dispatchTakePictureIntent() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		try {
+			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+		}
+	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			configImage.setImageBitmap(imageBitmap);
+		}
+	}
+	//4-----------------------------------------------------------
 	private void extractGameConfigExtra() {
 		Intent intent = getIntent();
 		gameConfigIndex = intent.getIntExtra(EXTRA_GAME_CONFIG_INDEX,0);

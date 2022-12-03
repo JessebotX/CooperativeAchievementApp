@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "703695383312",
+    "project_id": "game-config-image",
+    "storage_bucket": "game-config-image.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703695383312:android:3242c11da461b46a971395",
+        "android_client_info": {
+          "package_name": "ca.university.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703695383312-get9mhpsjt9r63djq7hu1jjhn9bo3ot9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP_AAP92V42qAdb7-T7xWwMk75GYZ5w1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703695383312-get9mhpsjt9r63djq7hu1jjhn9bo3ot9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
