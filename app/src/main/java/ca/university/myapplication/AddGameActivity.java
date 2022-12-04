@@ -39,6 +39,9 @@ public class AddGameActivity extends AppCompatActivity {
 	private static final int MIN_PLAYERS = 1;
 	private static final int DEFAULT_NUM_PLAYERS = 1;
 	private static final int DEFAULT_SCORE = 0;
+	private int lastEnteredNumberOfPlayers;
+
+	private ArrayList<Integer> previousScoresArray;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
@@ -53,7 +56,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private TextView tvAchievement;
 	private Button saveButton;
 
-	private Boolean editActivity = false;
+	private Boolean inEditMode = false;
 	private int numPlayers;
 	private double difficultyModifier = Game.NORMAL_DIFFICULTY;
 
@@ -71,7 +74,7 @@ public class AddGameActivity extends AppCompatActivity {
 		generateIndividualPlayerInputs();
 		setUpSaveButton();
 
-		if (editActivity) {
+		if (inEditMode) {
 			setUpForEditActivity();
 		} else{
 			setupDifficultySelect();
@@ -147,10 +150,11 @@ public class AddGameActivity extends AppCompatActivity {
 	private void initializeFields() {
 		gameConfigManager = GameConfigManager.getInstance();
 		gameConfig = gameConfigManager.getConfig(configIndex);
-		if (editActivity) {
+		if (inEditMode) {
 			currentGame = gameConfig.getGame(gameIndex);
+			previousScoresArray = currentGame.getPlayerScores();
+			lastEnteredNumberOfPlayers = previousScoresArray.size();
 		}
-
 
 		achievementNames = new String[][] {
 				getResources().getStringArray(R.array.achievement_theme_animals),
@@ -159,7 +163,7 @@ public class AddGameActivity extends AppCompatActivity {
 		};
 
 		inputNumPlayers = findViewById(R.id.inputNumPlayers);
-		if (!editActivity) {
+		if (!inEditMode) {
 			inputNumPlayers.setText(Integer.toString(DEFAULT_NUM_PLAYERS));
 		}
 		tvAchievement = findViewById(R.id.tvAchievement);
@@ -225,14 +229,13 @@ public class AddGameActivity extends AppCompatActivity {
 			numPlayers = Integer.parseInt(numPlayersText);
 			ArrayList<Integer> playerScores = getPlayerScoresFromInputs();
 
-			if (editActivity) {
+			if (inEditMode) {
 				gameConfig.editGame(gameIndex, playerScores, difficultyModifier);
 			} else {
 				assert playerScores != null;
 				gameConfig.addGame(numPlayers, playerScores, difficultyModifier);
 			}
 
-			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
 			showAchievementCelebration();
 		});
@@ -258,9 +261,9 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 
 		newInputPlayerScores = new ArrayList<>();
-		int numPlayers = Integer.parseInt(inputNumPlayers.getText().toString());
+		int newNumberOfPlayers = Integer.parseInt(inputNumPlayers.getText().toString());
 
-		for (int i = 0; i < numPlayers; i++) {
+		for (int i = 0; i < newNumberOfPlayers; i++) {
 			TableRow tableRow = new TableRow(this);
 			tableRow.setLayoutParams(new TableLayout.LayoutParams(
 					TableLayout.LayoutParams.MATCH_PARENT,
@@ -275,7 +278,28 @@ public class AddGameActivity extends AppCompatActivity {
 					TableRow.LayoutParams.MATCH_PARENT
 			));
 			playerInput.setHint(getString(R.string.player_input_hint, i + MIN_PLAYERS));
-			playerInput.setText(Integer.toString(DEFAULT_SCORE));
+
+
+			// fill player input with previous scores if user is in edit mode
+			if (inEditMode) {
+				// handle decreasing number of players
+				if (newNumberOfPlayers < lastEnteredNumberOfPlayers) {
+					// fill inputs with default value
+					playerInput.setText(Integer.toString(DEFAULT_SCORE));
+				} else {
+					// handle increasing number of players
+					if (i < previousScoresArray.size()) {
+						// set the value of player input textbox to the corresponding previous
+						// score
+						playerInput.setText(Integer.toString(previousScoresArray.get(i)));
+					} else {
+						// set player input textbox to default if new number of players
+						// is greater than previous number of players
+						playerInput.setText(Integer.toString(DEFAULT_SCORE));
+					}
+				}
+			}
+
 			playerInput.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -295,7 +319,10 @@ public class AddGameActivity extends AppCompatActivity {
 			newInputPlayerScores.add(playerInput);
 		}
 
-		if (numPlayers == newInputPlayerScores.size()) {
+		// update last entered number of players
+		lastEnteredNumberOfPlayers = newNumberOfPlayers;
+
+		if (newNumberOfPlayers == newInputPlayerScores.size()) {
 			refreshAchievementText();
 		}
 	}
@@ -431,7 +458,7 @@ public class AddGameActivity extends AppCompatActivity {
 		gameIndex = intent.getIntExtra(EXTRA_GAME_INDEX, DEFAULT);
 
 		if (gameIndex != -1) {
-			editActivity = true;
+			inEditMode = true;
 		}
 	}
 
