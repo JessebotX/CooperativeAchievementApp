@@ -24,7 +24,7 @@ public class GameConfigManagerTest {
 		for (GameConfig config : manager) {
 			ArrayList<Integer> playerScores = new ArrayList<Integer>();
 			playerScores.add(100);
-			config.addGame(4, playerScores);
+			config.addGame(1, playerScores);
 		}
 
 		for (int i = manager.totalConfigs() - 1; i >= 0; i--) {
