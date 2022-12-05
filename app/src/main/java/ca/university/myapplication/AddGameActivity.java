@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -67,10 +68,10 @@ public class AddGameActivity extends AppCompatActivity {
 	private Button saveButton;
 	private ImageView ivPhoto;
 
+	private String base64Photo = "";
 	private Boolean editActivity = false;
 	private int numPlayers;
 	private double difficultyModifier = Game.NORMAL_DIFFICULTY;
-
 	private String[][] achievementNames;
 
 	@Override
@@ -81,7 +82,8 @@ public class AddGameActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		extractDataFromIntent();
 		initializeFields();
-		setupCamera();
+		setupPhotoView();
+		setupCameraButton();
 		setupPlayerInputs();
 		setUpSaveButton();
 
@@ -129,40 +131,10 @@ public class AddGameActivity extends AppCompatActivity {
 				}
 				Bitmap photo = (Bitmap)data.getExtras().get("data");
 				ivPhoto = findViewById(R.id.ivPhoto);
-
-				String photoBase64 = bitmapToBase64(photo);
-				Bitmap photoBitmap = base64ToBitmap(photoBase64);
-
-				ivPhoto.setImageBitmap(photoBitmap);
+				base64Photo = bitmapToBase64(photo);
+				ivPhoto.setImageBitmap(photo);
 			}
 		}
-	}
-
-	private String bitmapToBase64(Bitmap bitmap) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY, outputStream);
-		return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-	}
-
-	private Bitmap base64ToBitmap(String base64) {
-		byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
-		return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-	}
-
-	private void setupCamera() {
-		Button buttonCamera = findViewById(R.id.buttonCamera);
-		String[] requestedPermissions = new String[] { Manifest.permission.CAMERA };
-
-		buttonCamera.setOnClickListener(e -> {
-			if (ContextCompat.checkSelfPermission(AddGameActivity.this, Manifest.permission.CAMERA)
-					== PackageManager.PERMISSION_GRANTED)
-			{
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(intent, CAMERA_REQUEST_CODE);
-			} else {
-				ActivityCompat.requestPermissions(AddGameActivity.this, requestedPermissions, CAMERA_PERMISSION_REQUEST_CODE);
-			}
-		});
 	}
 
 	private void setUpForEditActivity() {
@@ -222,7 +194,7 @@ public class AddGameActivity extends AppCompatActivity {
 		if (editActivity) {
 			currentGame = gameConfig.getGame(gameIndex);
 		}
-
+		ivPhoto = findViewById(R.id.ivPhoto);
 
 		achievementNames = new String[][] {
 				getResources().getStringArray(R.array.achievement_theme_animals),
@@ -262,6 +234,36 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 	}
 
+	private void setupPhotoView() {
+		if (editActivity) {
+			base64Photo = currentGame.getPhotoAsBase64();
+		}
+
+		if (base64Photo == null || base64Photo.trim().isEmpty()) {
+			Drawable defaultPhoto = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+			ivPhoto.setImageDrawable(defaultPhoto);
+		} else {
+			Bitmap bitmap = base64ToBitmap(base64Photo);
+			ivPhoto.setImageBitmap(bitmap);
+		}
+	}
+
+	private void setupCameraButton() {
+		Button buttonCamera = findViewById(R.id.buttonCamera);
+		String[] requestedPermissions = new String[] { Manifest.permission.CAMERA };
+
+		buttonCamera.setOnClickListener(e -> {
+			if (ContextCompat.checkSelfPermission(AddGameActivity.this, Manifest.permission.CAMERA)
+					== PackageManager.PERMISSION_GRANTED)
+			{
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(intent, CAMERA_REQUEST_CODE);
+			} else {
+				ActivityCompat.requestPermissions(AddGameActivity.this, requestedPermissions, CAMERA_PERMISSION_REQUEST_CODE);
+			}
+		});
+	}
+
 	private void setupPlayerInputs() {
 		inputNumPlayers.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -295,10 +297,10 @@ public class AddGameActivity extends AppCompatActivity {
 			ArrayList<Integer> playerScores = getPlayerScoresFromInputs();
 
 			if (editActivity) {
-				gameConfig.editGame(gameIndex, playerScores, difficultyModifier);
+				gameConfig.editGame(gameIndex, playerScores, difficultyModifier, base64Photo);
 			} else {
 				assert playerScores != null;
-				gameConfig.addGame(numPlayers, playerScores, difficultyModifier);
+				gameConfig.addGame(numPlayers, playerScores, difficultyModifier, base64Photo);
 			}
 
 			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
@@ -487,6 +489,17 @@ public class AddGameActivity extends AppCompatActivity {
 
 	private void clearAchievementText() {
 		tvAchievement.setText(R.string.dash);
+	}
+
+	private String bitmapToBase64(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY, outputStream);
+		return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+	}
+
+	private Bitmap base64ToBitmap(String base64) {
+		byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+		return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 	}
 
 	private void extractDataFromIntent() {
