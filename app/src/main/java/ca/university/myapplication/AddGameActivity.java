@@ -1,20 +1,27 @@
 package ca.university.myapplication;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
@@ -39,6 +46,8 @@ public class AddGameActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 	private static final String EXTRA_CONFIG_INDEX = "EXTRA_CONFIG_INDEX";
 	private static final int MIN_PLAYERS = 1;
+	public static final int REQUEST_CODE = 2;
+	public static final int PERMISSION_REQUEST_CODE = 1;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
@@ -67,6 +76,7 @@ public class AddGameActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		extractDataFromIntent();
 		initializeFields();
+		setupCamera();
 		setupPlayerInputs();
 		setUpSaveButton();
 
@@ -74,9 +84,65 @@ public class AddGameActivity extends AppCompatActivity {
 			setUpForEditActivity();
 		} else{
 			setupDifficultySelect();
-			TextView tv = findViewById(R.id.AddGameTextView);
-			tv.setText(R.string.addNewGame);
 		}
+	}
+
+	public static Intent makeIntent(Context context, int configIndex) {
+		Intent intent = new Intent(context, AddGameActivity.class);
+		intent.putExtra(EXTRA_CONFIG_INDEX, configIndex);
+		return intent;
+	}
+
+	public static Intent makeIntent(Context context,int configIndex, int gameIndex) {
+		Intent intent = new Intent(context, AddGameActivity.class);
+		intent.putExtra(EXTRA_CONFIG_INDEX,configIndex);
+		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+		return intent;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == PERMISSION_REQUEST_CODE) {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(intent, REQUEST_CODE);
+			} else {
+				Toast.makeText(this, "Must allow camera access to take photo", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == REQUEST_CODE) {
+				if (data == null || data.getExtras() == null) {
+					Toast.makeText(this, "Error has occured with getting image from camera", Toast.LENGTH_SHORT).show();
+				}
+				Bitmap photo = (Bitmap)data.getExtras().get("data");
+				ImageView photoImageView = findViewById(R.id.photoImageView);
+				photoImageView.setImageBitmap(photo);
+			}
+		}
+	}
+
+	private void setupCamera() {
+		Button buttonCamera = findViewById(R.id.buttonCamera);
+		String[] requestedPermissions = new String[] { Manifest.permission.CAMERA };
+
+		buttonCamera.setOnClickListener(e -> {
+			if (ContextCompat.checkSelfPermission(AddGameActivity.this, Manifest.permission.CAMERA)
+					== PackageManager.PERMISSION_GRANTED)
+			{
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(intent, REQUEST_CODE);
+			} else {
+				ActivityCompat.requestPermissions(AddGameActivity.this, requestedPermissions, PERMISSION_REQUEST_CODE);
+			}
+		});
 	}
 
 	private void setUpForEditActivity() {
@@ -128,19 +194,6 @@ public class AddGameActivity extends AppCompatActivity {
 			}
 		}
 
-	}
-
-	public static Intent makeIntent(Context context, int configIndex) {
-		Intent intent = new Intent(context, AddGameActivity.class);
-		intent.putExtra(EXTRA_CONFIG_INDEX, configIndex);
-		return intent;
-	}
-
-	public static Intent makeIntent(Context context,int configIndex, int gameIndex) {
-		Intent intent = new Intent(context, AddGameActivity.class);
-		intent.putExtra(EXTRA_CONFIG_INDEX,configIndex);
-		intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
-		return intent;
 	}
 
 	private void initializeFields() {
