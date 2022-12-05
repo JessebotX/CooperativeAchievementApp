@@ -6,7 +6,10 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -70,6 +73,25 @@ public class MessageFragment extends AppCompatDialogFragment {
 		TextView tv_next_level = v.findViewById(R.id.tv_next_level_score);
 		tv_next_level.setText(getString(R.string.points_for_next_achievement,
 				neededPoints,nextLevelName));
+
+		//theme spinner
+		Spinner themeSpinner = v.findViewById(R.id.spinner_theme);
+		ArrayAdapter themeAdapter = ArrayAdapter.createFromResource
+				(getActivity(), R.array.achievement_themes, R.layout.theme_spinner_text);
+		themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		themeSpinner.setAdapter(themeAdapter);
+//		themeSpinner.setSelection(lastSizeClick);
+//		themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//				editor.putInt("lastSizeClick",position).commit();
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//			}
+//		});
 
 		//play sound
 		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),R.raw.celebration);
