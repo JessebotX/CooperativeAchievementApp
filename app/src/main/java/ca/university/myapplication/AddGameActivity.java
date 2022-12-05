@@ -14,11 +14,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +49,9 @@ public class AddGameActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 	private static final String EXTRA_CONFIG_INDEX = "EXTRA_CONFIG_INDEX";
 	private static final int MIN_PLAYERS = 1;
-	public static final int REQUEST_CODE = 2;
-	public static final int PERMISSION_REQUEST_CODE = 1;
+	public static final int CAMERA_REQUEST_CODE = 2;
+	public static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
+	public static final int COMPRESSION_QUALITY = 100;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
@@ -61,6 +65,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private EditText inputNumPlayers;
 	private TextView tvAchievement;
 	private Button saveButton;
+	private ImageView ivPhoto;
 
 	private Boolean editActivity = false;
 	private int numPlayers;
@@ -103,10 +108,10 @@ public class AddGameActivity extends AppCompatActivity {
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == PERMISSION_REQUEST_CODE) {
+		if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(intent, REQUEST_CODE);
+				startActivityForResult(intent, CAMERA_REQUEST_CODE);
 			} else {
 				Toast.makeText(this, "Must allow camera access to take photo", Toast.LENGTH_SHORT).show();
 			}
@@ -118,15 +123,30 @@ public class AddGameActivity extends AppCompatActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == REQUEST_CODE) {
+			if (requestCode == CAMERA_REQUEST_CODE) {
 				if (data == null || data.getExtras() == null) {
 					Toast.makeText(this, "Error has occured with getting image from camera", Toast.LENGTH_SHORT).show();
 				}
 				Bitmap photo = (Bitmap)data.getExtras().get("data");
-				ImageView photoImageView = findViewById(R.id.photoImageView);
-				photoImageView.setImageBitmap(photo);
+				ivPhoto = findViewById(R.id.ivPhoto);
+
+				String photoBase64 = bitmapToBase64(photo);
+				Bitmap photoBitmap = base64ToBitmap(photoBase64);
+
+				ivPhoto.setImageBitmap(photoBitmap);
 			}
 		}
+	}
+
+	private String bitmapToBase64(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY, outputStream);
+		return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+	}
+
+	private Bitmap base64ToBitmap(String base64) {
+		byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+		return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 	}
 
 	private void setupCamera() {
@@ -138,9 +158,9 @@ public class AddGameActivity extends AppCompatActivity {
 					== PackageManager.PERMISSION_GRANTED)
 			{
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(intent, REQUEST_CODE);
+				startActivityForResult(intent, CAMERA_REQUEST_CODE);
 			} else {
-				ActivityCompat.requestPermissions(AddGameActivity.this, requestedPermissions, PERMISSION_REQUEST_CODE);
+				ActivityCompat.requestPermissions(AddGameActivity.this, requestedPermissions, CAMERA_PERMISSION_REQUEST_CODE);
 			}
 		});
 	}
