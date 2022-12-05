@@ -2,6 +2,7 @@ package ca.university.myapplication;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -65,14 +66,16 @@ public class MessageFragment extends AppCompatDialogFragment {
 
 		//fill text view to show next level points
 		savedGame = AddGameActivity.getNewGame();
-		requiredScores = savedGame.getAchievementLevelRequiredScores();
-		int nextLevelRequiredScore = requiredScores[savedGame.getAchievementLevel()];
-		int neededPoints = nextLevelRequiredScore - savedGame.getTotalScore();
+		if (savedGame.getAchievementLevel() < 8) {
+			requiredScores = savedGame.getAchievementLevelRequiredScores();
+			int nextLevelRequiredScore = requiredScores[savedGame.getAchievementLevel()];
+			int neededPoints = nextLevelRequiredScore - savedGame.getTotalScore();
 
-		String nextLevelName = achievementNames[manager.getTheme()][savedGame.getAchievementLevel()+1];
-		TextView tv_next_level = v.findViewById(R.id.tv_next_level_score);
-		tv_next_level.setText(getString(R.string.points_for_next_achievement,
-				neededPoints,nextLevelName));
+			String nextLevelName = achievementNames[manager.getTheme()][savedGame.getAchievementLevel() + 1];
+			TextView tv_next_level = v.findViewById(R.id.tv_next_level_score);
+			tv_next_level.setText(getString(R.string.points_for_next_achievement,
+					neededPoints, nextLevelName));
+		}
 
 		//theme spinner
 		Spinner themeSpinner = v.findViewById(R.id.spinner_theme);
@@ -81,17 +84,20 @@ public class MessageFragment extends AppCompatDialogFragment {
 		themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		themeSpinner.setAdapter(themeAdapter);
 //		themeSpinner.setSelection(lastSizeClick);
-//		themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//			@Override
-//			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+		themeSpinner.setSelection(manager.getTheme());
+		themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 //				editor.putInt("lastSizeClick",position).commit();
-//			}
-//
-//			@Override
-//			public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//			}
-//		});
+				manager.setTheme(position);
+				saveIntToSharedPrefs(ListGameConfigsActivity.SAVED_THEME_ID_KEY, position);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView) {
+
+			}
+		});
 
 		//play sound
 		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),R.raw.celebration);
@@ -101,5 +107,13 @@ public class MessageFragment extends AppCompatDialogFragment {
 		return new AlertDialog.Builder(getActivity(),R.style.dialog)
 				.setView(v)
 				.create();
+	}
+
+	private void saveIntToSharedPrefs(String key, int num) {
+		SharedPreferences prefs = getActivity().getSharedPreferences(ListGameConfigsActivity.APP_PREFERENCES, ListGameConfigsActivity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+
+		editor.putInt(key, num);
+		editor.apply();
 	}
 }

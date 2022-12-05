@@ -61,4 +61,5 @@
     <string name="achievement_stats_histogram_title">Frequency of Achievement Levels Earned</string>
     <string name="points_for_next_achievement">%d more points to reach the %s achievement!</string>
     <string name="change_the_app_theme">Change the app theme</string>
+    <string name="highest_achievement">You earned the highest achievement!</string>
 </resources>
