@@ -59,4 +59,5 @@
     <string name="edit_game_by_long_pressing_an_item">Edit Game by Long Pressing an Item</string>
     <string name="view_stats">View Stats</string>
     <string name="achievement_stats_histogram_title">Frequency of Achievement Levels Earned</string>
+    <string name="take_photo">Take Photo</string>
 </resources>
