@@ -14,10 +14,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import ca.university.myapplication.model.Game;
+import ca.university.myapplication.model.GameConfigManager;
+
 public class MessageFragment extends AppCompatDialogFragment {
+	private GameConfigManager manager;
+	private Game savedGame;
+	private int[] requiredScores;
+	private String[][] achievementNames;
+
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+		manager = GameConfigManager.getInstance();
+
 		//create the view to show
 		View v = LayoutInflater.from(getActivity())
 				.inflate(R.layout.achievement_celebration,null);
@@ -43,9 +53,23 @@ public class MessageFragment extends AppCompatDialogFragment {
 			}
 		});
 
-		//text view to show next level points
+		//initialize achievement names
+		achievementNames = new String[][] {
+				getResources().getStringArray(R.array.achievement_theme_animals),
+				getResources().getStringArray(R.array.achievement_theme_resources),
+				getResources().getStringArray(R.array.achievement_theme_weapons)
+		};
+
+		//fill text view to show next level points
+		savedGame = AddGameActivity.getNewGame();
+		requiredScores = savedGame.getAchievementLevelRequiredScores();
+		int nextLevelRequiredScore = requiredScores[savedGame.getAchievementLevel()];
+		int neededPoints = nextLevelRequiredScore - savedGame.getTotalScore();
+
+		String nextLevelName = achievementNames[manager.getTheme()][savedGame.getAchievementLevel()+1];
 		TextView tv_next_level = v.findViewById(R.id.tv_next_level_score);
-		tv_next_level.setText(getString(R.string.points_for_next_achievement,7,"hi"));
+		tv_next_level.setText(getString(R.string.points_for_next_achievement,
+				neededPoints,nextLevelName));
 
 		//play sound
 		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),R.raw.celebration);

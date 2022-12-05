@@ -42,7 +42,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
-	private Game newGame;
+	private static Game newGame;
 	private Game currentGame;
 
 	private int configIndex;
@@ -77,6 +77,10 @@ public class AddGameActivity extends AppCompatActivity {
 			TextView tv = findViewById(R.id.AddGameTextView);
 			tv.setText(R.string.addNewGame);
 		}
+	}
+
+	static public Game getNewGame() {
+		return newGame;
 	}
 
 	private void setUpForEditActivity() {
