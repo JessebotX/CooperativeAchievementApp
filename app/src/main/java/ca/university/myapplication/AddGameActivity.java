@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,8 @@ public class AddGameActivity extends AppCompatActivity {
 	private GameConfigManager gameConfigManager;
 	private Game newGame;
 	private Game currentGame;
+
+	private int MAX_NUM_INPUTS = 25;
 
 	private int configIndex;
 	private int gameIndex;
@@ -150,10 +153,23 @@ public class AddGameActivity extends AppCompatActivity {
 	private void initializeFields() {
 		gameConfigManager = GameConfigManager.getInstance();
 		gameConfig = gameConfigManager.getConfig(configIndex);
+
 		if (inEditMode) {
 			currentGame = gameConfig.getGame(gameIndex);
 			previousScoresArray = currentGame.getPlayerScores();
 			lastEnteredNumberOfPlayers = previousScoresArray.size();
+
+			// make sure that previous Scores Array has at least number of MAX_NUM_INPUTS in it
+			for (int i = previousScoresArray.size(); i < MAX_NUM_INPUTS; i++) {
+				previousScoresArray.add(0);
+			}
+		}
+		else {
+			// make sure that previous Scores Array has at least number of MAX_NUM_INPUTS in it
+			previousScoresArray = new ArrayList<>();
+			for (int i = 0; i < MAX_NUM_INPUTS; i++) {
+				previousScoresArray.add(0);
+			}
 		}
 
 		achievementNames = new String[][] {
@@ -209,6 +225,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 			@Override
 			public void afterTextChanged(Editable editable) {
+				updatePreviousEnteredScore();
 				generateIndividualPlayerInputs();
 			}
 		});
@@ -281,24 +298,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 
 			// fill player input with previous scores if user is in edit mode
-			if (inEditMode) {
-				// handle decreasing number of players
-				if (newNumberOfPlayers < lastEnteredNumberOfPlayers) {
-					// fill inputs with default value
-					playerInput.setText(Integer.toString(DEFAULT_SCORE));
-				} else {
-					// handle increasing number of players
-					if (i < previousScoresArray.size()) {
-						// set the value of player input textbox to the corresponding previous
-						// score
-						playerInput.setText(Integer.toString(previousScoresArray.get(i)));
-					} else {
-						// set player input textbox to default if new number of players
-						// is greater than previous number of players
-						playerInput.setText(Integer.toString(DEFAULT_SCORE));
-					}
-				}
-			}
+			playerInput.setText(Integer.toString(this.previousScoresArray.get(i)));
 
 			playerInput.addTextChangedListener(new TextWatcher() {
 				@Override
@@ -367,8 +367,19 @@ public class AddGameActivity extends AppCompatActivity {
 				}
 			});
 			tableRow.addView(playerInput);
-
 			newInputPlayerScores.add(playerInput);
+		}
+	}
+
+
+	private void updatePreviousEnteredScore() {
+		for (int i = 0; i < newInputPlayerScores.size(); i++) {
+			String inputText = newInputPlayerScores.get(i).getText().toString();
+			if (isInt(inputText)) {
+				int inputNumber = Integer.parseInt(inputText);
+//				Toast.makeText(this, "" + inputNumber, Toast.LENGTH_SHORT).show();
+				this.previousScoresArray.set(i, inputNumber);
+			}
 		}
 	}
 
