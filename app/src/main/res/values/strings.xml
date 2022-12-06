@@ -62,4 +62,5 @@
     <string name="points_for_next_achievement">%d more points to reach the %s achievement!</string>
     <string name="change_the_app_theme">Change the app theme</string>
     <string name="highest_achievement">You earned the highest achievement!</string>
+    <string name="take_photo">Take Photo</string>
 </resources>

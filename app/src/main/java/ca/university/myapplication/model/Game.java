@@ -12,12 +12,14 @@ public class Game implements Comparable<Game> {
 	public static final double EASY_DIFFICULTY = 0.75;
 	public static final double NORMAL_DIFFICULTY = 1;
 	public static final double HARD_DIFFICULTY = 1.25;
+	public static final String DEFAULT_PHOTO_BASE64 = "";
 
 	private static final int MIN_PLAYERS = 1;
 	private static final int ACHIEVEMENT_LEVELS = 8; // not including level 0
 
 	private double difficultyModifier = NORMAL_DIFFICULTY;
 	private int players;
+	private String photoAsBase64;
 	private ArrayList<Integer> playerScores;
 	private int expectedPoorScore;
 	private int expectedGreatScore;
@@ -37,6 +39,10 @@ public class Game implements Comparable<Game> {
 	}
 
 	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore, double difficultyModifier) {
+		this(players, playerScores, expectedPoorScore, expectedGoodScore, difficultyModifier, DEFAULT_PHOTO_BASE64);
+	}
+
+	public Game(int players, ArrayList<Integer> playerScores, int expectedPoorScore, int expectedGoodScore, double difficultyModifier, String photoAsBase64) {
 		setPlayers(players);
 		if (players != playerScores.size()) {
 			throw new IllegalArgumentException("Number of Players must be equal to the number of" +
@@ -48,6 +54,7 @@ public class Game implements Comparable<Game> {
 		this.achievementLevelRequiredScores = new int[ACHIEVEMENT_LEVELS];
 		this.timeOfCreation = new CurrentDateTime();
 		this.difficultyModifier = difficultyModifier;
+		this.photoAsBase64 = photoAsBase64;
 
 		initializeAchievementLevelThresholds();
 	}
@@ -164,6 +171,14 @@ public class Game implements Comparable<Game> {
 
 	public void setDifficultyModifier(double difficultyModifier) {
 		this.difficultyModifier = difficultyModifier;
+	}
+
+	public String getPhotoAsBase64() {
+		return photoAsBase64;
+	}
+
+	public void setPhotoAsBase64(String photoAsBase64) {
+		this.photoAsBase64 = photoAsBase64;
 	}
 
 	public void initializeAchievementLevelThresholds() {
