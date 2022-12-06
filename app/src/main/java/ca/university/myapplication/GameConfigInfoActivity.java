@@ -69,6 +69,12 @@ public class GameConfigInfoActivity extends AppCompatActivity {
 		setUpViewStatsButton();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setAchievementLabelTextViews();
+	}
+
 	private void setUpViewStatsButton() {
 		Button statsButton = findViewById(R.id.btn_view_stats);
 		statsButton.setOnClickListener(view -> {
