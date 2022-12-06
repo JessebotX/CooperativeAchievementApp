@@ -40,10 +40,7 @@ public class MessageFragment extends AppCompatDialogFragment {
 		initializeAchievementNames();
 		fillNextLevelPointsTextView();
 		populateThemeSpinner();
-
-		//play sound
-		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),R.raw.celebration);
-		mediaPlayer.start();
+		playSound();
 
 		//build the alert dialog
 		return new AlertDialog.Builder(getActivity(),R.style.dialog)
@@ -128,5 +125,11 @@ public class MessageFragment extends AppCompatDialogFragment {
 
 			}
 		});
+	}
+
+	//play sound
+	private void playSound() {
+		final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), R.raw.celebration);
+		mediaPlayer.start();
 	}
 }

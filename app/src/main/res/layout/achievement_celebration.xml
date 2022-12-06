@@ -49,6 +49,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif"
         android:text="@string/celebration_msg"
         android:textAlignment="center"
         android:textColor="#0B0A0A"
