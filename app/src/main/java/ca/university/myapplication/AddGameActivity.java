@@ -309,6 +309,11 @@ public class AddGameActivity extends AppCompatActivity {
 
 			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
+
+			if (editActivity) {
+				newGame = new Game(numPlayers, playerScores, gameConfig.getExpectedPoorScore(), gameConfig.getExpectedGreatScore(), difficultyModifier, base64Photo);
+			}
+
 			showAchievementCelebration();
 		});
 	}
