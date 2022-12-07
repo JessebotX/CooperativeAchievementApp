@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,12 +28,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.cast.framework.media.ImagePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
@@ -50,43 +45,40 @@ import ca.university.myapplication.model.GameConfigManager;
  */
 public class AddGameConfigActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_CONFIG_INDEX = "extra_game_config_index";
-	public static final String EMPTY_STRING = "";
+	private static final int REQUEST_IMAGE_CAPTURE = 1;
+	private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
+	private static final int CAMERA_REQUEST_CODE = 2;
+	private static final int COMPRESSION_QUALITY = 100;
+	private static final String EMPTY_STRING = "";
+
 	private GameConfigManager manager;
 	private GameConfig gameConfig;
-	boolean isInAddMode;
+	private boolean isInAddMode;
 	private int gameConfigIndex;
-	boolean hasDeletedGame = false;
+	private boolean hasDeletedGame = false;
+	private String photoBase64 = "";
 
-
-
-	Button uploadBtn;
-	ImageView configImage;
-
-	static final int REQUEST_IMAGE_CAPTURE = 1;
-	static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
-	static final int CAMERA_REQUEST_CODE = 2;
-	static final int COMPRESSION_QUALITY = 100;
+	private Button uploadBtn;
+	private ImageView configImage;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_game_config);
-		//1-----------------------------------------------------------
+		manager = GameConfigManager.getInstance();
 		configImage = findViewById(R.id.gameConfigImage);
 		uploadBtn = findViewById(R.id.uploadImageBtn);
-		//1-----------------------------------------------------------
 		androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
 
+		extractGameConfigExtra();
 		setSupportActionBar(toolbar);
+		setupInitialImageView();
 		setupCamera();
 
 		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 
-		manager = GameConfigManager.getInstance();
-
-		extractGameConfigExtra();
 		fillInfoForEdit();
 		if (isInAddMode) {
 			findViewById(R.id.btn_delete_config).setVisibility(View.GONE);
@@ -94,52 +86,27 @@ public class AddGameConfigActivity extends AppCompatActivity {
 			findViewById(R.id.btn_delete_config).setOnClickListener(v -> deleteGameConfig());
 		}
 		findViewById(R.id.btn_save_game_config).setOnClickListener(v -> saveGameConfig());
-
-
-		//2-----------------------------------------------------------
-		setupUploadImageButton();
-		//2-----------------------------------------------------------
-
 	}
+
+	private void setupInitialImageView() {
+		if (!isInAddMode) {
+			photoBase64 = gameConfig.getPhotoAsBase64();
+		}
+
+		if (photoBase64 == null || photoBase64.trim().isEmpty()) {
+			Drawable defaultPhoto = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+			configImage.setImageDrawable(defaultPhoto);
+		} else {
+			Bitmap bitmap = base64ToBitmap(photoBase64);
+			configImage.setImageBitmap(bitmap);
+		}
+	}
+
 	public static Intent makeIntent(Context context,int gameConfigIndex) {
 		Intent intent = new Intent(context, AddGameConfigActivity.class);
 		intent.putExtra(EXTRA_GAME_CONFIG_INDEX,gameConfigIndex);
 		return intent;
 	}
-	private void setupUploadImageButton(){
-		uploadBtn = findViewById(R.id.uploadImageBtn);
-		uploadBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				//dispatchTakePictureIntent();
-			}
-		});
-	}
-	//4-----------------------------------------------------------
-	//code used from developer.android.com:
-	//https://developer.android.com/training/camera-deprecated/photobasics
-
-	//	private void dispatchTakePictureIntent() {
-	//		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	//		try {
-	//			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-	//		} catch (ActivityNotFoundException e) {
-	//			Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
-	//		}
-	//	}
-	//
-	//	@Override
-	//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	//		super.onActivityResult(requestCode, resultCode, data);
-	//
-	//		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-	//			Bundle extras = data.getExtras();
-	//			Bitmap imageBitmap = (Bitmap) extras.get("data");
-	//			configImage.setImageBitmap(imageBitmap);
-	//
-	//
-	//		}
-	//	}
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -166,7 +133,7 @@ public class AddGameConfigActivity extends AppCompatActivity {
 				Bitmap photo = (Bitmap)data.getExtras().get("data");
 				configImage = findViewById(R.id.gameConfigImage);
 
-				String photoBase64 = bitmapToBase64(photo);
+				photoBase64 = bitmapToBase64(photo);
 				Bitmap photoBitmap = base64ToBitmap(photoBase64);
 
 				configImage.setImageBitmap(photoBitmap);
@@ -262,11 +229,12 @@ public class AddGameConfigActivity extends AppCompatActivity {
 
 		//save
 		if (isInAddMode) {
-			manager.addConfig(name, poorScore, greatScore);
+			manager.addConfig(name, poorScore, greatScore, photoBase64);
 		} else if (!isInAddMode) {
 			gameConfig.setName(name);
 			gameConfig.setExpectedPoorScore(poorScore);
 			gameConfig.setExpectedGreatScore(greatScore);
+			gameConfig.setPhotoAsBase64(photoBase64);
 		}
 
 		saveToSharedPreferences();
