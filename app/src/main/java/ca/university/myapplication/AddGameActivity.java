@@ -21,6 +21,8 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MenuItem;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,14 +52,22 @@ public class AddGameActivity extends AppCompatActivity {
 	private static final String EXTRA_GAME_INDEX = "EXTRA_GAME_INDEX";
 	private static final String EXTRA_CONFIG_INDEX = "EXTRA_CONFIG_INDEX";
 	private static final int MIN_PLAYERS = 1;
+	private static final int DEFAULT_NUM_PLAYERS = 1;
+	private static final int DEFAULT_SCORE = 0;
 	public static final int CAMERA_REQUEST_CODE = 2;
 	public static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
 	public static final int COMPRESSION_QUALITY = 100;
+
+	private int lastEnteredNumberOfPlayers;
+
+	private ArrayList<Integer> previousScoresArray;
 
 	private GameConfig gameConfig;
 	private GameConfigManager gameConfigManager;
 	private static Game newGame;
 	private Game currentGame;
+
+	private int MAX_NUM_INPUTS = 25;
 
 	private int configIndex;
 	private int gameIndex;
@@ -68,6 +78,7 @@ public class AddGameActivity extends AppCompatActivity {
 	private Button saveButton;
 	private ImageView ivPhoto;
 
+	private Boolean inEditMode = false;
 	private String base64Photo = "";
 	private Boolean editActivity = false;
 	private int numPlayers;
@@ -85,9 +96,10 @@ public class AddGameActivity extends AppCompatActivity {
 		setupPhotoView();
 		setupCameraButton();
 		setupPlayerInputs();
+		generateIndividualPlayerInputs();
 		setUpSaveButton();
 
-		if (editActivity) {
+		if (inEditMode) {
 			setUpForEditActivity();
 		} else{
 			setupDifficultySelect();
@@ -195,8 +207,22 @@ public class AddGameActivity extends AppCompatActivity {
 	private void initializeFields() {
 		gameConfigManager = GameConfigManager.getInstance();
 		gameConfig = gameConfigManager.getConfig(configIndex);
-		if (editActivity) {
+
+		if (inEditMode) {
 			currentGame = gameConfig.getGame(gameIndex);
+			previousScoresArray = currentGame.getPlayerScores();
+			lastEnteredNumberOfPlayers = previousScoresArray.size();
+
+			// make sure that previous Scores Array has at least number of MAX_NUM_INPUTS in it
+			for (int i = previousScoresArray.size(); i < MAX_NUM_INPUTS; i++) {
+				previousScoresArray.add(0);
+			}
+		} else {
+			// make sure that previous Scores Array has at least number of MAX_NUM_INPUTS in it
+			previousScoresArray = new ArrayList<>();
+			for (int i = 0; i < MAX_NUM_INPUTS; i++) {
+				previousScoresArray.add(0);
+			}
 		}
 		ivPhoto = findViewById(R.id.ivPhoto);
 
@@ -207,6 +233,9 @@ public class AddGameActivity extends AppCompatActivity {
 		};
 
 		inputNumPlayers = findViewById(R.id.inputNumPlayers);
+		if (!inEditMode) {
+			inputNumPlayers.setText(Integer.toString(DEFAULT_NUM_PLAYERS));
+		}
 		tvAchievement = findViewById(R.id.tvAchievement);
 		saveButton = findViewById(R.id.btnSave);
 	}
@@ -280,6 +309,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 			@Override
 			public void afterTextChanged(Editable editable) {
+				updatePreviousEnteredScore();
 				generateIndividualPlayerInputs();
 			}
 		});
@@ -307,7 +337,6 @@ public class AddGameActivity extends AppCompatActivity {
 				gameConfig.addGame(numPlayers, playerScores, difficultyModifier, base64Photo);
 			}
 
-			Toast.makeText(this, getString(R.string.saved_game_toast), Toast.LENGTH_SHORT).show();
 			saveToSharedPreferences();
 
 			if (editActivity) {
@@ -338,9 +367,9 @@ public class AddGameActivity extends AppCompatActivity {
 		}
 
 		newInputPlayerScores = new ArrayList<>();
-		int numPlayers = Integer.parseInt(inputNumPlayers.getText().toString());
+		int newNumberOfPlayers = Integer.parseInt(inputNumPlayers.getText().toString());
 
-		for (int i = 0; i < numPlayers; i++) {
+		for (int i = 0; i < newNumberOfPlayers; i++) {
 			TableRow tableRow = new TableRow(this);
 			tableRow.setLayoutParams(new TableLayout.LayoutParams(
 					TableLayout.LayoutParams.MATCH_PARENT,
@@ -355,6 +384,11 @@ public class AddGameActivity extends AppCompatActivity {
 					TableRow.LayoutParams.MATCH_PARENT
 			));
 			playerInput.setHint(getString(R.string.player_input_hint, i + MIN_PLAYERS));
+
+
+			// fill player input with previous scores if user is in edit mode
+			playerInput.setText(Integer.toString(this.previousScoresArray.get(i)));
+
 			playerInput.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -372,6 +406,13 @@ public class AddGameActivity extends AppCompatActivity {
 			tableRow.addView(playerInput);
 
 			newInputPlayerScores.add(playerInput);
+		}
+
+		// update last entered number of players
+		lastEnteredNumberOfPlayers = newNumberOfPlayers;
+
+		if (newNumberOfPlayers == newInputPlayerScores.size()) {
+			refreshAchievementText();
 		}
 	}
 	private void setUpIndividualPlayerInputs() {
@@ -415,8 +456,18 @@ public class AddGameActivity extends AppCompatActivity {
 				}
 			});
 			tableRow.addView(playerInput);
-
 			newInputPlayerScores.add(playerInput);
+		}
+	}
+
+
+	private void updatePreviousEnteredScore() {
+		for (int i = 0; i < newInputPlayerScores.size(); i++) {
+			String inputText = newInputPlayerScores.get(i).getText().toString();
+			if (isInt(inputText)) {
+				int inputNumber = Integer.parseInt(inputText);
+				this.previousScoresArray.set(i, inputNumber);
+			}
 		}
 	}
 
@@ -517,7 +568,7 @@ public class AddGameActivity extends AppCompatActivity {
 		gameIndex = intent.getIntExtra(EXTRA_GAME_INDEX, DEFAULT);
 
 		if (gameIndex != -1) {
-			editActivity = true;
+			inEditMode = true;
 		}
 	}
 
