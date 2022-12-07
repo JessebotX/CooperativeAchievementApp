@@ -123,13 +123,8 @@ public class ListGamesActivity extends AppCompatActivity {
 			//find the game
 			Game currentGame = gameList.get(position);
 
-			//fill the view
-			//image
-			ImageView imageView = itemView.findViewById(R.id.item_image);
-			imageView.setImageResource(fillImage(currentGame));
-
 			// set up game photo
-			ImageView gamePhotoView = itemView.findViewById(R.id.game_photo);
+			ImageView gamePhotoView = itemView.findViewById(R.id.item_image);
 			String base64Photo = currentGame.getPhotoAsBase64();
 			if (base64Photo == null || base64Photo.trim().isEmpty()) {
 				Drawable defaultPhoto = getResources().getDrawable(R.drawable.ic_launcher_foreground);
