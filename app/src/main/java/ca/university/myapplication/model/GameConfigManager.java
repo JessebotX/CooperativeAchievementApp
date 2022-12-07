@@ -36,6 +36,10 @@ public class GameConfigManager implements Iterable<GameConfig> {
 		addConfig(new GameConfig(name, expectedPoorScore, expectedGreatScore));
 	}
 
+	public void addConfig(String name, int expectedPoorScore, int expectedGreatScore, String base64Photo) {
+		addConfig(new GameConfig(name, expectedPoorScore, expectedGreatScore, base64Photo));
+	}
+
 	public void addConfig(GameConfig gameConfig) {
 		gameConfigs.add(gameConfig);
 	}
