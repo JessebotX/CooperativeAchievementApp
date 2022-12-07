@@ -8,12 +8,14 @@ import java.util.List;
  * A Game Configuration that manages a list of Games
  */
 public class GameConfig implements Iterable<Game> {
+	public static final String DEFAULT_PHOTO_BASE64 = "";
 	private static final String INDEX_OUT_OF_BOUNDS_ERROR_MESSAGE = "index out of bounds.";
 
 	private String name;
 	private int expectedGreatScore;
 	private int expectedPoorScore;
 	private List<Game> games;
+	private String photoAsBase64;
 
 	/**
 	 * Create a new Game Configuration
@@ -22,14 +24,27 @@ public class GameConfig implements Iterable<Game> {
 	 * @param expectedGreatScore the expected great performance of an individual
 	 */
 	public GameConfig(String name, int expectedPoorScore, int expectedGreatScore) {
+		this(name, expectedPoorScore, expectedGreatScore, DEFAULT_PHOTO_BASE64);
+	}
+
+	public GameConfig(String name, int expectedPoorScore, int expectedGreatScore, String photoAsBase64) {
 		setName(name);
 		this.expectedPoorScore = expectedPoorScore;
 		this.expectedGreatScore = expectedGreatScore;
 		this.games = new ArrayList<>();
+		this.photoAsBase64 = photoAsBase64;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getPhotoAsBase64() {
+		return photoAsBase64;
+	}
+
+	public void setPhotoAsBase64(String photoAsBase64) {
+		this.photoAsBase64 = photoAsBase64;
 	}
 
 	/**
