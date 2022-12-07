@@ -57,6 +57,13 @@
     <string name="difficulty_hard">Difficulty: Hard</string>
     <string name="addNewGame">Add New Game</string>
     <string name="edit_game_by_long_pressing_an_item">Edit Game by Long Pressing an Item</string>
+    <string name="view_stats">View Stats</string>
+    <string name="achievement_stats_histogram_title">Frequency of Achievement Levels Earned</string>
+    <string name="points_for_next_achievement">%d more points to reach the %s achievement!</string>
+    <string name="change_the_app_theme">Change the app theme</string>
+    <string name="highest_achievement">You earned the highest achievement!</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="upload_image">UPLOAD IMAGE</string>
     <string name="References">
         <![CDATA[
     References for images:

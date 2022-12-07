@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ca.university.myapplication">
 
-    <uses-feature android:name="android.hardware.camera"
-        android:required="true" />
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -20,6 +19,14 @@
         <activity
             android:name=".AboutActivity"
             android:exported="false" />
+        <activity
+            android:name=".AchievementStatsActivity"
+            android:exported="false"
+            android:parentActivityName=".ListGameConfigsActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".AchievementScreenActivity"
             android:exported="false"

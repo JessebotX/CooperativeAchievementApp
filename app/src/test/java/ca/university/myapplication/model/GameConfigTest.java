@@ -41,11 +41,11 @@ public class GameConfigTest {
 		gameConfig.addGame(4, playerScores);
 
 		ArrayList<Integer> playerScores2 = new ArrayList<Integer>();
-		playerScores.add(100000);
-		playerScores.add(0);
-		playerScores.add(0);
-		playerScores.add(0);
-		playerScores.add(0);
+		playerScores2.add(100000);
+		playerScores2.add(0);
+		playerScores2.add(0);
+		playerScores2.add(0);
+		playerScores2.add(0);
 		gameConfig.addGame(5, playerScores2);
 
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.getGame(-1));
@@ -91,18 +91,17 @@ public class GameConfigTest {
 		gameConfig.addGame(4, playerScores);
 
 		ArrayList<Integer> playerScores2 = new ArrayList<Integer>();
-		playerScores.add(10000);
-		playerScores.add(0);
-		playerScores.add(0);
-		playerScores.add(0);
-		gameConfig.addGame(100, playerScores2);
+		playerScores2.add(10000);
+		playerScores2.add(0);
+		playerScores2.add(0);
+		playerScores2.add(0);
+		assertThrows(IllegalArgumentException.class, () -> gameConfig.addGame(100, playerScores2));
 
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(-1));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(2));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(3));
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(Integer.MAX_VALUE));
 
-		gameConfig.removeGame(1);
 		assertThrows(IllegalArgumentException.class, () -> gameConfig.removeGame(1));
 	}
 
@@ -119,10 +118,10 @@ public class GameConfigTest {
 		gameConfig.addGame(4, playerScores);
 
 		ArrayList<Integer> newPlayerScores = new ArrayList<>();
-		playerScores.add(5);
-		playerScores.add(0);
-		playerScores.add(0);
-		playerScores.add(0);
+		newPlayerScores.add(5);
+		newPlayerScores.add(0);
+		newPlayerScores.add(0);
+		newPlayerScores.add(0);
 
 		gameConfig.editGame(0, newPlayerScores, Game.HARD_DIFFICULTY);
 
