@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.university.myapplication.R;
 import ca.university.myapplication.model.GameConfig;
 import ca.university.myapplication.model.GameConfigManager;
 
@@ -41,6 +42,19 @@ public class ListGameConfigsActivity extends AppCompatActivity {
 		longClickConfigToOpenAnEditor();
 		setUpSingleClick();
 		setupOptionsButton();
+
+		setUpAboutButton();
+	}
+
+	private void setUpAboutButton() {
+		Button about = findViewById(R.id.aboutBtn);
+		about.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(ListGameConfigsActivity.this, AboutActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
