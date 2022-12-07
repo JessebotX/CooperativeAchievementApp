@@ -92,6 +92,10 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public void editGame(int gameIndex, ArrayList<Integer> newPlayerScores, double difficultyModifier) {
+		editGame(gameIndex, newPlayerScores, difficultyModifier, Game.DEFAULT_PHOTO_BASE64);
+	}
+
+	public void editGame(int gameIndex, ArrayList<Integer> newPlayerScores, double difficultyModifier, String base64Photo) {
 		if (gameIndex < 0 || gameIndex >= this.games.size()) {
 			throw new IllegalArgumentException("Player Index out of range. Please enter an index" +
 					" between " + 0 + "-" + (newPlayerScores.size() - 1));
@@ -101,6 +105,7 @@ public class GameConfig implements Iterable<Game> {
 		gameToEdit.setPlayerScores(newPlayerScores);
 		gameToEdit.setPlayers(newPlayerScores.size());
 		gameToEdit.setDifficultyModifier(difficultyModifier);
+		gameToEdit.setPhotoAsBase64(base64Photo);
 	}
 
 	public void addGame(int players, ArrayList<Integer> playerScores) {
@@ -108,11 +113,15 @@ public class GameConfig implements Iterable<Game> {
 	}
 
 	public void addGame(int players, ArrayList<Integer> playerScores, double difficultyModifier) {
+		addGame(players, playerScores, difficultyModifier, Game.DEFAULT_PHOTO_BASE64);
+	}
+
+	public void addGame(int players, ArrayList<Integer> playerScores, double difficultyModifier, String base64Photo) {
 		if (players > playerScores.size() || players < 0) {
 			throw new IllegalArgumentException("Player Index out of range. Please enter an index" +
 					" between " + 0 + "-" + (playerScores.size() - 1));
 		}
-		Game game = new Game(players, playerScores, expectedPoorScore, expectedGreatScore, difficultyModifier);
+		Game game = new Game(players, playerScores, expectedPoorScore, expectedGreatScore, difficultyModifier, base64Photo);
 		games.add(game);
 	}
 
