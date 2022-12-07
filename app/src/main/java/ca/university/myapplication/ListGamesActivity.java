@@ -2,7 +2,11 @@ package ca.university.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -119,10 +123,16 @@ public class ListGamesActivity extends AppCompatActivity {
 			//find the game
 			Game currentGame = gameList.get(position);
 
-			//fill the view
-			//image
-			ImageView imageView = itemView.findViewById(R.id.item_image);
-			imageView.setImageResource(fillImage(currentGame));
+			// set up game photo
+			ImageView gamePhotoView = itemView.findViewById(R.id.item_image);
+			String base64Photo = currentGame.getPhotoAsBase64();
+			if (base64Photo == null || base64Photo.trim().isEmpty()) {
+				Drawable defaultPhoto = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+				gamePhotoView.setImageDrawable(defaultPhoto);
+			} else {
+				Bitmap bitmap = base64ToBitmap(base64Photo);
+				gamePhotoView.setImageBitmap(bitmap);
+			}
 
 			//date
 			TextView textDate = itemView.findViewById(R.id.item_date);
@@ -151,6 +161,11 @@ public class ListGamesActivity extends AppCompatActivity {
 			setAchievementLevelText(textLevel, currentGame);
 
 			return itemView;
+		}
+
+		private Bitmap base64ToBitmap(String base64) {
+			byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+			return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 		}
 
 		private int fillImage(Game game) {
